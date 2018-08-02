@@ -1,0 +1,101 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: auto;
+    padding-top: 40px;
+    position: relative;
+    background-color: #f7efff;
+}
+
+h1{
+    font-size: 100px;
+    color: rgb(4, 4, 4);
+    text-align: center;
+}
+
+
+#map{
+    height: 400px;
+    width: 100%;
+}
+
+.text{
+    margin-top: -20px;
+
+    text-align:center;
+    color: rgb(4, 4, 4);
+}
+
+#plot{
+    margin-top: -16px;
+
+    width: auto;
+    height: auto;
+}
+
+#Ares{
+    margin-top: -166px;
+    background-color: rgba(172, 183, 255, 0.82);
+}
+
+#Mars{
+    margin-top: -166px;
+    background-color: rgba(172, 183, 255, 0.82);
+}
+
+#Star{
+    margin-top: -166px;
+    background-color: rgba(172, 183, 255, 0.82);
+}
+
+h2{
+    font-size: 200px;
+    color: white;
+    transform:rotate(180deg);
+    /*transform: translate(800px);*/
+
+}
+
+.bullet {
+    margin-top: 10px;
+    margin-left: 150px;
+    font: 10px sans-serif;
+}
+
+.bullet .marker {
+    stroke: #080b10;
+    stroke-width: 2px;
+}
+
+.bullet .tick line {
+    stroke: #666;
+    stroke-width: .1px;
+}
+
+.bullet .range.s0 {
+    fill: #eee;
+}
+
+.bullet .range.s1 {
+    fill: #ddd;
+}
+
+.bullet .range.s2 {
+    fill: #ccc;
+}
+
+.bullet .measure.s0 {
+    fill: lightsteelblue;
+}
+
+.bullet .measure.s1 {
+    fill: steelblue;
+}
+
+.bullet .title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.bullet .subtitle {
+    fill: #999;
+}
