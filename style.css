@@ -14,8 +14,15 @@ h1{
 
 
 #map{
+    margin-top: -400px;
     height: 400px;
-    width: 100%;
+    width: 50%;
+}
+
+img{
+    margin-left: 50%;
+    height: 400px;
+    width: 50%;
 }
 
 .text{
@@ -52,7 +59,7 @@ h1{
 
 h2{
     text-align: left;
-    font-size: 100px;
+    font-size: 80px;
     color: white;
 }
 
