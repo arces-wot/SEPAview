@@ -22,17 +22,20 @@
 </head>
 
 
+
 <body onLoad='onLoad()'>
 
-<div id="title"><h1>SEPAview - demo</h1></div>
+<div id="container">
 
-	<img   src="arces-monitor-architecture.jpg">
+
+	<div id = "title">SEPAview - demo</div>
+
+	<img src="arces-monitor-architecture.jpg">
 
 	<div id="map"></div>
 	<script async defer
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAUOXaMNCKDLXCwmdTQPRRHRAlZtv-q_U&callback=initMap">
 	</script>
-
 
 	<div class="text">
 
@@ -48,11 +51,43 @@
 	</div>
 
 
-
 	<div id="plot"></div>
 	<div id="Mars">
 		<h2>MARS</h2>
-	</div>
+
+
+
+
+        <div id="hormenu">
+            <ul>
+                <li>
+                    Menu
+                    <ul>
+                        <script>
+
+<!-- da sistemare -->
+
+
+                            let i = 0, li_1 = "<li><a href =\"#\">", li_2 = "</a></li>";
+                            for(; i <=  - 1 ; i++){
+                                document.write(li_1 + "Submenu " + (i+1) + li_2);
+                            }
+
+
+
+                            console.log(a);
+
+
+                        </script>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+
+    </div>
 	<div id="Star">
 		<h2>STAR</h2>
 	</div>
@@ -60,11 +95,12 @@
 		<h2>ARES</h2>
 	</div>
 
+</div>
 	
 		
 	<script>
 		function onLoad() {
-            subscribe(jsap,["PLACES", "OBSERVATIONS"]);
+            subscribe(jsap,["PLACES", "OBSERVATIONS","LOG_QUANTITY"]);
 		}
 	</script>
 
@@ -79,6 +115,36 @@
 		$("#Star").hide();
 		$("#Mars").hide();
 	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
