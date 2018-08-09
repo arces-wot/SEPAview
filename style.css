@@ -76,13 +76,20 @@ h2{
     color: white;
 }
 
-button{
+.button{
     position: relative;
-    margin-left: 70px;
-    padding: 10px 32px;
-    cursor:pointer;
+    background-color: #4050c9;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
 }
 
+.button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
 
 /**********************************************************/
 
