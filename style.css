@@ -76,6 +76,16 @@ h2{
     color: white;
 }
 
+button{
+    position: relative;
+    margin-left: 70px;
+    padding: 10px 32px;
+    cursor:pointer;
+}
+
+
+/**********************************************************/
+
 .bullet {
     font: 10px sans-serif;
 }
@@ -118,60 +128,4 @@ h2{
 .bullet .subtitle {
     fill: #999;
 }
-
-/* ********************************************************* */
-
-div#hormenu {
-    margin-left: 1100px;
-    font-family: Calibri;
-    width: 150px;
-    float: left;
-    margin-top: -120px;
-    padding: 0;
-    border-top: 1px solid black;
-}
-
-div#hormenu ul{
-    list-style-type: none;
-}
-
-div#hormenu li {
-    width:100px;
-    float:left;
-    margin: 0;
-    padding: 0;
-    color:black;
-}
-
-div#hormenu a {
-    display: block;
-    padding: 5px;
-    color: #000;
-    text-decoration: none;
-}
-
-div#hormenu a:hover {
-    background-color: #8a8a8a;
-    color: #FFFFFF;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-div#hormenu li ul {
-    display: none
-}
-
-div#hormenu li:hover ul {
-    display: block;
-    z-index:1;
-    width:150px;
-    padding: 0;
-    margin: 0 0 0 -1px;
-    border:1px solid black;
-    background: white;
-}
-
-div#hormenu li li   { border:none; width:150px; }
-div#hormenu li li a { padding:2px 2px 2px 10px; }
-
 
