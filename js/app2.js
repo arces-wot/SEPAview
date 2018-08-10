@@ -1,15 +1,18 @@
+let a = window.opener.x;
+console.log(window.opener.x);
 var variables = [ "temperature1", "temperature2"];
 var titles = ["Temperature Server ERCOLE Core 1 of 20 (ARCES-Risorgimento)", "Temperature Server GIOVE Core 1 of 6 (ARCES-Toffano) "];
-var a = ["arces-monitor:QuantityValue-E120AF28-7B98-11E8-9BD5-A77C67284400","arces-monitor:QuantityValue-E1187C2C-7B98-11E8-9BD5-A77C67284400"];
-var queries = [];
+//var a = ["arces-monitor:QuantityValue-E120AF28-7B98-11E8-9BD5-A77C67284400","arces-monitor:QuantityValue-E1187C2C-7B98-11E8-9BD5-A77C67284400"];
+
 var max =[];
 var min = [];
 
-for( var i = 0 ; i <= a.length - 1 ; i++ ){
+//for( var i = 0 ; i <= a.length - 1 ; i++ ){
 
-	queries[i] = "{?log arces-monitor:refersTo " + a[i] + "; qudt-1-1:numericValue ?temperature1 ; time:inXSDDateTimeStamp ?timestamp}";
+	let queries = "{?log arces-monitor:refersTo arces-monitor:" + a + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
 
-}
+//}
+
 
 
 
@@ -97,7 +100,7 @@ function queryLiveData(callback) {
 
 	query = prefix
 			+ " "
-			+ "SELECT * WHERE {"+ queries[0]  + "FILTER(xsd:dateTime(?timestamp) > '"+from+"'^^xsd:dateTime && xsd:dateTime(?timestamp) < '"+to+"'^^xsd:dateTime)} ORDER BY ?timestamp"
+			+ "SELECT * WHERE {"+ queries  + "FILTER(xsd:dateTime(?timestamp) > '"+from+"'^^xsd:dateTime && xsd:dateTime(?timestamp) < '"+to+"'^^xsd:dateTime)} ORDER BY ?timestamp"
 
 	url = "http://"+host+":8000/query?query=" + encodeURIComponent(query)
 			+ "&default-graph-uri=" + encodeURIComponent(default_graph_uri)

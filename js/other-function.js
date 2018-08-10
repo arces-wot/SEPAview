@@ -1,6 +1,3 @@
-
-
-
 function max(data) {
     let m = data[0], i = 1, n = data.length;
 
@@ -24,6 +21,7 @@ function min(data) {
 
     return m;
 }
+
 
 
  function createSvg(data, l){
@@ -60,34 +58,19 @@ function min(data) {
              element.setAttribute('data-quantity', data[i].quantities);
              element.setAttribute('href','indexAnalitics.html');
              element.setAttribute('target','blanck');
-
-
-             //$(l).html("<a id = data[i].title class = 'button' data-quantity = data[i].quantities >STORICO</a>")
-
-
          }
      }
 
 
 
-     var buttons = document.getElementsByClassName("button");
-     var buttonsCount = buttons.length;
-     for (var j = 0; j < buttonsCount; j += 1) {
+     let buttons = document.getElementsByClassName("button");
+     let buttonsCount = buttons.length;
+     for (let j = 0; j < buttonsCount; j += 1) {
          buttons[j].onclick = function(e) {
-             console.log(this.dataset.quantity);
-
-             qua = this.dataset.quantity;
-
-         };
+             x = this.dataset.quantity;
+             console.log(x);
+         }
      }
-
-
-
-
-
-
-
-
  }
 
 function divideData(data, l){
