@@ -1,9 +1,9 @@
-let a = window.opener.x;
-console.log(window.opener.x);
+let a = [];
+let y = [];
+a[0] = window.opener.x;
+y[0] = window.opener.tit;
+console.log(a.length);
 var variables = [ "temperature1", "temperature2"];
-var titles = ["Temperature Server ERCOLE Core 1 of 20 (ARCES-Risorgimento)", "Temperature Server GIOVE Core 1 of 6 (ARCES-Toffano) "];
-//var a = ["arces-monitor:QuantityValue-E120AF28-7B98-11E8-9BD5-A77C67284400","arces-monitor:QuantityValue-E1187C2C-7B98-11E8-9BD5-A77C67284400"];
-
 var max =[];
 var min = [];
 
@@ -33,17 +33,17 @@ var layout = {
 	},
 	yaxis : {
 		range: [],
-		title : titles[0],
+		title : y,
 		color : colors[0],
 		tickfont : {
 			family : 'Verdana',
 			size : 10,
 			color : colors[0]
 		}
-	},
+	}/*,
 	yaxis2 : {
 		range: [],
-		title : titles[1],
+		title : y,
 		color : colors[1],
 		overlaying : 'y',
 		anchor : "free",
@@ -54,7 +54,7 @@ var layout = {
 			size : 10,
 			color : colors[1]
 		}
-	}
+	}*/
 }
 
 function queryLiveData(callback) {
@@ -81,7 +81,7 @@ function queryLiveData(callback) {
 	default_graph_uri = "http://wot.arces.unibo.it/monitor/mqtt/log";
 	
 	utc = new Date();
-	dateTo = new Date(utc.getTime()+2*3600*1000)
+	dateTo = new Date(utc.getTime()+2*3600*1000);
 	dateFrom = new Date(dateTo.getTime()-24*3600*1000);
 	
 	console.log(dateTo.toISOString());
@@ -117,7 +117,7 @@ var seconds = 0;
 
 function waitingTimer() {
 	seconds += 1;
-	document.getElementById('waiting').innerHTML = "<h2>Loading data...please wait...(elapsed seconds: "
+	document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...(elapsed seconds: "
 			+ seconds + ")</h2>";
 }
 
@@ -129,14 +129,14 @@ function results(json) {
 	window.clearInterval(timer);
 	jsapObj = JSON.parse(json);
 
-	for (i in variables) {
+	for (i in a) {
 		var trace = {
 			x : [],
 			y : [],
-			name : variables[i],
+			name : "temperature1",
 			line : {
 				width : 2,
-				color : colors[i]
+				color : colors[0]
 			},
 			type : 'scatter'
 		};
@@ -145,13 +145,13 @@ function results(json) {
 
 
 		layouts.push({
-			title : titles[i],
+			title : y,
 			titlefont : {
 				family : 'Verdana',
 				size : 24,
 				color : 'rgb(17,57,177)'
 			},
-			color : colors[i],
+			color : colors[0],
 			tickfont : {
 				family : 'Verdana',
 				size : 10
@@ -163,14 +163,16 @@ function results(json) {
 	for (index in jsapObj.results.bindings) {
 		timestamp = jsapObj.results.bindings[index].timestamp.value;
 		binding = jsapObj.results.bindings[index];
+
 		for (i in traces) {
-			if (binding[traces[i].name] == undefined) continue;
+            if (binding[traces[i].name] === undefined) continue;
+
 			
 			value = binding[traces[i].name].value;
 			traces[i].x.push(timestamp);
 			traces[i].y.push(value);
 
-			if (max[i] == undefined) {
+			if (max[i] === undefined) {
 				max[i] = value;
 				min[i] = value;
 			}
@@ -178,18 +180,19 @@ function results(json) {
 				if (value > max[i]) max[i] = value;
 				else if (value < min[i]) min[i] = value;
 			}
-			
-			if (i != "0") {
+
+
+			if (i !== "0") {
 				index = parseInt(i, 10) + 1;
 				traces[i].yaxis = "y" + index;
 				
-				if (i == 1) {
+				if (i === 1) {
 					layout.yaxis2.range[0] = min[i];
 					layout.yaxis2.range[1] = max[i];
-				} else if (i == 2) {
+				} /*else if (i === 2) {
 					layout.yaxis3.range[0] = min[i];
 					layout.yaxis3.range[1] = max[i];
-				}
+				}*/
 			}
 			else {
 				layout.yaxis.range[0] = min[i];

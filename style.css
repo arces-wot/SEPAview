@@ -1,7 +1,7 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Arial Narrow, sans-serif;
     padding-top: 40px;
-    background-color: #f7efff;
+    background-color: rgba(198, 209, 247, 0.82);
 }
 
 #container{
@@ -10,22 +10,43 @@ body {
 }
 
 #title{
+    transition: height 2s;
+    transition-timing-function: ease-in-out;
     margin-top: -48px;
     width: 100%;
-    height: 100px;
+    height: 90px;
     position: fixed;
-    font-size: 50px;
-    color: rgb(4, 4, 4);
-    text-align: center;
+    color: rgb(6, 6, 6);
     z-index: 20;
-    background-color: silver;
+    background-color: rgb(243, 236, 238);
 }
 
+#title.shrink{
+    width: 100%;
+    position: fixed;
+    font-size: 20px;
+    height: 40px;
+    color: rgb(5, 5, 5);
+    z-index: 20;
+}
 
+#titleText{
+    font-weight: 100;
+    opacity: 0.9;
+    text-align: center;
+    font-size: 30px;
+    transition: transform 2s;
+}
+
+#titleText.shrink{
+    opacity: 0.9;
+    transform: scale(0.5,0.5) translate(-1200px,-40px);
+    transition: transform 1s;
+}
 
 #map{
     position: relative;
-    margin-top: -404px;
+    margin-top: -403px;
     height: 400px;
     width: 50%;
 }
@@ -37,6 +58,8 @@ img{
     height: 400px;
     width: 50%;
 }
+
+
 
 .text{
     position: relative;
@@ -70,10 +93,17 @@ img{
     background-color: rgba(172, 183, 255, 0.82);
 }
 
-h2{
-    text-align: left;
-    font-size: 80px;
+#secondPage{
+    text-align: center;
+    font-size: 50px;
     color: white;
+}
+
+
+#load{
+    text-align: left;
+    font-size: 30px;
+    color: #060606;
 }
 
 .button{
@@ -135,4 +165,3 @@ h2{
 .bullet .subtitle {
     fill: #999;
 }
-

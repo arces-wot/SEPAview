@@ -19,23 +19,31 @@
 	<script src="js/arces-demo.js"></script>
 	<script src="js/sepa-api.js"></script>
 
-</head>
+	<script>
+        $(window).scroll(function() {
+            if($(document).scrollTop() > 45){
+                $("#title").addClass("shrink");
+                $("#titleText").addClass("shrink");
+            }else {
+                $("#title").removeClass("shrink");
+                $("#titleText").removeClass("shrink");
+            }
+        });
+	</script>
 
+</head>
 
 
 <body onLoad='onLoad()'>
 
+<div id = "title"><p id="titleText">SEPAview - demo</p></div>
+
 <div id="container">
 
-
-	<div id = "title">SEPAview - demo</div>
 
 	<img src="images/arces-monitor-architecture.jpg">
 
 	<div id="map"></div>
-	<script async defer
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAUOXaMNCKDLXCwmdTQPRRHRAlZtv-q_U&callback=initMap">
-	</script>
 
 	<div class="text">
 
@@ -46,10 +54,11 @@
 		<p>On the map you can see our locations, if you click on one <br> (or more) of them, you can see the sensors
 			that belong to that place.</p>
 
+		<br>
+
 		<p>____________________________________________________________</p>
 
 	</div>
-
 
 	<div id="plot"></div>
 	<div id="Mars">
@@ -63,36 +72,28 @@
 	</div>
 
 </div>
-	
-		
-	<script>
-		function onLoad() {
-            subscribe(jsap,["PLACES", "OBSERVATIONS","LOG_QUANTITY"]);
-		}
-	</script>
-
-
-
-	<!--  questo script va messo dopo la dichiarazione dei div necessari ai svg  -->
-	<script src="js/app.js"></script>
-
-
-	<script>
-		$("#Ares").hide();
-		$("#Star").hide();
-		$("#Mars").hide();
 
 
 
 
+<script>
+	function onLoad() {
+		subscribe(jsap,["PLACES", "OBSERVATIONS"]);
+	}
+</script>
 
+<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAUOXaMNCKDLXCwmdTQPRRHRAlZtv-q_U&callback=initMap">
+</script>
 
+<!--  questo script va messo dopo la dichiarazione dei div necessari ai svg  -->
+<script src="js/app.js"></script>
 
-
-
-
-
-	</script>
+<script>
+    $("#Ares").hide();
+    $("#Star").hide();
+    $("#Mars").hide();
+</script>
 
 </body>
 </html>

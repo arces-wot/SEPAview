@@ -5,34 +5,37 @@
 	<meta charset="UTF-8">
 	<title>ARCES - Data Analytics Portal</title>
 
+    <link href = "./style.css" rel = "stylesheet" type="text/css">
+
 	<script src="lib/plotly-latest.min.js"></script>
 	<script src="lib/color-scheme.js"></script>
 	<script src="js/app2.js"></script>
 	<script src="js/arces-demo.js"></script>
 
 
-
 </head>
-<!--
-<img src="images/dot-one-logo-1475741704.jpg" align="middle">
--->
-<h1>ARCES Sensors Monitoring (last 24h trends)</h1>
-
-<div id="waiting"></div>
 <body onload='onLoad()'>
 
-<script>console.log(window.opener)
+<div id="container">
 
-</script>
+    <!--
+    <img src="images/dot-one-logo-1475741704.jpg" align="middle">
+    -->
+    <h1 id="secondPage">ARCES Sensors Monitoring (last 24h trends)</h1>
 
+    <div id="waiting"></div>
 	<div id="plot"></div>
 
-	<script>
-		function onLoad() {
-			document.getElementById('waiting').innerHTML = "<h2>Loading data...please wait...</h2>";
-			queryLiveData(results);
-		}
-	</script>
+</div>
+
+
+
+<script>
+    function onLoad() {
+        document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";
+        queryLiveData(results);
+    }
+</script>
 
 </body>
 

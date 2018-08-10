@@ -22,6 +22,7 @@ function min(data) {
     return m;
 }
 
+x = [];
 
 
  function createSvg(data, l){
@@ -44,11 +45,12 @@ function min(data) {
             return d.subtitle;
         });
 
+    console.log(data)
 
 
      let i, id = l.substr(1, l.length - 1);
      for(i = 0; i <= data.length - 1; i++){
-         if( document.getElementById(data[i].title) === null){
+         if( document.getElementById(data[i].title) === null && data[i].title !== "Notifications"){
              element = document.createElement("a");
              element.id = data[i].title;
              element.className = "button";
@@ -56,6 +58,7 @@ function min(data) {
              element.appendChild(t);
              document.getElementById(id).appendChild(element);
              element.setAttribute('data-quantity', data[i].quantities);
+             element.setAttribute('data-title', data[i].title);
              element.setAttribute('href','indexAnalitics.html');
              element.setAttribute('target','blanck');
          }
@@ -68,7 +71,7 @@ function min(data) {
      for (let j = 0; j < buttonsCount; j += 1) {
          buttons[j].onclick = function(e) {
              x = this.dataset.quantity;
-             console.log(x);
+             tit = this.dataset.title;
          }
      }
  }
