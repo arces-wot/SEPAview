@@ -3,7 +3,6 @@ let y = [];
 a[0] = window.opener.x;
 y[0] = window.opener.tit;
 console.log(a.length);
-var variables = [ "temperature1", "temperature2"];
 var max =[];
 var min = [];
 
@@ -22,7 +21,7 @@ var s = new ColorScheme;
 var colors = s.from_hue(10).scheme('analogic').variation("pastel").distance(0.5).colors();
 
 var layout = {
-	title : 'Overview',
+    title : y[0],
 	xaxis : {
 		domain : [ 0.15, 1.0 ]
 	},
@@ -33,28 +32,13 @@ var layout = {
 	},
 	yaxis : {
 		range: [],
-		title : y,
 		color : colors[0],
 		tickfont : {
 			family : 'Verdana',
 			size : 10,
 			color : colors[0]
 		}
-	}/*,
-	yaxis2 : {
-		range: [],
-		title : y,
-		color : colors[1],
-		overlaying : 'y',
-		anchor : "free",
-		position : 0.0,
-		side: 'left',
-		tickfont : {
-			family : 'Verdana',
-			size : 10,
-			color : colors[1]
-		}
-	}*/
+	}
 }
 
 function queryLiveData(callback) {
@@ -79,28 +63,31 @@ function queryLiveData(callback) {
 	prefix += " prefix sosa:<http://www.w3.org/ns/sosa/>";
 				
 	default_graph_uri = "http://wot.arces.unibo.it/monitor/mqtt/log";
-	
-	utc = new Date();
-	dateTo = new Date(utc.getTime()+2*3600*1000);
-	dateFrom = new Date(dateTo.getTime()-24*3600*1000);
-	
-	console.log(dateTo.toISOString());
-	console.log(dateFrom.toISOString());
-	
-	from = dateFrom.toISOString();
-	from = from.substring(0,from.length-1);
-	console.log(from);
-	
-	to = dateTo.toISOString();
-	to = to.substring(0,to.length-1);
-	console.log(to);
+
+
+        utc = new Date();
+        dateTo = new Date(utc.getTime()+2*3600*1000);
+        dateFrom = new Date(dateTo.getTime()-24*3600*1000);
+
+        console.log(dateTo.toISOString());
+        console.log(dateFrom.toISOString());
+
+        from = dateFrom.toISOString();
+        from = from.substring(0,from.length-1);
+        console.log(from);
+
+        to = dateTo.toISOString();
+        to = to.substring(0,to.length-1);
+        console.log(to);
+
+
 
 //+ "UNION" + queries[1]
 
 
 	query = prefix
 			+ " "
-			+ "SELECT * WHERE {"+ queries  + "FILTER(xsd:dateTime(?timestamp) > '"+from+"'^^xsd:dateTime && xsd:dateTime(?timestamp) < '"+to+"'^^xsd:dateTime)} ORDER BY ?timestamp"
+			+ "SELECT * WHERE {" + queries  + "FILTER(xsd:dateTime(?timestamp) > '" + from + "'^^xsd:dateTime && xsd:dateTime(?timestamp) < '" + to + "'^^xsd:dateTime)} ORDER BY ?timestamp"
 
 	url = "http://"+host+":8000/query?query=" + encodeURIComponent(query)
 			+ "&default-graph-uri=" + encodeURIComponent(default_graph_uri)
@@ -118,7 +105,7 @@ var seconds = 0;
 function waitingTimer() {
 	seconds += 1;
 	document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...(elapsed seconds: "
-			+ seconds + ")</h2>";
+			+ seconds + ")</h3>";
 }
 
 function results(json) {
@@ -135,7 +122,7 @@ function results(json) {
 			y : [],
 			name : "temperature1",
 			line : {
-				width : 2,
+				width : 1,
 				color : colors[0]
 			},
 			type : 'scatter'
@@ -213,7 +200,7 @@ function results(json) {
 	Plotly.newPlot("all", data, layout);
 
 	// Trace by trace
-	for (i in traces) {
+	for (i in traces -1) {
 		var element = document.createElement("div");
 		element.id = traces[i].name;
 		document.getElementById('plot').appendChild(element);
