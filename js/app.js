@@ -1,14 +1,16 @@
-var observations = [];//, locations = [];
-var sensorData = [ {
+let observations = [];//, locations = [];
+let sensorData = [ {
 	"title" : "Notifications",
 	"subtitle" : "",
 	"measures" : [ 0, 0 ],
 	"ranges" : [ 0, 10 ],
 	"markers" : [ 0 ],
-	"location" : ""
-} ]
+	"location" : "",
+    "quantities" : ""
+} ];
 
-var margin = {
+
+let margin = {
 	top : 0,
 	right : 10,
 	bottom : 30,
@@ -16,51 +18,35 @@ var margin = {
 }, width = 960 - margin.left - margin.right, height = 75 - margin.top
 		- margin.bottom;
 
-var chart = d3.bullet().width(width).height(height);
+let chart = d3.bullet().width(width).height(height);
 
-var notifications = 0;
-var svg;
+let notifications = 0;
+let svg;
 
 function drawData(data) {
-
-    var loc = countLocation(data), i = 0;
+    loc = countLocation(data);
+	let i = 0;
 
     for(; i <= loc.length - 1; i++){
-
     	if(loc[i] === ""){
-            var d = divideData(data, "");
-            createSvg(d,"#plot");
+            let a = divideData(data, "");
+            createSvg(a,"#plot");
+
+
+
+
 		}else{
-            var b = divideData(data, loc[i]);
+            let b = divideData(data, loc[i]);
             createSvg(b,loc[i]);
+
+
+
 		}
-
 	}
-
-
-    var a = divideData(data, "#Ares");
-    createSvg(a,"#Ares");
-
-    var d = divideData(data, "#Star");
-    createSvg(d,"#Star");
-
-    var c = divideData(data, "#Mars");
-    createSvg(c,"#Mars");
-
-    var b = divideData(data, "");
-    createSvg(b,"#plot");
-
-
-
-
-
-
-
-
 }
 
 function redrawData(data) {
-	var svg = d3.select("body").selectAll("svg").data(data);
+	let svg = d3.select("body").selectAll("svg").data(data);
 	svg.datum(randomize).call(chart.duration(1000));
 }
 
@@ -68,7 +54,7 @@ function randomize(d) {
 	return d;
 }
 
-function updateData(observation, value, label, unit, location) {
+function updateData(observation, value, label, unit, location, quantity) {
 	index = observations.indexOf(observation);
 
 	console.log("Plot <" + observation + ":" + value + ">  index:" + index);
@@ -89,11 +75,9 @@ function updateData(observation, value, label, unit, location) {
 			"ranges" : [ valueAsFloat, valueAsFloat, valueAsFloat*2 ],
 			"measures" : [valueAsFloat, valueAsFloat ],
 			"markers" : [ valueAsFloat, valueAsFloat ],
-			"location" : location
+			"location" : location,
+			"quantities" : quantity
 		});
-
-
-
 		drawData(sensorData);
 
 
@@ -124,6 +108,8 @@ function updateData(observation, value, label, unit, location) {
 
 		redrawData(sensorData);
 	}
+
+
 };
 
 

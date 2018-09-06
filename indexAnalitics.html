@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>ARCES - Data Analytics Portal</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <link href = "./style.css" rel = "stylesheet" type="text/css">
+
+	<script src="lib/plotly-latest.min.js"></script>
+	<script src="lib/color-scheme.js"></script>
+	<script src="js/app2.js"></script>
+	<script src="js/arces-demo.js"></script>
+</head>
+
+<body onload='onLoad()'>
+
+
+
+
+
+
+<div id="container">
+    <!--
+    <img src="images/dot-one-logo-1475741704.jpg" align="middle">
+    -->
+    <h1 id="secondPage">ARCES Sensors Monitoring (last 24h trends)</h1>
+    <div id="waiting"></div>
+
+	<form id="calendar" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
+		date: <input type="date" name="date"><br>
+		time: <input type="time" name="time"><br>
+		<input type="submit" value="CAMBIA">
+	</form>
+
+	<div id="plot"></div>
+
+</div>
+
+
+
+<script>
+    function onLoad() {
+        document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";
+        queryLiveData(results);
+    }
+</script>
+
+<script>
+	$("#calendar").hide();
+</script>
+
+</body>
+
+</html>

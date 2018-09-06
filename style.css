@@ -1,63 +1,138 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: auto;
+    font-family: 'Montserrat', sans-serif;
     padding-top: 40px;
-    position: relative;
-    background-color: #f7efff;
+    background-color: #c9cdce;
+}
+
+#container{
+    position:relative;
+    width:100%;
 }
 
 h1{
-    font-size: 100px;
-    color: rgb(4, 4, 4);
-    text-align: center;
+margin-top: -37px;
+
 }
 
+#title{
+    transition: height 2s;
+    transition-timing-function: ease-in-out;
+    margin-top: -48px;
+    margin-left: -8px;
+    width: 100%;
+    height: 90px;
+    position: fixed;
+    color: rgb(252, 252, 252);
+    z-index: 20;
+    background-color: #455A64;
+}
+
+#title.shrink{
+    width: 100%;
+    position: fixed;
+    font-size: 20px;
+    height: 40px;
+    z-index: 20;
+}
+
+#titleText{
+    font-weight: 100;
+    opacity: 0.9;
+    text-align: center;
+    font-size: 30px;
+    transition: transform 2s;
+}
+
+#titleText.shrink{
+    opacity: 0.9;
+    transform: scale(0.5,0.5) translate(-1200px,-40px);
+    transition: transform 1s;
+}
 
 #map{
-    height: 400px;
-    width: 100%;
+    position: relative;
+    margin-top: -334px;
+    height: 330px;
+    width: 50%;
 }
 
-.text{
-    margin-top: -20px;
+img{
+    margin-top: 43px;
+    position: relative;
+    margin-left: 50%;
+    height: 330px;
+    width: 50%;
+}
 
+
+
+.text{
+    position: relative;
+    margin-top: -20px;
     text-align:center;
     color: rgb(4, 4, 4);
 }
 
 #plot{
-    margin-top: -16px;
-
+    position: relative;
+    text-align: center;
     width: auto;
     height: auto;
 }
 
+h2{
+    color: white;
+    transform: translate(450px);
+    font-size: 100px;
+}
+
 #Ares{
-    margin-top: -166px;
-    background-color: rgba(172, 183, 255, 0.82);
+    text-align: center;
+    background-color: #6f747a;
 }
 
 #Mars{
-    margin-top: -166px;
-    background-color: rgba(172, 183, 255, 0.82);
+    text-align: center;
+    background-color: #6f747a;
 }
 
 #Star{
-    margin-top: -166px;
-    background-color: rgba(172, 183, 255, 0.82);
+    text-align: center;
+    background-color: #6f747a;
 }
 
-h2{
-    font-size: 200px;
+#secondPage{
+    text-align: center;
+    font-size: 50px;
     color: white;
-    transform:rotate(180deg);
-    /*transform: translate(800px);*/
-
 }
+
+
+#load{
+    text-align: left;
+    font-size: 30px;
+    color: #060606;
+}
+
+.button{
+    margin-left: 50px;
+    margin-top: 50px;
+    background-color: #4050c9;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+/**********************************************************/
 
 .bullet {
-    margin-top: 10px;
-    margin-left: 150px;
     font: 10px sans-serif;
 }
 
