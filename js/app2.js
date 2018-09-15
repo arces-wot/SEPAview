@@ -5,15 +5,8 @@ y[0] = window.opener.tit;
 var max =[];
 var min = [];
 
-//for( var i = 0 ; i <= a.length - 1 ; i++ ){
 
 	let queries = "{?log arces-monitor:refersTo arces-monitor:" + a + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
-
-//}
-
-
-
-
 
 
 var host ="mml.arces.unibo.it";
@@ -67,7 +60,6 @@ function queryLiveData(callback) {
 
 
 
-
     var form ="<form id=\"calendar\">\n" +
         "        date from: <input type=\"date\" name=\"dateFrom\"><br>\n" +
         "        time from: <input type=\"time\" name=\"timeFrom\"><br>\n" +
@@ -79,8 +71,6 @@ function queryLiveData(callback) {
 
     $("#form").append(form);
     $("#buttonCambia").append(buttonCambia);
-    
-
 
         utc = new Date();
         dateTo = new Date(utc.getTime()+2*3600*1000);
@@ -93,8 +83,6 @@ function queryLiveData(callback) {
         to = dateTo.toISOString();
         to = to.substring(0,to.length-1);
         console.log(to);
-
-
 
 
     $('#buttonCambia').click(function() {
@@ -126,11 +114,6 @@ function queryLiveData(callback) {
     });
 
 
-
-
-//+ "UNION" + queries[1]
-
-
 	query = prefix
 			+ " "
 			+ "SELECT * WHERE {" + queries  + "FILTER(xsd:dateTime(?timestamp) > '" + from + "'^^xsd:dateTime && xsd:dateTime(?timestamp) < '" + to + "'^^xsd:dateTime)} ORDER BY ?timestamp"
@@ -144,8 +127,6 @@ function queryLiveData(callback) {
 
 	xmlHttp.send(null);
 }
-
-
 
 
 var timer = window.setInterval(waitingTimer, 1000);
@@ -178,8 +159,6 @@ function results(json) {
 		};
 		traces.push(trace);
 
-
-
 		layouts.push({
 			title : y,
 			titlefont : {
@@ -195,14 +174,12 @@ function results(json) {
 		});
 	}
 
-
 	for (index in jsapObj.results.bindings) {
 		timestamp = jsapObj.results.bindings[index].timestamp.value;
 		binding = jsapObj.results.bindings[index];
 
 		for (i in traces) {
             if (binding[traces[i].name] === undefined) continue;
-
 
 			value = binding[traces[i].name].value;
 			traces[i].x.push(timestamp);
@@ -225,10 +202,7 @@ function results(json) {
 				if (i === 1) {
 					layout.yaxis2.range[0] = min[i];
 					layout.yaxis2.range[1] = max[i];
-				} /*else if (i === 2) {
-					layout.yaxis3.range[0] = min[i];
-					layout.yaxis3.range[1] = max[i];
-				}*/
+				}
 			}
 			else {
 				layout.yaxis.range[0] = min[i];
