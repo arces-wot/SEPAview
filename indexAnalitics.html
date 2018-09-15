@@ -6,6 +6,7 @@
 	<title>ARCES - Data Analytics Portal</title>
 
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
     <link href = "./style.css" rel = "stylesheet" type="text/css">
 
@@ -18,10 +19,6 @@
 <body onload='onLoad()'>
 
 
-
-
-
-
 <div id="container">
     <!--
     <img src="images/dot-one-logo-1475741704.jpg" align="middle">
@@ -29,15 +26,15 @@
     <h1 id="secondPage">ARCES Sensors Monitoring (last 24h trends)</h1>
     <div id="waiting"></div>
 
-	<form id="calendar" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
-		date: <input type="date" name="date"><br>
-		time: <input type="time" name="time"><br>
-		<input type="submit" value="CAMBIA">
-	</form>
+	<div id="form"></div>
+	<div id="buttonCambia"></div>
+
+    <br>
 
 	<div id="plot"></div>
 
 </div>
+
 
 
 
@@ -48,9 +45,6 @@
     }
 </script>
 
-<script>
-	$("#calendar").hide();
-</script>
 
 </body>
 
