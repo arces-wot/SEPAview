@@ -35,8 +35,11 @@ function showSpecificGraph(marker) {
 
     marker.addListener('click', function() {
 
-        let a = "#" + marker.title;
-        $(a).show();
+
+        link(marker.title);
+
+        /*let a = "#" + marker.title;
+        $(a).show();*/
 
     });
 

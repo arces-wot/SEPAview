@@ -45,8 +45,6 @@ x = [];
             return d.subtitle;
         });
 
-    console.log(data)
-
 
      let i, id = l.substr(1, l.length - 1);
      for(i = 0; i <= data.length - 1; i++){

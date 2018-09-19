@@ -53,12 +53,13 @@ function subscribe(jsapObj,id) {
 
 
 
-
                 } else { console.log(msg); }},
             error(err) { console.log("Received an error: " + err) },
             complete() { console.log("Server closed connection ") }, },
 
         {host:jsapObj["host"]});
+
+
 
 
     //------------------------------------------------------------------------------------
@@ -182,4 +183,5 @@ function subscribe(jsapObj,id) {
             console.log(msg);
         }
     }
+
 }
