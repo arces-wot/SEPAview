@@ -5,27 +5,27 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    padding-top: 40px;
-    background-color: #c9cdce;
+    background-color: #f9feff;
 }
 
 #container{
+    height: 1000px;
     position:relative;
     width:100%;
 }
 
-
+/*TITLE*/
 
 #title{
+    top: 0;
     transition: height 2s;
     transition-timing-function: ease-in-out;
-margin-top: -40px;
     width: 100%;
-    height: 90px;
+    height: 15vh;
     position: fixed;
     color: rgb(252, 252, 252);
     z-index: 20;
-    background-color: #455A64;
+    background-color: #223a64;
 }
 
 #title.shrink{
@@ -40,6 +40,7 @@ margin-top: -40px;
     font-weight: 100;
     opacity: 0.9;
     text-align: center;
+    line-height: 90px;
     font-size: 30px;
     transition: transform 2s;
 }
@@ -50,41 +51,159 @@ margin-top: -40px;
     transition: transform 1s;
 }
 
+/*MAP*/
 #map{
+    z-index: 1;
     position: relative;
-    margin-top: -334px;
-    height: 330px;
+    margin-top: 15vh;
+    height: 50vh;
     width: 50%;
 }
 
-img{
-    margin-top: 43px;
+/*TEXT*/
+h4{
+    margin-top: -40vh;
+    margin-left: 55%;
     position: relative;
-    margin-left: 50%;
-    height: 330px;
-    width: 50%;
-}
-
-
-
-.text{
-    position: relative;
-    margin-top: -20px;
+    width: 40%;
+    height: 40vh;
     text-align:center;
-    color: rgb(4, 4, 4);
 }
 
+/*TREE*/
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 55;
+    top: 0;
+    left: 0;
+    background-color: #5390b2;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav li {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav li:hover {
+    color: #2c2c2c;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #2c2c2c;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
+/* TREE */
+
+ul, #myUL {
+    list-style-type: none;
+}
+
+#myUL {
+    margin: 0;
+    padding: 0;
+}
+
+.caret {
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+}
+
+.caret::before {
+    content: "\25B6"; /*serve per la freccia ->unicode*/
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.caret-down::before {
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari */'
+transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+
+/*OVERLAY*/
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-image: url("images/arces-monitor-architecture.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 70;
+    cursor: pointer;
+}
+
+#overlayButton{
+    color: white;
+    background-color: #7299b2;
+    border: solid 1px black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: -10px;
+    margin-left: 95vw;
+    position: fixed;
+    z-index: 30;
+    cursor: pointer;
+}
+
+/*GRAPH*/
 #plot{
+    margin-top: 70px;
     position: relative;
     text-align: center;
     width: auto;
     height: auto;
-}
-
-h2{
-    color: white;
-    transform: translate(450px);
-    font-size: 100px;
 }
 
 #Ares{
@@ -102,37 +221,13 @@ h2{
     background-color: #6f747a;
 }
 
-#secondPage{
-    text-align: center;
-    font-size: 50px;
+h2{
     color: white;
+    transform: translate(450px);
+    font-size: 100px;
 }
 
-
-#load{
-    text-align: left;
-    font-size: 30px;
-    color: #060606;
-}
-
-.button{
-    margin-left: 50px;
-    margin-top: 50px;
-    background-color: #4050c9;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    display: inline-block;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.button:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}
-
-/**********************************************************/
-
+/*****************************************************/
 .bullet {
     font: 10px sans-serif;
 }

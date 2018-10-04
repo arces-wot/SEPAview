@@ -1,12 +1,11 @@
 let a = [];
 let y = [];
-a[0] = window.opener.x;
 y[0] = window.opener.tit;
 var max =[];
 var min = [];
 
 
-	let queries = "{?log arces-monitor:refersTo arces-monitor:" + a + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
+	let queries = "{?log arces-monitor:refersTo arces-monitor:" + window.opener.x + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
 
 
 var host ="mml.arces.unibo.it";
@@ -41,9 +40,10 @@ function queryLiveData(callback) {
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(xmlHttp.responseText);
-	}
+	};
 
 	prefix = "prefix arces-monitor:<http://wot.arces.unibo.it/monitor#>";
+    prefix += " prefix schema:<http://schema.org/>";
 	prefix += " prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>";
 	prefix += " prefix owl:<http://www.w3.org/2002/07/owl#>";
 	prefix += " prefix qudt-1-1:<http://qudt.org/1.1/schema/qudt#>";
@@ -61,13 +61,13 @@ function queryLiveData(callback) {
 
 
     var form ="<form id=\"calendar\">\n" +
-        "        date from: <input type=\"date\" name=\"dateFrom\"><br>\n" +
-        "        time from: <input type=\"time\" name=\"timeFrom\"><br>\n" +
-        "        date to: <input type=\"date\" name=\"dateTo\"><br>\n" +
-        "        time to: <input type=\"time\" name=\"timeTo\"><br>\n" +
+        "        Date from: <input type=\"date\" name=\"dateFrom\"><br>\n" +
+        "        Time from: <input type=\"time\" name=\"timeFrom\"><br>\n" +
+        "        Date to: <input type=\"date\" name=\"dateTo\"><br>\n" +
+        "        Time to: <input type=\"time\" name=\"timeTo\"><br>\n" +
         "        </form>";
 
-    var buttonCambia = "<button id=\"cambia\">CAMBIA</button>";
+    var buttonCambia = "<button type=\"submit\" class=\"btn\">Go</button>";
 
     $("#form").append(form);
     $("#buttonCambia").append(buttonCambia);
@@ -100,7 +100,7 @@ function queryLiveData(callback) {
 
         query = prefix
             + " "
-            + "SELECT * WHERE {" + queries  + "FILTER(xsd:dateTime(?timestamp) > '" + from + "'^^xsd:dateTime && xsd:dateTime(?timestamp) < '" + to + "'^^xsd:dateTime)} ORDER BY ?timestamp"
+            + "SELECT * WHERE {" + queries  + "FILTER(xsd:dateTime(?timestamp) > '" + from + "'^^xsd:dateTime && xsd:dateTime(?timestamp) < '" + to + "'^^xsd:dateTime)} ORDER BY ?timestamp";
 
         url = "http://"+host+":8000/query?query=" + encodeURIComponent(query)
             + "&default-graph-uri=" + encodeURIComponent(default_graph_uri);

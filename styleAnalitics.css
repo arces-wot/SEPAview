@@ -1,0 +1,157 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f9feff;
+}
+
+#container{
+    height: 1000px;
+    position:relative;
+    width:100%;
+}
+
+#title{
+    top: 0;
+    width: 100%;
+    height: 15vh;
+    text-align: center;
+    line-height: 80px;
+    color: rgb(252, 252, 252);
+    z-index: 20;
+    background-color: #223a64;
+}
+
+#titleText{
+    font-weight: 100;
+    opacity: 0.9;
+    text-align: center;
+    line-height: 90px;
+    font-size: 30px;
+}
+
+
+
+#load{
+    text-align: left;
+    font-size: 30px;
+    color: #060606;
+}
+
+.button{
+    margin-left: 50px;
+    margin-top: 50px;
+    background-color: #4050c9;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-image: url("images/LiveData.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 70;
+    cursor: pointer;
+}
+
+#overlayButton{
+    color: white;
+    background-color: #7299b2;
+    border: solid 1px black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-left: 95vw;
+    position: fixed;
+    z-index: 30;
+    cursor: pointer;
+}
+
+
+.open-button {
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: #020202;
+    padding: 16px 20px;
+    border: solid 1px;
+    cursor: pointer;
+    opacity: 0.8;
+    width: 280px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+    display: none;
+    left: 15px;
+    width: 300px;
+    line-height: 40px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+    background-color: #2d7daa;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+    background-color: #58575c;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+}
+

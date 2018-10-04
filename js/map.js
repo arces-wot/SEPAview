@@ -35,11 +35,12 @@ function showSpecificGraph(marker) {
 
     marker.addListener('click', function() {
 
+        //let a = "#" + marker.title;
+        let root = marker.title;
+        //$(a).show();
 
-        link(marker.title);
+        createTree(root,jsap,"#li");
 
-        /*let a = "#" + marker.title;
-        $(a).show();*/
 
     });
 

@@ -63,7 +63,7 @@
              }
          },
          "ADD_PLACE": {
-             "sparql": "INSERT DATA {?place rdf:type schema:place; schema:geo ?name ; schema:lat ?lat ; schema:long ?long}",
+             "sparql": "INSERT {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:cordinate . _:cordinate schema:latitude ?lat ; schema:longitude ?long} WHERE{}",
              "forcedBindings": {
                  "place": {
                      "type": "uri",
@@ -85,21 +85,8 @@
                  }
              }
          },
-         "ADD_ROOM_OR_SERVER": {
-             "sparql": "INSERT DATA {?place rdf:type schema:place; schema:geo ?name}",
-             "forcedBindings": {
-                 "place": {
-                     "type": "uri",
-                     "value": "arces-monitor:Mars"
-                 },
-                 "name": {
-                     "type": "literal",
-                     "value": "Mars"
-                 }
-             }
-         },
          "LINK_PLACES":{
-             "sparql": "INSERT { ?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }",
+             "sparql": "INSERT DATA { ?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }",
              "forcedBindings":{
                  "root": {
                      "type": "uri",
@@ -112,7 +99,7 @@
              }
          },
          "DELETE_LINK_PLACES":{
-             "sparql": "DELETE  { ?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }",
+             "sparql": "DELETE DATA { ?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }",
              "forcedBindings":{
                  "root": {
                      "type": "uri",
@@ -224,19 +211,38 @@
              }
          },
          "PLACES": {
-             "sparql": "SELECT * WHERE {?place rdf:type schema:place; schema:geo ?name ; schema:lat ?lat ; schema:long ?long}"
+             "sparql": "SELECT * WHERE {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:cordinate . _:cordinate schema:latitude ?lat ; schema:longitude ?long}"
          },
-         "ADD_ROOM_OR_SERVER": {
-             "sparql": "SELECT * WHERE {?place rdf:type schema:place; schema:geo ?name}"
+         "MAP_PLACES":{
+             "sparql": "SELECT * WHERE {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:cordinate . _:cordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}"
          },
-         "LINK_PLACES":{
-             "sparql": "SELECT * where { ?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }"
+         "CREATE_TREE":{
+             "sparql": "SELECT * where { ?observation rdf:type sosa:Observation. ?child rdf:type schema:Place . ?root schema:containsPlace ?child }",
+             "forcedBindings": {
+                 "root": {
+                     "type": "uri",
+                     "value": "arces-monitor:Mars"
+                 }
+             }
+         },
+         "CONTAINED_PLACES":{
+             "sparql": "SELECT * where { ?root schema:containsPlace ?child }",
+             "forcedBindings": {
+                 "root": {
+                     "type": "uri",
+                     "value": "arces-monitor:Mars"
+                 }
+             }
+         },
+         "ROOT_PLACES": {
+             "sparql": "SELECT * where { ?root rdf:type schema:Place .  FILTER NOT EXISTS{?root schema:containedInPlace ?place} }"
+
          },
          "OBSERVATIONS_TOPICS": {
              "sparql": "SELECT * WHERE {?observation rdf:type sosa:Observation ; arces-monitor:hasMqttTopic ?topic}"
          },
          "OBSERVATIONS": {
-             "sparql": "SELECT * WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?location rdf:type schema:Place . ?location schema:containsPlace ?room . ?location schema:containsPlace ?server .  ?quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit . OPTIONAL {?quantity qudt-1-1:numericValue ?value}}"
+             "sparql": "SELECT * WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?location rdf:type schema:Place . ?quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit . OPTIONAL {?quantity qudt-1-1:numericValue ?value}}"
          },
          "OBSERVATIONS_BY_LOCATION": {
              "sparql": "SELECT * WHERE { ?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit ;  qudt-1-1:numericValue ?value}",

@@ -15,12 +15,14 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 
-	<script src="./js/link.js"></script>
 	<script src="lib/bullet.js"></script>
+    <script src="js/overlay.js"></script>
 	<script src="js/map.js"></script>
 	<script src="js/other-function.js"></script>
 	<script src="js/arces-demo.js"></script>
 	<script src="js/sepa-api.js"></script>
+    <script src="js/tree.js"></script>
+    <script src="js/tree-animation.js"></script>
 
 	<script>
         $(window).scroll(function() {
@@ -39,67 +41,43 @@
 
 <body onLoad='onLoad()'>
 
-<div id = "title"><p id="titleText">SEPAview - DEMO</p></div>
-
 <div id="container">
 
-	<img src="images/arces-monitor-architecture.jpg">
-
-	<div id="map"></div>
-
-	<div class="text">
-
-		<p>____________________________________________________________</p>
-
-		<p>On the map you can see our locations, if you click on one <br> (or more) of them, you can see the sensors
-			that belong to that place.</p>
-
-		<p>____________________________________________________________</p>
-
-	</div>
-
-	<div id="plot"></div>
-	<div id="Mars">
-		<h2>MARS</h2>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+         <ul id="myUL">
+            <div id="li"></div>
+         </ul>
     </div>
-	<div id="Star">
-		<h2>STAR</h2>
-	</div>
-	<div id="Ares">
-		<h2>ARES</h2>
-	</div>
 
-	<!--	<div id="plot"></div>
-	<div id="Mars">
-		<h2>MARS</h2>
-		<div id="SalaServerMars">
-			<div id="SensoriStanzaMars"></div>
-			<div id="ServerMars">
-				<div id="ServerGiove"></div>
-				<div id="ServerSamba"></div>
-			</div>
-		</div>
+    <div id="main">
+
+
+        <div id = "title"><p id="titleText">SEPAview - DEMO</p></div>
+
+        <div id="map"></div>
+
+        <h4>On the map you can see our locations, if you click on one (or more) of them, you can see the sensors
+            that belong to that place.</h4>
+
+
+
+        <div id="plot"></div>
+        <div id="Mars">
+            <h2>MARS</h2>
+        </div>
+        <div id="Star">
+            <h2>STAR</h2>
+        </div>
+        <div id="Ares">
+            <h2>ARES</h2>
+        </div>
+
+        <!--<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>-->
     </div>
-	<div id="Star">
-		<h2>STAR</h2>
-		<div id="SalaServerStar">
-			<div id="SensoriStanzaStar"></div>
-			<div id="ServerStar"></div>
-		</div>
-		<div id="Ufficio"></div>
-		<div id="SHMLAB"></div>
-	</div>
-	<div id="Ares">
-		<h2>ARES</h2>
-		<div id="SalaServerAres">
-			<div id="SensoriStanzaAres"></div>
-			<div id="ServerAres">
-				<div id="ServerErcole"></div>
-			</div>
-		</div>
-	</div>
 
-</div>-->
+	<div id="overlay" onclick="off()"></div>
+	<div id="overlayButton" onclick="on()">?</div>
 
 </div>
 
@@ -108,7 +86,7 @@
 
 <script>
 	function onLoad() {
-		subscribe(jsap,["PLACES", "OBSERVATIONS"]);
+		subscribe(jsap,["MAP_PLACES", "OBSERVATIONS"]);
 	}
 </script>
 
@@ -120,9 +98,28 @@
 <script src="js/app.js"></script>
 
 <script>
+
+</script>
+
+<script>
     $("#Ares").hide();
     $("#Star").hide();
     $("#Mars").hide();
+
+
+    //------------------
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft= "0";
+    }
+
+
 </script>
 
 </body>

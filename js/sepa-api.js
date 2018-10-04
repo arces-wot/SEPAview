@@ -3,7 +3,7 @@ function subscribe(jsapObj,id) {
     //jsapObj = JSON.parse(jsap);
 
     //------------------------------------------------------------------------------------
-    //PLACES
+    //MAP_PLACES
     //------------------------------------------------------------------------------------
 
     subscribe = jsapObj["queries"][id[0]]["sparql"];
@@ -36,7 +36,7 @@ function subscribe(jsapObj,id) {
 
                         binding = msg.notification.addedResults.results.bindings[index];
 
-                        places = binding.place.value;
+                        places = binding.root.value;
                         names = binding.name.value;
                         lat = parseFloat(binding.lat.value);
                         lng = parseFloat(binding.long.value);
@@ -47,7 +47,6 @@ function subscribe(jsapObj,id) {
                         p.push(places);
 
                     }
-
                     initMap(latitude,longitude);
                     add_marker(latitude,longitude,n);
 
@@ -58,9 +57,6 @@ function subscribe(jsapObj,id) {
             complete() { console.log("Server closed connection ") }, },
 
         {host:jsapObj["host"]});
-
-
-
 
     //------------------------------------------------------------------------------------
     //OBSERVATIONS
