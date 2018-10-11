@@ -5,11 +5,10 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #f9feff;
+    background-color: #ffffff;
 }
 
 #container{
-    height: 1000px;
     position:relative;
     width:100%;
 }
@@ -57,17 +56,7 @@ body {
     position: relative;
     margin-top: 15vh;
     height: 50vh;
-    width: 50%;
-}
-
-/*TEXT*/
-h4{
-    margin-top: -40vh;
-    margin-left: 55%;
-    position: relative;
-    width: 40%;
-    height: 40vh;
-    text-align:center;
+    width: 100%;
 }
 
 /*TREE*/
@@ -122,13 +111,11 @@ h4{
     transition: margin-left .5s;
 }
 
-/* TREE */
-
-ul, #myUL {
+ul {
     list-style-type: none;
 }
 
-#myUL {
+#tree {
     margin: 0;
     padding: 0;
 }
@@ -153,15 +140,6 @@ ul, #myUL {
     -webkit-transform: rotate(90deg); /* Safari */'
 transform: rotate(90deg);
 }
-
-.nested {
-    display: none;
-}
-
-.active {
-    display: block;
-}
-
 
 /*OVERLAY*/
 #overlay {
@@ -206,25 +184,42 @@ transform: rotate(90deg);
     height: auto;
 }
 
-#Ares{
+.graphic{
+    z-index: 0;
     text-align: center;
-    background-color: #6f747a;
+    background-color: #b1c1ff;
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+    transition-duration: 2s;
 }
 
-#Mars{
+.button{
+    height: 50px;
+    width: 140px;
+    border: #020202 1px solid;
+    color: #020202;
     text-align: center;
-    background-color: #6f747a;
+    line-height: 50px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: 30px;
+    margin-left: 75%;
+    transition-duration: 0.4s;
+    position: relative;
 }
 
-#Star{
-    text-align: center;
-    background-color: #6f747a;
+.button:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
+
 
 h2{
-    color: white;
-    transform: translate(450px);
+    color: #ffffff;
     font-size: 100px;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 /*****************************************************/

@@ -1,6 +1,5 @@
 let a = [];
-let y = [];
-y[0] = window.opener.tit;
+let y = window.opener.tit;
 var max =[];
 var min = [];
 
@@ -14,7 +13,7 @@ var s = new ColorScheme;
 var colors = s.from_hue(10).scheme('analogic').variation("pastel").distance(0.5).colors();
 
 var layout = {
-    title : y[0],
+    title : y,
 	xaxis : {
 		domain : [ 0.15, 1.0 ]
 	},

@@ -1,5 +1,5 @@
 let observations = [];//, locations = [];
-let sensorData = [ {
+sensorData = [ {
 	"title" : "Notifications",
 	"subtitle" : "",
 	"measures" : [ 0, 0 ],
@@ -25,33 +25,26 @@ let svg;
 
 function drawData(data) {
     loc = countLocation(data);
-	let i = 0;
 
-    for(; i <= loc.length - 1; i++){
+    for(let i = 0; i <= loc.length - 1; i++){
     	if(loc[i] === ""){
             let a = divideData(data, "");
             createSvg(a,"#plot");
-
-
-
-
 		}else{
             let b = divideData(data, loc[i]);
             createSvg(b,loc[i]);
-
-
 
 		}
 	}
 }
 
+function randomize(d){
+	return d;
+}
+
 function redrawData(data) {
 	let svg = d3.select("body").selectAll("svg").data(data);
 	svg.datum(randomize).call(chart.duration(1000));
-}
-
-function randomize(d) {
-	return d;
 }
 
 function updateData(observation, value, label, unit, location, quantity) {

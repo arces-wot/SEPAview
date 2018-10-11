@@ -58,36 +58,88 @@ function subscribe(jsapObj,id) {
 
         {host:jsapObj["host"]});
 
+
     //------------------------------------------------------------------------------------
+    //PLACES
+    //------------------------------------------------------------------------------------
+
+    subscribe = jsapObj["queries"][id[1]]["sparql"];
+
+    // PREFIXES
+    prefixes = "";
+    for (ns in jsapObj["namespaces"]) {
+        prefixes += "PREFIX " + ns + ":<"+ jsapObj["namespaces"][ns] + ">";
+    }
+
+    query = prefixes + " " + subscribe;
+
+    //const sepa = Sepajs.client;
+
+    sepa.subscribe(query,{
+            next(val) {
+                console.log("Data received: " + val);
+                msg = JSON.parse(val);
+
+                n = [];
+                p = [];
+                if (msg["notification"] !== undefined) {
+
+                    len = msg["notification"]["addedResults"]["results"]["bindings"].length - 1;
+                    for (index = 0; index <= len; index++) {
+                        binding = msg.notification.addedResults.results.bindings[index];
+                        places = binding.place.value;
+                        names = binding.name.value;
+                        n.push(names);
+                        p.push(places);
+
+                    }
+
+                    for(let i = 0; i < p.length ; i++){
+
+                        id_place = p[i].slice(34, p[i].length);
+                        $("#graph").append("<div id='"+ id_place +"' class='graphic'></div>");
+                        $("#"+id_place).append("<h2>"+ n[i] + "</h2>");
+                        $("#"+id_place).hide();
+                    }
+
+                } else { console.log(msg); }},
+            error(err) { console.log("Received an error: " + err) },
+            complete() { console.log("Server closed connection ") }, },
+
+        {host:jsapObj["host"]});
+
+
+
+    //-----------------------------------------------------------------------------------
     //OBSERVATIONS
     //------------------------------------------------------------------------------------
 
-    queryObj = jsap["queries"][id[1]];
+    queryObj = jsap["queries"][id[2]];
 
     // SPARQL
     sparql = queryObj["sparql"];
 
     // HOST
-    if (queryObj["host"] != undefined)
+    if (queryObj["host"] !== undefined)
         host = queryObj["host"];
     else
         host = jsap["host"];
 
     // PROTOCOL
-    if (queryObj["sparql11seprotocol"] != undefined) {
-        if (queryObj["sparql11seprotocol"]["protocol"] != undefined)
+    if (queryObj["sparql11seprotocol"] !== undefined) {
+        if (queryObj["sparql11seprotocol"]["protocol"] !== undefined)
             scheme = queryObj["protocol"];
         else
             scheme = jsap["sparql11seprotocol"]["protocol"];
 
-        if (queryObj["sparql11seprotocol"]["availableProtocols"] != undefined)
-            if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme] != undefined)
-                if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme]["port"] != undefined)
+        if (queryObj["sparql11seprotocol"]["availableProtocols"] !== undefined)
+            if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme] !== undefined)
+                if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme]["port"] !== undefined)
                     port = queryObj["sparql11seprotocol"]["availableProtocols"][scheme]["port"];
 
-        if (queryObj["sparql11seprotocol"]["availableProtocols"] != undefined)
-            if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme] != undefined)
-                if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme]["path"] != undefined)
+        if (queryObj["sparql11seprotocol"]["availableProtocols"] !== undefined)
+            if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme] !== undefined)
+                if (queryObj["sparql11seprotocol"]["availableProtocols"][scheme]["path"] !== undefined)
                     port = queryObj["sparql11seprotocol"]["availableProtocols"][scheme]["path"];
     }
     else {
@@ -100,7 +152,7 @@ function subscribe(jsapObj,id) {
     subscribeURI = scheme + "://" + host + ":" + port + path;
 
     // GRAPHS
-    if (jsap["graphs"] != undefined) {
+    if (jsap["graphs"] !== undefined) {
         default_graph_uri = jsap["graphs"]["default-graph-uri"];
         named_graph_uri = jsap["graphs"]["named-graph-uri"];
     }
@@ -109,9 +161,9 @@ function subscribe(jsapObj,id) {
         named_graph_uri = "http://default";
     }
 
-    if (queryObj["graphs"] != undefined) {
-        if (queryObj["graphs"]["default-graph-uri"] != undefined) default_graph_uri = queryObj["graphs"]["default-graph-uri"];
-        if (queryObj["graphs"]["named-graph-uri"] != undefined) named_graph_uri = queryObj["graphs"]["named-graph-uri"];
+    if (queryObj["graphs"] !== undefined) {
+        if (queryObj["graphs"]["default-graph-uri"] !== undefined) default_graph_uri = queryObj["graphs"]["default-graph-uri"];
+        if (queryObj["graphs"]["named-graph-uri"] !== undefined) named_graph_uri = queryObj["graphs"]["named-graph-uri"];
     }
 
     // PREFIXES
@@ -146,18 +198,13 @@ function subscribe(jsapObj,id) {
     ws.onmessage = function(event) {
         // parse the message
 
-        obj = [{
-            "label" : "",
-            "location" : "",
-            "quantities" : ""
-        }];
-
         msg = JSON.parse(event.data);
         if (msg["notification"] !== undefined) {
             for (index in msg["notification"]["addedResults"]["results"]["bindings"]) {
 
                 binding = msg.notification.addedResults.results.bindings[index];
-                if (binding.observation != null && binding.value != null) {
+                if (binding.observation !== null && binding.value !== null) {
+                    //errore nodeID
                     uri = binding.observation.value;
                     q = binding.quantity.value;
                     locations = binding.location.value;
@@ -165,19 +212,17 @@ function subscribe(jsapObj,id) {
                     unit = binding.unit.value;
                     label = binding.label.value;
 
-
                     q = q.substr(34, q.length - 1);
                     locations = locations.substr(33,locations.length - 1);
 
-
                     updateData(uri, value, label, unit, locations, q);
                 }
-
-
             }
         } else {
             console.log(msg);
         }
     }
+
+
 
 }

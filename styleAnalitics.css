@@ -9,7 +9,7 @@ body {
 }
 
 #container{
-    height: 1000px;
+    height: auto;
     position:relative;
     width:100%;
 }
@@ -23,6 +23,7 @@ body {
     color: rgb(252, 252, 252);
     z-index: 20;
     background-color: #223a64;
+    position: relative;
 }
 
 #titleText{
@@ -33,12 +34,19 @@ body {
     font-size: 30px;
 }
 
-
+#plot{
+    width: 100%;
+    margin-left: -100px;
+    position: fixed;
+    text-align: center;
+    z-index: 1;
+}
 
 #load{
     text-align: left;
     font-size: 30px;
     color: #060606;
+    position: relative;
 }
 
 .button{

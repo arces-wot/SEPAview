@@ -34,12 +34,12 @@ function initMap(lat,lng) {
 function showSpecificGraph(marker) {
 
     marker.addListener('click', function() {
+        $('#tree').empty();
 
         //let a = "#" + marker.title;
         let root = marker.title;
         //$(a).show();
-
-        createTree(root,jsap,"#li");
+        createTree(root,jsap,"#tree");
 
 
     });

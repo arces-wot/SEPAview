@@ -22,7 +22,7 @@ function min(data) {
     return m;
 }
 
-x = [];
+//x = [];
 
 
  function createSvg(data, l){
@@ -45,29 +45,22 @@ x = [];
             return d.subtitle;
         });
 
+    for(let i = 0; i <= data.length - 1; i++){
 
-     let i, id = l.substr(1, l.length - 1);
-     for(i = 0; i <= data.length - 1; i++){
-         if( document.getElementById(data[i].title) === null && data[i].title !== "Notifications"){
-             element = document.createElement("a");
-             element.id = data[i].title;
-             element.className = "button";
-             let t = document.createTextNode("STORICO");
-             element.appendChild(t);
-             document.getElementById(id).appendChild(element);
-             element.setAttribute('data-quantity', data[i].quantities);
-             element.setAttribute('data-title', data[i].title);
-             element.setAttribute('href','indexAnalitics.html');
-             element.setAttribute('target','blanck');
+         id_a = data[i].location.substr(1, l.length - 1) + i;
+         if(document.getElementById(id_a) === null &&  data[i].title !== "Notifications"){
+
+             $(l).append("<a id='"+ id_a +"' class='button' data-quantity='" +data[i].quantities+ "' " +
+                 "data-title='" +data[i].title+ "' href='./indexAnalitics.html' target='_blank' >HISTORICAL</a>")
+
          }
      }
-
-
 
      let buttons = document.getElementsByClassName("button");
      let buttonsCount = buttons.length;
      for (let j = 0; j < buttonsCount; j += 1) {
-         buttons[j].onclick = function(e) {
+         buttons[j].onclick = function() {
+
              x = this.dataset.quantity;
              tit = this.dataset.title;
          }
@@ -84,8 +77,6 @@ function divideData(data, l){
     }
     return d;
 }
-
-
 
 function countLocation(data){
     let i , j, isEqual = 0, k = 0, l = [];
@@ -107,7 +98,6 @@ function countLocation(data){
     return l;
 }
 
-
 function humidex(T, h){
     //https://it.wikipedia.org/wiki/Punto_di_rugiada
     //https://en.wikipedia.org/wiki/Humidex
@@ -124,10 +114,3 @@ function humidex(T, h){
 
     return H;
 }
-
-
-//_____________________________________________________________________
-
-
-
-

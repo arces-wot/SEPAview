@@ -22,7 +22,6 @@
 	<script src="js/arces-demo.js"></script>
 	<script src="js/sepa-api.js"></script>
     <script src="js/tree.js"></script>
-    <script src="js/tree-animation.js"></script>
 
 	<script>
         $(window).scroll(function() {
@@ -45,33 +44,18 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-         <ul id="myUL">
-            <div id="li"></div>
-         </ul>
+
+        <div id="tree"></div>
+
     </div>
 
     <div id="main">
 
-
         <div id = "title"><p id="titleText">SEPAview - DEMO</p></div>
 
         <div id="map"></div>
-
-        <h4>On the map you can see our locations, if you click on one (or more) of them, you can see the sensors
-            that belong to that place.</h4>
-
-
-
         <div id="plot"></div>
-        <div id="Mars">
-            <h2>MARS</h2>
-        </div>
-        <div id="Star">
-            <h2>STAR</h2>
-        </div>
-        <div id="Ares">
-            <h2>ARES</h2>
-        </div>
+        <div id="graph"></div>
 
         <!--<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>-->
     </div>
@@ -81,12 +65,9 @@
 
 </div>
 
-
-
-
 <script>
 	function onLoad() {
-		subscribe(jsap,["MAP_PLACES", "OBSERVATIONS"]);
+		subscribe(jsap,["MAP_PLACES","PLACES","OBSERVATIONS"]);
 	}
 </script>
 
@@ -97,15 +78,12 @@
 <!--  questo script va messo dopo la dichiarazione dei div necessari ai svg  -->
 <script src="js/app.js"></script>
 
-<script>
-
-</script>
 
 <script>
-    $("#Ares").hide();
-    $("#Star").hide();
+    //$("#Mars").hide();
+    /*$("#Star").hide();
     $("#Mars").hide();
-
+*/
 
     //------------------
 

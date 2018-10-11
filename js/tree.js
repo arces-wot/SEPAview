@@ -2,9 +2,9 @@ function createTree(root, jsapObj, r){
 
     openNav();
 
-    //queries = "SELECT * where { ?observation rdf:type sosa:Observation. ?child rdf:type schema:Place . "+ root +" schema:containsPlace ?child }";
+    queries = "SELECT * where { arces-monitor:"+ root +" schema:containsPlace ?child ; schema:name ?nameRo . ?child rdf:type schema:Place; schema:name ?nameCh }";
 
-    queries = "SELECT * where { arces-monitor:"+ root +" schema:containsPlace ?child . ?child rdf:type schema:Place; schema:name ?name }";
+//    queries = "SELECT * where { arces-monitor:"+ root +" schema:containsPlace ?child . ?child rdf:type schema:Place; schema:name ?name }";
 
     prefixes = "";
     for (ns in jsapObj["namespaces"]) {
@@ -20,9 +20,9 @@ function createTree(root, jsapObj, r){
                 console.log("Data received: " + val);
                 msg = JSON.parse(val);
 
-                child = [];
-                names = [];
-
+                child = [""];
+                namesCh = [""];
+                namesRo = [""];
                 if (msg["notification"] !== undefined) {
 
                     len = msg["notification"]["addedResults"]["results"]["bindings"].length - 1;
@@ -31,35 +31,44 @@ function createTree(root, jsapObj, r){
                         binding = msg.notification.addedResults.results.bindings[index];
 
                         c = binding.child.value;
-                        n = binding.name.value;
+                        nCh = binding.nameCh.value;
+                        nRo = binding.nameRo.value;
                         child.push(c);
-                        names.push(n);
+                        namesCh.push(nCh);
+                        namesRo.push(nRo);
                     }
 
-                    for(i = 0; i < child.length; i++){
+                    console.log(child.length);
 
-                        if(child[i] !== ""){
+                     if(child.length === 1){
 
-                            id_li = child[i].slice(34,child[i].length);
+                        $("#Mars").show();
+                        //$("#" + root).show();
+
+
+                    }else{
+//help
+                        for (i = 1; i < child.length; i++) {
+
+                            id_li = child[i].slice(34, child[i].length);
+                            id_ul = id_li + "_ul";
+
+                            $(r).append("<ul id='" + id_ul + "'></ul>");
                             $(r).append("<li id='" + id_li + "'></li>");
-
-                            console.log(">>>>>>>>>>>"+ id_li );
-
-                            id_span = id_li + "_span";
-                            $("#" + id_li).append("<span id='" + id_span +  "' class=\"caret\"></span>");
-                            $("#" + id_li).append(names[i]);
-
-                            id_ul= id_li + "_ul";
-                            $(r).append("<ul id='" + id_ul + "' class=\"nested\"></ul>");
-
-                            $("#" + id_ul).append(createTree(id_li,jsap,"#"+ id_li ));
+                            $("#" + id_li).append(namesCh[i]);
 
 
-                        }else if(child[i]){
-                            console.log("r:------------>"+r);
-                            $(r).hide(r + "_span");
+                            document.querySelector('#' + id_li).addEventListener("click", doSomething(id_ul, jsap, id_li), false);
+
+                            //funzione wrapper
+                            function doSomething(id_u, js, id_l) {
+                                return function () {
+                                    $("#" + id_u).append(createTree(id_l, js, "#" + id_l));
+                                    console.log(id_l);
+                                }
+                            }
+
                         }
-
                     }
 
 
@@ -71,15 +80,6 @@ function createTree(root, jsapObj, r){
 
 
 
-    /*var toggler = document.getElementsByClassName("caret");
-    var i;
 
-    for (i = 0; i < toggler.length; i++) {
-        toggler[i].addEventListener("click", function() {
-            this.parentElement.querySelector(".nested").classList.toggle("active");
-            this.classList.toggle("caret-down");
-        });
-    }
-*/
 
 }
