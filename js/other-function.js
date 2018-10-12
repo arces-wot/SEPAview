@@ -22,9 +22,6 @@ function min(data) {
     return m;
 }
 
-//x = [];
-
-
  function createSvg(data, l){
 
      let svg = d3.select(l).selectAll("svg").data(data).enter().append(
@@ -51,7 +48,7 @@ function min(data) {
          if(document.getElementById(id_a) === null &&  data[i].title !== "Notifications"){
 
              $(l).append("<a id='"+ id_a +"' class='button' data-quantity='" +data[i].quantities+ "' " +
-                 "data-title='" +data[i].title+ "' href='./indexAnalitics.html' target='_blank' >HISTORICAL</a>")
+                 "data-title='" +data[i].title+ "' href='./indexAnalitics.html' target='_blank' >HISTORY</a>")
 
          }
      }
@@ -60,7 +57,6 @@ function min(data) {
      let buttonsCount = buttons.length;
      for (let j = 0; j < buttonsCount; j += 1) {
          buttons[j].onclick = function() {
-
              x = this.dataset.quantity;
              tit = this.dataset.title;
          }

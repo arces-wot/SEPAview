@@ -213,6 +213,9 @@
          "PLACES": {
              "sparql": "SELECT * WHERE {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:cordinate . _:cordinate schema:latitude ?lat ; schema:longitude ?long}"
          },
+         "NO_CHILD": {
+             "sparql": "SELECT * where {?root rdf:type schema:Place ; schema:name ?name . FILTER NOT EXISTS{?child schema:containedInPlace ?root}}"
+         },
          "MAP_PLACES":{
              "sparql": "SELECT * WHERE {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:cordinate . _:cordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}"
          },
@@ -242,7 +245,7 @@
              "sparql": "SELECT * WHERE {?observation rdf:type sosa:Observation ; arces-monitor:hasMqttTopic ?topic}"
          },
          "OBSERVATIONS": {
-             "sparql": "SELECT * WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?location rdf:type schema:Place . ?quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit . OPTIONAL {?quantity qudt-1-1:numericValue ?value}}"
+             "sparql": "SELECT * WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit . OPTIONAL {?quantity qudt-1-1:numericValue ?value}}"
          },
          "OBSERVATIONS_BY_LOCATION": {
              "sparql": "SELECT * WHERE { ?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit ;  qudt-1-1:numericValue ?value}",

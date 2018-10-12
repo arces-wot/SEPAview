@@ -60,7 +60,7 @@ function subscribe(jsapObj,id) {
 
 
     //------------------------------------------------------------------------------------
-    //PLACES
+    //NO_CHILD
     //------------------------------------------------------------------------------------
 
     subscribe = jsapObj["queries"][id[1]]["sparql"];
@@ -87,12 +87,13 @@ function subscribe(jsapObj,id) {
                     len = msg["notification"]["addedResults"]["results"]["bindings"].length - 1;
                     for (index = 0; index <= len; index++) {
                         binding = msg.notification.addedResults.results.bindings[index];
-                        places = binding.place.value;
+                        places = binding.root.value;
                         names = binding.name.value;
                         n.push(names);
                         p.push(places);
 
                     }
+                    console.log(p);
 
                     for(let i = 0; i < p.length ; i++){
 

@@ -51,7 +51,7 @@
 
     <div id="main">
 
-        <div id = "title"><p id="titleText">SEPAview - DEMO</p></div>
+        <div id = "title"><p id="titleText">SEPAview</p></div>
 
         <div id="map"></div>
         <div id="plot"></div>
@@ -67,12 +67,12 @@
 
 <script>
 	function onLoad() {
-		subscribe(jsap,["MAP_PLACES","PLACES","OBSERVATIONS"]);
+		subscribe(jsap,["MAP_PLACES","NO_CHILD","OBSERVATIONS"]);
 	}
 </script>
 
 <script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAUOXaMNCKDLXCwmdTQPRRHRAlZtv-q_U&callback=initMap">
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHgZRudu8jTxJgJ3IXCVyfrTH1RLdPOgI&callback=initMap">
 </script>
 
 <!--  questo script va messo dopo la dichiarazione dei div necessari ai svg  -->
