@@ -1,18 +1,12 @@
 function createTree(root, jsapObj, r){
-
     openNav();
 
     queries = "SELECT * where { arces-monitor:"+ root +" schema:containsPlace ?child ; schema:name ?nameRo . ?child rdf:type schema:Place; schema:name ?nameCh }";
-
-//    queries = "SELECT * where { arces-monitor:"+ root +" schema:containsPlace ?child . ?child rdf:type schema:Place; schema:name ?name }";
-
     prefixes = "";
     for (ns in jsapObj["namespaces"]) {
         prefixes += "PREFIX " + ns + ":<"+ jsapObj["namespaces"][ns] + ">";
     }
-
     query = prefixes + " " + queries;
-
     const sepa = Sepajs.client;
 
     sepa.subscribe(query,{
@@ -37,18 +31,11 @@ function createTree(root, jsapObj, r){
                         namesCh.push(nCh);
                         namesRo.push(nRo);
                     }
-
-                    console.log(child.length);
-
                      if(child.length === 1){
-
-                         console.log(root);
-                        //$("#" + root).show();
-
-
+                        $("#"+root).show();
                     }else{
                         for (i = 1; i < child.length; i++) {
-                            id_li = child[i].slice(34, child[i].length);
+                            id_li = child[i].slice(34, child[i].length) + "_li";
                             id_ul = id_li + "_ul";
 
                             $(r).append("<ul id='" + id_ul + "'></ul>");
@@ -60,23 +47,15 @@ function createTree(root, jsapObj, r){
                             function doSomething(id_u, js, id_l) {
                                 return function (e) {
                                     e.stopPropagation();
-                                    createTree(id_l, js, "#" + id_l);
+                                    createTree(id_l.slice(0,id_l.length - 3), js, "#" + id_l);
                                     console.log(id_l);
                                 }
                             }
-
                         }
                     }
-
-
                 } else { console.log(msg); }},
             error(err) { console.log("Received an error: " + err) },
             complete() { console.log("Server closed connection ") }, },
 
         {host:jsapObj["host"]});
-
-
-
-
-
 }

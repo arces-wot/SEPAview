@@ -14,7 +14,6 @@
 	<script src="https://d3js.org/d3.v3.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-
 	<script src="lib/bullet.js"></script>
     <script src="js/overlay.js"></script>
 	<script src="js/map.js"></script>
@@ -37,11 +36,9 @@
 
 </head>
 
-
 <body onLoad='onLoad()'>
 
 <div id="container">
-
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
@@ -52,13 +49,12 @@
     <div id="main">
 
         <div id = "title"><p id="titleText">SEPAview</p></div>
-
         <div id="map"></div>
         <div id="plot"></div>
+		<div id="close_all">Close All</div>
         <div id="graph"></div>
 
-        <!--<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>-->
-    </div>
+	</div>
 
 	<div id="overlay" onclick="off()"></div>
 	<div id="overlayButton" onclick="on()">?</div>
@@ -66,26 +62,21 @@
 </div>
 
 <script>
-	function onLoad() {
-		subscribe(jsap,["MAP_PLACES","NO_CHILD","OBSERVATIONS"]);
-	}
+    function onLoad() {
+        subscribe(jsap,["MAP_PLACES","NO_CHILD","OBSERVATIONS"]);
+    }
 </script>
 
 <script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHgZRudu8jTxJgJ3IXCVyfrTH1RLdPOgI&callback=initMap">
-</script>
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHgZRudu8jTxJgJ3IXCVyfrTH1RLdPOgI&callback=initMap"></script>
 
 <!--  questo script va messo dopo la dichiarazione dei div necessari ai svg  -->
 <script src="js/app.js"></script>
 
-
 <script>
-    //$("#Mars").hide();
-    /*$("#Star").hide();
-    $("#Mars").hide();
-*/
 
-    //------------------
+
+	//-------------------------------------------------------------
 
     function openNav() {
         document.getElementById("mySidenav").style.width = "250px";
@@ -96,7 +87,6 @@
         document.getElementById("mySidenav").style.width = "0";
         document.getElementById("main").style.marginLeft= "0";
     }
-
 
 </script>
 

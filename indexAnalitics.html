@@ -19,12 +19,10 @@
 
 <body onload='onLoad()'>
 
-
 <div id="container">
 
 	<div id = "title"><p id="titleText">ARCES Sensors Monitoring</p></div>
     <div id="waiting"></div>
-
 
 	<button class="open-button" onclick="openForm()">Change Date and Time</button>
 
@@ -39,21 +37,15 @@
 	<div id="plot"></div>
 
 	<div id="overlay" onclick="off()"></div>
-
 	<div id="overlayButton" onclick="on()">?</div>
 
 </div>
-
-
-
-
 <script>
     function onLoad() {
         document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";
         queryLiveData(results);
     }
 
-    //-----------------
     function openForm() {
         document.getElementById("myForm").style.display = "block";
     }
@@ -63,7 +55,5 @@
     }
 </script>
 
-
 </body>
-
 </html>

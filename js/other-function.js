@@ -1,31 +1,27 @@
 function max(data) {
     let m = data[0], i = 1, n = data.length;
-
     for (; i <= n; ++i) {
         if (data[i] > m) {
             m = data[i];
         }
     }
-
     return m;
 }
 
 function min(data) {
     let m = data[0], i = 1, n = data.length;
-
     for (; i <= n; ++i) {
         if (data[i] < m) {
             m = data[i];
         }
     }
-
     return m;
 }
 
  function createSvg(data, l){
 
      let svg = d3.select(l).selectAll("svg").data(data).enter().append(
-        "svg").attr("class", "bullet").attr("width",
+        "svg").attr("class", "bullet").style("margin-top","30px").attr("width",
         width + margin.left + margin.right).attr("height",
         height + margin.top + margin.bottom).append("g").attr("transform",
         "translate(" + margin.left + "," + margin.top + ")").call(chart);
@@ -45,11 +41,12 @@ function min(data) {
     for(let i = 0; i <= data.length - 1; i++){
 
          id_a = data[i].location.substr(1, l.length - 1) + i;
-         if(document.getElementById(id_a) === null &&  data[i].title !== "Notifications"){
+         id_div = data[i].location.substr(1, l.length - 1) + "_div_" + i;
+         if(document.getElementById(id_a) === null && document.getElementById(id_div) === null &&  data[i].title !== "Notifications"){
 
-             $(l).append("<a id='"+ id_a +"' class='button' data-quantity='" +data[i].quantities+ "' " +
-                 "data-title='" +data[i].title+ "' href='./indexAnalitics.html' target='_blank' >HISTORY</a>")
-
+             $(l).append("<div id='"+id_div+"' class='div_button' style='position:relative;height:50px;width: 130px;border: #020202 1px solid; " +
+                 "margin-left: 45%;'></div>");
+             $("#"+id_div).append("<a id='"+ id_a +"' class='button' href='./indexAnalitics.html' target='_blank' >HISTORY</a>")
          }
      }
 

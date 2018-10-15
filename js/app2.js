@@ -3,9 +3,7 @@ let y = window.opener.tit;
 var max =[];
 var min = [];
 
-
-	let queries = "{?log arces-monitor:refersTo arces-monitor:" + window.opener.x + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
-
+	let queries = "{?log arces-monitor:refersTo arces-monitor:" + window.opener.q + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
 
 var host ="mml.arces.unibo.it";
 
@@ -35,7 +33,6 @@ var layout = {
 
 function queryLiveData(callback) {
 	var xmlHttp = new XMLHttpRequest();
-
 	xmlHttp.onreadystatechange = function() {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			callback(xmlHttp.responseText);
@@ -56,8 +53,6 @@ function queryLiveData(callback) {
 	prefix += " prefix sosa:<http://www.w3.org/ns/sosa/>";
 
 	default_graph_uri = "http://wot.arces.unibo.it/monitor/mqtt/log";
-
-
 
     var form ="<form id=\"calendar\">\n" +
         "        Date from: <input type=\"date\" name=\"dateFrom\"><br>\n" +
@@ -96,7 +91,6 @@ function queryLiveData(callback) {
             from = timeAndDate.dateFrom + "T" + timeAndDate.timeFrom + ":00";
             to = timeAndDate.dateTo + "T" + timeAndDate.timeTo + ":00";
 
-
         query = prefix
             + " "
             + "SELECT * WHERE {" + queries  + "FILTER(xsd:dateTime(?timestamp) > '" + from + "'^^xsd:dateTime && xsd:dateTime(?timestamp) < '" + to + "'^^xsd:dateTime)} ORDER BY ?timestamp";
@@ -104,14 +98,10 @@ function queryLiveData(callback) {
         url = "http://"+host+":8000/query?query=" + encodeURIComponent(query)
             + "&default-graph-uri=" + encodeURIComponent(default_graph_uri);
         xmlHttp.open("GET", url, true); // true for asynchronous
-
         xmlHttp.setRequestHeader("Accept", "application/sparql-results+json");
         xmlHttp.setRequestHeader("Content-Type", "application/sparql-query");
-
         xmlHttp.send(null);
-
     });
-
 
 	query = prefix
 			+ " "
@@ -120,13 +110,10 @@ function queryLiveData(callback) {
 	url = "http://"+host+":8000/query?query=" + encodeURIComponent(query)
 			+ "&default-graph-uri=" + encodeURIComponent(default_graph_uri);
 	xmlHttp.open("GET", url, true); // true for asynchronous
-
 	xmlHttp.setRequestHeader("Accept", "application/sparql-results+json");
 	xmlHttp.setRequestHeader("Content-Type", "application/sparql-query");
-
 	xmlHttp.send(null);
 }
-
 
 var timer = window.setInterval(waitingTimer, 1000);
 var seconds = 0;
@@ -140,7 +127,6 @@ function waitingTimer() {
 function results(json) {
 	var traces = [];
 	var layouts = [];
-
 
 	window.clearInterval(timer);
 	jsapObj = JSON.parse(json);
@@ -179,7 +165,6 @@ function results(json) {
 
 		for (i in traces) {
             if (binding[traces[i].name] === undefined) continue;
-
 			value = binding[traces[i].name].value;
 			traces[i].x.push(timestamp);
 			traces[i].y.push(value);
@@ -192,7 +177,6 @@ function results(json) {
 				if (value > max[i]) max[i] = value;
 				else if (value < min[i]) min[i] = value;
 			}
-
 
 			if (i !== "0") {
 				index = parseInt(i, 10) + 1;

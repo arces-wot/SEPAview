@@ -5,7 +5,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #f9feff;
+    background-color: #ffffff;
 }
 
 #container{
@@ -21,8 +21,7 @@ body {
     text-align: center;
     line-height: 80px;
     color: rgb(252, 252, 252);
-    z-index: 20;
-    background-color: #223a64;
+    background-color: #234d78;
     position: relative;
 }
 
@@ -39,7 +38,7 @@ body {
     margin-left: -100px;
     position: fixed;
     text-align: center;
-    z-index: 1;
+    top: 190px;
 }
 
 #load{
@@ -75,7 +74,7 @@ body {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.65);
-    background-image: url("images/LiveData.jpg");
+    background-image: url("images/arces-monitor-architecture.jpg");
     background-repeat: no-repeat;
     background-position: center;
     z-index: 70;
@@ -84,7 +83,7 @@ body {
 
 #overlayButton{
     color: white;
-    background-color: #7299b2;
+    background-color: #234d78;
     border: solid 1px black;
     border-radius: 50%;
     width: 30px;
@@ -94,9 +93,10 @@ body {
     margin-left: 95vw;
     position: fixed;
     z-index: 30;
+    bottom: 20px;
+    right: 20px;
     cursor: pointer;
 }
-
 
 .open-button {
     margin-top: 10px;
@@ -124,6 +124,11 @@ body {
     max-width: 300px;
     padding: 10px;
     background-color: white;
+}
+
+#myForm{
+    position: fixed;
+    z-index: 20;
 }
 
 /* Full-width input fields */

@@ -1,13 +1,8 @@
 function subscribe(jsapObj,id) {
-    // SPARQL
-    //jsapObj = JSON.parse(jsap);
-
     //------------------------------------------------------------------------------------
     //MAP_PLACES
     //------------------------------------------------------------------------------------
-
     subscribe = jsapObj["queries"][id[0]]["sparql"];
-
     // PREFIXES
     prefixes = "";
     for (ns in jsapObj["namespaces"]) {
@@ -15,7 +10,6 @@ function subscribe(jsapObj,id) {
     }
 
     query = prefixes + " " + subscribe;
-
     const sepa = Sepajs.client;
 
     sepa.subscribe(query,{
@@ -27,13 +21,9 @@ function subscribe(jsapObj,id) {
                 latitude = [];
                 longitude = [];
                 p = [];
-
-
                 if (msg["notification"] !== undefined) {
-
                     len = msg["notification"]["addedResults"]["results"]["bindings"].length - 1;
                     for (index = 0; index <= len; index++) {
-
                         binding = msg.notification.addedResults.results.bindings[index];
 
                         places = binding.root.value;
@@ -45,13 +35,9 @@ function subscribe(jsapObj,id) {
                         longitude.push(lng);
                         n.push(names);
                         p.push(places);
-
                     }
                     initMap(latitude,longitude);
                     add_marker(latitude,longitude,n);
-
-
-
                 } else { console.log(msg); }},
             error(err) { console.log("Received an error: " + err) },
             complete() { console.log("Server closed connection ") }, },
@@ -72,9 +58,6 @@ function subscribe(jsapObj,id) {
     }
 
     query = prefixes + " " + subscribe;
-
-    //const sepa = Sepajs.client;
-
     sepa.subscribe(query,{
             next(val) {
                 console.log("Data received: " + val);
@@ -83,7 +66,6 @@ function subscribe(jsapObj,id) {
                 n = [];
                 p = [];
                 if (msg["notification"] !== undefined) {
-
                     len = msg["notification"]["addedResults"]["results"]["bindings"].length - 1;
                     for (index = 0; index <= len; index++) {
                         binding = msg.notification.addedResults.results.bindings[index];
@@ -91,25 +73,45 @@ function subscribe(jsapObj,id) {
                         names = binding.name.value;
                         n.push(names);
                         p.push(places);
-
                     }
-                    console.log(p);
 
                     for(let i = 0; i < p.length ; i++){
-
                         id_place = p[i].slice(34, p[i].length);
+                        id_a = id_place + "_a";
+
                         $("#graph").append("<div id='"+ id_place +"' class='graphic'></div>");
+                        $("#"+id_place).append("<a href=\"javascript:void(0)\" id='"+ id_a +"' class=\"closebtn1\"" +
+                            "style='margin-left: 700px;' >&times;</a>");
                         $("#"+id_place).append("<h2>"+ n[i] + "</h2>");
                         $("#"+id_place).hide();
+
+
+                        document.querySelector('#' + id_a).addEventListener("click", doSomething1(id_place), false);
+                        //funzione wrapper
+                        function doSomething1(id_p) {
+                            return function (e) {
+                                e.stopPropagation();
+                                $("#" + id_p).hide();
+                            }
+                        }
+
                     }
+                    
+                    $("#close_all").click(function () {
+                        for(let i = 0; i < p.length ; i++) {
+                            id_place = p[i].slice(34, p[i].length);
+                            my_element = document.getElementById(id_place);
+                            if( my_element.style.display === 'block' ){
+                                my_element.style.display = 'none'
+                            }
+                        }
+                    });
 
                 } else { console.log(msg); }},
             error(err) { console.log("Received an error: " + err) },
             complete() { console.log("Server closed connection ") }, },
 
         {host:jsapObj["host"]});
-
-
 
     //-----------------------------------------------------------------------------------
     //OBSERVATIONS

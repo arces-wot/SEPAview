@@ -24,7 +24,7 @@ body {
     position: fixed;
     color: rgb(252, 252, 252);
     z-index: 20;
-    background-color: #223a64;
+    background-color: #234d78;
 }
 
 #title.shrink{
@@ -54,9 +54,10 @@ body {
 #map{
     z-index: 1;
     position: relative;
+    margin-left: 5%;
     margin-top: 15vh;
     height: 50vh;
-    width: 100%;
+    width: 90%;
 }
 
 /*TREE*/
@@ -67,7 +68,7 @@ body {
     z-index: 55;
     top: 0;
     left: 0;
-    background-color: #5390b2;
+    background-color: #286585;/*#39587b;*/
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -84,6 +85,7 @@ body {
 
 .sidenav li:hover {
     color: #2c2c2c;
+    cursor: pointer;
 }
 
 .sidenav a {
@@ -161,33 +163,53 @@ transform: rotate(90deg);
 
 #overlayButton{
     color: white;
-    background-color: #7299b2;
+    background-color: #234d78;
     border: solid 1px black;
     border-radius: 50%;
     width: 30px;
     height: 30px;
     line-height: 30px;
     text-align: center;
-    margin-top: -10px;
-    margin-left: 95vw;
     position: fixed;
     z-index: 30;
+    bottom: 20px;
+    right: 20px;
     cursor: pointer;
 }
 
 /*GRAPH*/
 #plot{
-    margin-top: 70px;
+    margin-top: 20px;
     position: relative;
     text-align: center;
     width: auto;
     height: auto;
 }
 
+#close_all{
+    width: 100px;
+    height: 35px;
+    margin-top: 20px;
+    margin-left: 85%;
+    text-align: center;
+    color: #020202;
+    border: solid 2px;
+    line-height: 35px;
+    text-decoration: none;
+    cursor: pointer;
+    transition-duration: 0.5s;
+    position: relative;
+}
+
+#graph{
+    background-color: #3586a6;
+}
+
 .graphic{
+    border-top: white solid 1px;
     z-index: 0;
     text-align: center;
-    background-color: #b1c1ff;
+    background-color: #3586a6;
     width: 100%;
     position: relative;
     margin-top: 20px;
@@ -195,22 +217,22 @@ transform: rotate(90deg);
 }
 
 .button{
-    height: 50px;
-    width: 140px;
-    border: #020202 1px solid;
     color: #020202;
-    text-align: center;
     line-height: 50px;
     text-decoration: none;
-    display: inline-block;
     cursor: pointer;
-    margin-bottom: 30px;
-    margin-left: 75%;
-    transition-duration: 0.4s;
+    transition-duration: 0.5s;
     position: relative;
 }
 
-.button:hover{
+.div_button{
+    background-color: #234d78;
+}
+
+.div_button:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+#close_all:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
@@ -220,6 +242,19 @@ h2{
     font-size: 100px;
     margin-bottom: 20px;
     position: relative;
+}
+
+.graphic a {
+    text-decoration: none;
+    font-size: 25px;
+    color: #ffffff;
+    display: block;
+    transition: 0.5s;
+}
+
+
+.graphic a:hover {
+    color: #2c2c2c;
 }
 
 /*****************************************************/
@@ -254,7 +289,7 @@ h2{
 }
 
 .bullet .measure.s1 {
-    fill: steelblue;
+    fill: #286585;
 }
 
 .bullet .title {
