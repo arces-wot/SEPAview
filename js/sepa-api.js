@@ -96,7 +96,6 @@ function subscribe(jsapObj,id) {
                         }
 
                     }
-                    
                     $("#close_all").click(function () {
                         for(let i = 0; i < p.length ; i++) {
                             id_place = p[i].slice(34, p[i].length);
@@ -225,7 +224,4 @@ function subscribe(jsapObj,id) {
             console.log(msg);
         }
     }
-
-
-
 }

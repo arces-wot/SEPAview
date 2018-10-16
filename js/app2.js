@@ -3,7 +3,7 @@ let y = window.opener.tit;
 var max =[];
 var min = [];
 
-	let queries = "{?log arces-monitor:refersTo arces-monitor:" + window.opener.q + "; qudt-1-1:numericValue ?temperature1; time:inXSDDateTimeStamp ?timestamp}";
+	let queries = "{?log arces-monitor:refersTo arces-monitor:"+ window.opener.x +" ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp}";
 
 var host ="mml.arces.unibo.it";
 
@@ -107,6 +107,8 @@ function queryLiveData(callback) {
 			+ " "
 			+ "SELECT * WHERE {" + queries  + "FILTER(xsd:dateTime(?timestamp) > '" + from + "'^^xsd:dateTime && xsd:dateTime(?timestamp) < '" + to + "'^^xsd:dateTime)} ORDER BY ?timestamp"
 
+    console.log(query);
+
 	url = "http://"+host+":8000/query?query=" + encodeURIComponent(query)
 			+ "&default-graph-uri=" + encodeURIComponent(default_graph_uri);
 	xmlHttp.open("GET", url, true); // true for asynchronous
@@ -135,7 +137,7 @@ function results(json) {
 		var trace = {
 			x : [],
 			y : [],
-			name : "temperature1",
+			name : "value",
 			line : {
 				width : 1,
 				color : colors[0]

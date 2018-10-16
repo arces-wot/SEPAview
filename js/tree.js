@@ -48,7 +48,6 @@ function createTree(root, jsapObj, r){
                                 return function (e) {
                                     e.stopPropagation();
                                     createTree(id_l.slice(0,id_l.length - 3), js, "#" + id_l);
-                                    console.log(id_l);
                                 }
                             }
                         }

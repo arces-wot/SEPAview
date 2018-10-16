@@ -9,7 +9,6 @@ sensorData = [ {
     "quantities" : ""
 } ];
 
-
 let margin = {
 	top : 0,
 	right : 10,
@@ -33,7 +32,6 @@ function drawData(data) {
 		}else{
             let b = divideData(data, loc[i]);
             createSvg(b,loc[i]);
-
 		}
 	}
 }
@@ -101,9 +99,7 @@ function updateData(observation, value, label, unit, location, quantity) {
 
 		redrawData(sensorData);
 	}
-
-
-};
+}
 
 
 
