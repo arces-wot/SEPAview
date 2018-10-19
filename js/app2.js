@@ -133,7 +133,8 @@ function results(json) {
 	window.clearInterval(timer);
 	jsapObj = JSON.parse(json);
 
-	for (i in a) {
+	// This was supposed to be used to visualize multiple graphs. Now we have just one graph to show.
+	//for (i in a) {
 		var trace = {
 			x : [],
 			y : [],
@@ -159,7 +160,7 @@ function results(json) {
 				size : 10
 			}
 		});
-	}
+	//}
 
 	for (index in jsapObj.results.bindings) {
 		timestamp = jsapObj.results.bindings[index].timestamp.value;
