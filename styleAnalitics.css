@@ -38,7 +38,7 @@ body {
     margin-left: -100px;
     position: fixed;
     text-align: center;
-    top: 190px;
+    top: 200px;
 }
 
 #load{
@@ -166,5 +166,95 @@ body {
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
     opacity: 1;
+}
+
+
+/****************************************************************************************************************/
+/***********************************************************   MEDIA    *****************************************/
+/****************************************************************************************************************/
+
+@media(max-width: 1025px) {
+
+    #title{
+        height: 10vh;
+        line-height: 80px;
+    }
+
+    #titleText{
+        line-height: 10vh;
+        font-size: 60px;
+    }
+
+    #plot{
+        margin-left: -100px;
+        top: 350px;
+    }
+    #overlayButton{
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        font-size: 70px;
+    }
+
+}
+
+@media(orientation: landscape) and (max-width:1100px){
+
+    #title{
+        height: 10vh;
+    }
+
+    #titleText{
+        line-height: 10vh;
+        font-size: 30px;
+    }
+
+    #load{
+        font-size: 20px;
+    }
+
+    #plot{
+        top: 140px;
+    }
+
+}
+
+@media(orientation: landscape) and (min-device-width:800px)and (max-device-width: 1023px){
+    #waiting{
+        display: none;
+    }
+
+    .open-button{
+        z-index: 40;
+        margin-left: 70%;
+        position: fixed;
+        top: 15%;
+    }
+    .form-popup {
+        left: 68%;
+        top: 140px;
+
+    }
+
+    #plot{
+        top: 50px;
+    }
+
+}
+
+@media(orientation: landscape) and (min-device-width:1023px)and (max-device-width:1366px){
+
+    #plot{
+        top: 300px;
+    }
+
+}
+
+@media (orientation: landscape) and (max-width:1023px){
+
+    #overlayButton{
+        display: none;
+    }
+
 }
 
