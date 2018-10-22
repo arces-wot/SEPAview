@@ -122,27 +122,6 @@ ul {
     padding: 0;
 }
 
-.caret {
-    cursor: pointer;
-    -webkit-user-select: none; /* Safari 3.1+ */
-    -moz-user-select: none; /* Firefox 2+ */
-    -ms-user-select: none; /* IE 10+ */
-    user-select: none;
-}
-
-.caret::before {
-    content: "\25B6"; /*serve per la freccia ->unicode*/
-    color: black;
-    display: inline-block;
-    margin-right: 6px;
-}
-
-.caret-down::before {
-    -ms-transform: rotate(90deg); /* IE 9 */
-    -webkit-transform: rotate(90deg); /* Safari */'
-transform: rotate(90deg);
-}
-
 /*OVERLAY*/
 #overlay {
     position: fixed;
@@ -299,4 +278,133 @@ h2{
 
 .bullet .subtitle {
     fill: #999;
+}
+
+
+/****************************************************************************************************************/
+/***********************************************************   MEDIA    *****************************************/
+/****************************************************************************************************************/
+
+@media(max-width: 1024px){
+
+    #title{
+        height: 10vh;
+    }
+
+    #title.shrink{
+        font-size: 30px;
+        height: 5vh;
+    }
+
+    #titleText{
+        line-height: 10vh;
+        font-size: 60px;
+    }
+
+    #titleText.shrink{
+        transform: scale(0.5,0.5) translate(-75%,-50%);
+    }
+
+    .sidenav li {
+        padding: 8px 8px 8px 50px;
+        margin-top: 90px;
+        margin-left: 30px;
+        font-size: 70px;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 100px;
+        margin-left: 100px;
+    }
+
+    #overlayButton{
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        font-size: 70px;
+    }
+
+    #plot{
+        margin-top: 70px;
+    }
+
+    #close_all{
+        width: 250px;
+        height: 60px;
+        margin-top: 50px;
+        margin-left: 40%;
+        text-align: center;
+        line-height: 60px;
+        font-size: 50px;
+    }
+
+    #graph .closebtn1{
+        font-size: 70px;
+    }
+
+}
+
+@media(orientation: landscape) and (max-width:1100px){
+
+    #title{
+        height: 10vh;
+    }
+
+    #titleText{
+        line-height: 10vh;
+        font-size: 30px;
+    }
+
+    .sidenav li {
+        padding: 8px 8px 8px 50px;
+        margin-top: 20px;
+        margin-left: 30px;
+        font-size: 40px;
+    }
+
+    .sidenav .closebtn {
+        right: 25px;
+        font-size: 50px;
+        margin-left: 50px;
+    }
+
+    #overlay {
+       resize: both;
+    }
+
+    #overlayButton{
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 30px;
+    }
+
+    #plot{
+        margin-top: 0;
+    }
+
+    #close_all{
+        width: 100px;
+        height: 40px;
+        margin-top: 5px;
+        margin-left: 80%;
+        line-height: 40px;
+        font-size: 20px;
+    }
+
+    #graph .closebtn1{
+        font-size: 40px;
+    }
+
+}
+
+@media (orientation: landscape) and (max-width:1023px){
+
+    #overlayButton{
+        display: none;
+    }
+
 }
