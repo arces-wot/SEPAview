@@ -1,5 +1,5 @@
 function createTree(root, jsapObj, r){
-    openNav();
+
 
     queries = "SELECT * where { arces-monitor:"+ root +" schema:containsPlace ?child ; schema:name ?nameRo . ?child rdf:type schema:Place; schema:name ?nameCh }";
     prefixes = "";
@@ -31,9 +31,12 @@ function createTree(root, jsapObj, r){
                         namesCh.push(nCh);
                         namesRo.push(nRo);
                     }
+
                      if(child.length === 1){
                         $("#"+root).show();
                     }else{
+                         openNav();
+
                         for (i = 1; i < child.length; i++) {
                             id_li = child[i].slice(34, child[i].length) + "_li";
                             id_ul = id_li + "_ul";

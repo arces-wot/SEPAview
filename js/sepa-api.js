@@ -78,11 +78,13 @@ function subscribe(jsapObj,id) {
                     for(let i = 0; i < p.length ; i++){
                         id_place = p[i].slice(34, p[i].length);
                         id_a = id_place + "_a";
+                        id_div_tab = "tab" + i;
 
-                        $("#graph").append("<div id='"+ id_place +"' class='graphic'></div>");
-                        $("#"+id_place).append("<a href=\"javascript:void(0)\" id='"+ id_a +"' class=\"closebtn1\"" +
-                            "style='margin-left: 700px;' >&times;</a>");
-                        $("#"+id_place).append("<h2>"+ n[i] + "</h2>");
+                        $("#graph").append("<div id='"+ id_place +"' class='graphic' style='margin-bottom: 10px'></div>");
+                        $("#"+id_place).append("<div id='"+ id_div_tab +"'style='text-align: left; margin-left: 15%'></div>");
+                        $("#"+id_div_tab).append("<a href=\"javascript:void(0)\" id='"+ id_a +"' class=\"closebtn1\"" +
+                            "style='color:black; font-size: 30px; display: inline;' >&times;</a>");
+                        $("#"+id_div_tab).append("<h2 style='margin-right: 20px;display: inline;'>  "+ n[i] + "</h2>");
                         $("#"+id_place).hide();
 
 

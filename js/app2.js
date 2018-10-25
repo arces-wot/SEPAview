@@ -28,8 +28,10 @@ var layout = {
 			size : 10,
 			color : colors[0]
 		}
-	}
-}
+	},
+    width: 0.9 * window.innerWidth,
+    height: 0.7 * window.innerHeight
+};
 
 function queryLiveData(callback) {
 	var xmlHttp = new XMLHttpRequest();
@@ -202,19 +204,21 @@ function results(json) {
 	for (i in traces) {
 		data.push(traces[i]);
 	}
-	var element = document.createElement("div");
-	element.id = "all";
-	document.getElementById('plot').appendChild(element);
 
-	Plotly.newPlot("all", data, layout);
+	Plotly.newPlot("plot", data, layout);
 
 	// Trace by trace
 	for (i in traces -1) {
-		var element = document.createElement("div");
-		element.id = traces[i].name;
-		document.getElementById('plot').appendChild(element);
-
 		var data = [ traces[i] ];
 		Plotly.newPlot(traces[i].name, data, layouts[i]);
 	}
+
+    window.onresize = function() {
+        Plotly.relayout("plot", {
+            width: 0.9 * window.innerWidth,
+            height: 0.7 * window.innerHeight
+        })
+    }
 }
+
+
