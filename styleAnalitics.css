@@ -1,10 +1,10 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
     background-color: #ffffff;
 }
 
@@ -12,6 +12,7 @@ body {
     height: auto;
     position:relative;
     width:100%;
+    text-align: center
 }
 
 #title{
@@ -31,14 +32,6 @@ body {
     text-align: center;
     line-height: 90px;
     font-size: 30px;
-}
-
-#plot{
-    width: 100%;
-    margin-left: -100px;
-    position: fixed;
-    text-align: center;
-    top: 200px;
 }
 
 #load{
@@ -64,54 +57,32 @@ body {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-#overlay {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.65);
-    background-image: url("images/arces-monitor-architecture.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 70;
-    cursor: pointer;
-}
-
-#overlayButton{
-    color: white;
-    background-color: #234d78;
-    border: solid 1px black;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    margin-left: 95vw;
-    position: fixed;
-    z-index: 30;
-    bottom: 20px;
-    right: 20px;
-    cursor: pointer;
-}
-
-.open-button {
+.open-button{
     margin-top: 10px;
-    background-color: #ffffff;
-    color: #020202;
     padding: 16px 20px;
-    border: solid 1px;
+    border: solid 1px #000000;
+    text-decoration: none;
     cursor: pointer;
-    opacity: 0.8;
-    width: 280px;
+    transition-duration: 0.5s;
+    position: relative;
+    background-color: #234d78;
+    z-index: 10;
+}
+
+.open-button p{
+    color: white;
+    font-size: 20px;
+}
+
+
+.open-button:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 /* The popup form - hidden by default */
 .form-popup {
     display: none;
+    margin-left: 37.5%;
     left: 15px;
     width: 300px;
     line-height: 40px;
@@ -168,6 +139,28 @@ body {
     opacity: 1;
 }
 
+/*LOADER*/
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 
 /****************************************************************************************************************/
 /***********************************************************   MEDIA    *****************************************/
@@ -176,6 +169,7 @@ body {
 @media(max-width: 1025px) {
 
     #title{
+        width: 100%;
         height: 10vh;
         line-height: 80px;
     }
@@ -185,22 +179,14 @@ body {
         font-size: 60px;
     }
 
-    #plot{
-        margin-left: -100px;
-        top: 350px;
-    }
-    #overlayButton{
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
-        font-size: 70px;
-    }
 
 }
+
 
 @media(orientation: landscape) and (max-width:1100px){
 
     #title{
+        width: 100%;
         height: 10vh;
     }
 
@@ -212,49 +198,5 @@ body {
     #load{
         font-size: 20px;
     }
-
-    #plot{
-        top: 140px;
-    }
-
-}
-
-@media(orientation: landscape) and (min-device-width:800px)and (max-device-width: 1023px){
-    #waiting{
-        display: none;
-    }
-
-    .open-button{
-        z-index: 40;
-        margin-left: 70%;
-        position: fixed;
-        top: 15%;
-    }
-    .form-popup {
-        left: 68%;
-        top: 140px;
-
-    }
-
-    #plot{
-        top: 50px;
-    }
-
-}
-
-@media(orientation: landscape) and (min-device-width:1023px)and (max-device-width:1366px){
-
-    #plot{
-        top: 300px;
-    }
-
-}
-
-@media (orientation: landscape) and (max-width:1023px){
-
-    #overlayButton{
-        display: none;
-    }
-
 }
 

@@ -12,19 +12,18 @@
 
 	<script src="lib/plotly-latest.min.js"></script>
 	<script src="lib/color-scheme.js"></script>
-	<script src="js/overlay.js"></script>
 	<script src="js/app2.js"></script>
 	<script src="js/arces-demo.js"></script>
 </head>
 
-<body onload='onLoad()'>
+<body onload='onLoad()' onload="">
 
 <div id="container">
 
 	<div id = "title"><p id="titleText">ARCES Sensors Monitoring</p></div>
     <div id="waiting"></div>
 
-	<button class="open-button" onclick="openForm()">Change Date and Time</button>
+	<button class="open-button" onclick="openForm()"><p>Change Date and Time</p></button>
 
 	<div class="form-popup" id="myForm">
 		<div class="form-container">
@@ -36,10 +35,8 @@
 
 	<div id="plot"></div>
 
-	<div id="overlay" onclick="off()"></div>
-	<div id="overlayButton" onclick="on()">?</div>
-
 </div>
+
 <script>
     function onLoad() {
         document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";

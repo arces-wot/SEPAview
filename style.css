@@ -68,7 +68,7 @@ body {
     z-index: 55;
     top: 0;
     left: 0;
-    background-color: #286585;/*#39587b;*/
+    background-color: #234d78;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -122,40 +122,6 @@ ul {
     padding: 0;
 }
 
-/*OVERLAY*/
-#overlay {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.65);
-    background-image: url("images/arces-monitor-architecture.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 70;
-    cursor: pointer;
-}
-
-#overlayButton{
-    color: white;
-    background-color: #234d78;
-    border: solid 1px black;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    position: fixed;
-    z-index: 30;
-    bottom: 20px;
-    right: 20px;
-    cursor: pointer;
-}
-
 /*GRAPH*/
 #plot{
     margin-top: 20px;
@@ -181,14 +147,14 @@ ul {
 }
 
 #graph{
-    background-color: #3586a6;
+    background-color: #ffffff;
 }
 
 .graphic{
     border-top: white solid 1px;
     z-index: 0;
     text-align: center;
-    background-color: #3586a6;
+    background-color: #ffffff;
     width: 100%;
     position: relative;
     margin-top: 20px;
@@ -215,11 +181,9 @@ ul {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
-
 h2{
-    color: #ffffff;
-    font-size: 100px;
-    margin-bottom: 20px;
+    color: #234d78;
+    font-size: 25px;
     position: relative;
 }
 
@@ -229,11 +193,6 @@ h2{
     color: #ffffff;
     display: block;
     transition: 0.5s;
-}
-
-
-.graphic a:hover {
-    color: #2c2c2c;
 }
 
 /*****************************************************/
@@ -320,13 +279,6 @@ h2{
         margin-left: 100px;
     }
 
-    #overlayButton{
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
-        font-size: 70px;
-    }
-
     #plot{
         margin-top: 70px;
     }
@@ -342,7 +294,7 @@ h2{
     }
 
     #graph .closebtn1{
-        font-size: 70px;
+        font-size: 60px;
     }
 
 }
@@ -371,17 +323,6 @@ h2{
         margin-left: 50px;
     }
 
-    #overlay {
-       resize: both;
-    }
-
-    #overlayButton{
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        font-size: 30px;
-    }
-
     #plot{
         margin-top: 0;
     }
@@ -397,14 +338,6 @@ h2{
 
     #graph .closebtn1{
         font-size: 40px;
-    }
-
-}
-
-@media (orientation: landscape) and (max-width:1023px){
-
-    #overlayButton{
-        display: none;
     }
 
 }

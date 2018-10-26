@@ -15,7 +15,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 	<script src="lib/bullet.js"></script>
-    <script src="js/overlay.js"></script>
 	<script src="js/map.js"></script>
 	<script src="js/other-function.js"></script>
 	<script src="js/arces-demo.js"></script>
@@ -57,9 +56,6 @@
 
 	</div>
 
-	<div id="overlay" onclick="off()"></div>
-	<div id="overlayButton" onclick="on()">?</div>
-
 </div>
 
 <script>
@@ -86,7 +82,7 @@
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main").style.marginLeft= "0";
         }
-	}else{
+	}else if(screen.width < 1025){
         function openNav() {
             document.getElementById("mySidenav").style.width = "75%";
         }

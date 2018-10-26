@@ -8,20 +8,31 @@ function initMap(lat,lng) {
     let lngCenter = (lngMin+lngMax)/2;
 
     position = {lat: latCenter, lng: lngCenter};
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: position,
-    });
-    let latlng = [];
 
-    for(let i = 0; i <= lat.length - 1; i++ ){
-        latlng[i] = new google.maps.LatLng(lat[i], lng[i]);
+    if(lat.length > 1){
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: position,
+        });
+        let latlng = [];
+
+        for(let i = 0; i <= lat.length - 1; i++ ){
+            latlng[i] = new google.maps.LatLng(lat[i], lng[i]);
+        }
+
+        let latlngbounds = new google.maps.LatLngBounds();
+        for (let i = 0; i < latlng.length; i++) {
+            latlngbounds.extend(latlng[i]);
+        }
+        map.fitBounds(latlngbounds);
+
+    }else if(lat.length === 1){
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: position,
+            zoom: 12
+        });
     }
 
-    let latlngbounds = new google.maps.LatLngBounds();
-    for (let i = 0; i < latlng.length; i++) {
-        latlngbounds.extend(latlng[i]);
-    }
-    map.fitBounds(latlngbounds);
 }
 
 function showSpecificGraph(marker) {

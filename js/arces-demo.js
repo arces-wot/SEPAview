@@ -1,5 +1,10 @@
+<<<<<<< HEAD
  jsap = {
      "host": "localhost",
+=======
+jsap = {
+     "host": "mml.arces.unibo.it",
+>>>>>>> branch 'master' of https://github.com/arces-wot/SEPAview.git
      "oauth": {
          "enable" : false,
          "register": "https://localhost:8443/oauth/register",
