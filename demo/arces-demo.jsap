@@ -54,17 +54,13 @@
 	"extended": {
 		"simulate": true,
 		"simulation": {
-			"5CCF7F1B599E/temperature": [
-				15,
-				35
-			],
-			"5CCF7F15676D/temperature": [
+			"/ffa574972ab9/applink/107/001BC50C700009CD": [
 				10,
 				20
 			],
-			"5CCF7F1B599E/humidity": [
+			"/ffa574972ab9/applink/107/001BC50C700009BB": [
 				35,
-				90
+				50
 			]
 		},
 		"mqtt": {
