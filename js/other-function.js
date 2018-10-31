@@ -1,3 +1,20 @@
+//var count = 0;
+
+//function generateID() {
+//	count = count + 1;
+//	return CSS.escape(""+count);
+//}
+
+function generateID(){
+    var dt = new Date().getTime();
+    var uuid = 'uuid_xxxxxxxx_xxxx_4xxx_yxxx_xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return CSS.escape(uuid);
+}
+
 function max(data) {
     let m = data[0], i = 1, n = data.length;
     for (; i <= n; ++i) {
@@ -18,6 +35,7 @@ function min(data) {
     return m;
 }
 
+// Get all the observations of a specific location "l"
 function divideData(data, l){
     let i = 0, d = [], j = 0;
     for(; i <= data.length - 1; i++){

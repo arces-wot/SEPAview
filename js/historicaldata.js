@@ -5,7 +5,7 @@ var min = [];
 
 	let queries = "{?log arces-monitor:refersTo arces-monitor:"+ window.opener.x +" ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp}";
 
-var host ="mml.arces.unibo.it";
+var host = jsap["host"];
 
 var s = new ColorScheme;
 var colors = s.from_hue(10).scheme('analogic').variation("pastel").distance(0.5).colors();
@@ -33,6 +33,8 @@ var layout = {
     height: 0.7 * window.innerHeight
 };
 
+// TUTTO QUESTO ANDREBBE SOSTITUITO USANDO LE API PER FARE LA QUERY
+// LA QUERY VA AGGIUNTA AL JSAP USANDO I FORCED BINDINGS PER INIZIO, FINE E QUANTITY
 function queryLiveData(callback) {
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
