@@ -102,6 +102,10 @@ function add_marker(lat, lng, name, id) {
 	markers[id]["marker"].addListener('click', function() {
 		$('#tree').empty();
 
+		if (sensorData[place] !== undefined) {
+			$("#"+sensorData[place]["div_id"]).show();
+		}
+		
 		createTree(markers[id].uri, "#tree");
 	});
 }

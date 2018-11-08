@@ -1,62 +1,75 @@
-function createTree(place, root){
+function createTree(place, rootDiv){
+	if (sensorData[place] !== undefined) {
+		$("#"+sensorData[place]["div_id"]).show();
+	}
+	
+	// QUERY for contained places
 	const sepa = Sepajs.client;
 	
 	// PREFIXES
     prefixes = "";
     for (ns in jsap["namespaces"]) {
-        prefixes += "PREFIX " + ns + ":<"+ jsap["namespaces"][ns] + ">";
+        prefixes += " PREFIX " + ns + ":<"+ jsap["namespaces"][ns] + ">";
     }
-    
-    // QUERY for contained places
+
     query = prefixes + " " + jsap["queries"]["CONTAINED_PLACES"]["sparql"];
-    query.replace("?root","<"+place+">");
+    query = query.replace("?root","<"+place+">");
     
     sepa.query(query,{host:jsap["host"]}).then((data)=>{    		
     		for (index in data.results.bindings) {
-    			bindings = data.results.bindings[index];
     			
-    			// ?child may be null (OPTIONAL)
-    			if (bindings.child != undefined) {
-    				// Create place UUID
-    				if (placeIds[bindings.child.value] == undefined) {
-    					placeIds[bindings.child.value] = generateID();
-    				}
-    				
-    				// Using UUID as id
-    				id_li = placeIds[bindings.child.value];
-                id_ul = id_li + "_ul";
+    			if (isNaN(index)) continue;
+    			
+    			childPlaceUri = data.results.bindings[index].child.value;
+    			childPlaceName = data.results.bindings[index].childName.value;
+    			
+			// Create place UUID if it do not exist
+			if (placeIds[childPlaceUri] == undefined) {
+				placeIds[childPlaceUri] = generateID();
+			}
+			
+			// Using UUID as id
+			id_li = placeIds[childPlaceUri];
+            id_ul = id_li + "_ul";
 
-                 $(root).append("<ul id='" + id_ul + "'></ul>");
-                 $("#" + id_ul).append("<li id='" + id_li + "'></li>");
-                 $("#" + id_li).append(bindings.childName.value);
+            // Create <ul>
+            // TODO : APPENDI SONO SE NON CI SONO GIA' FIGLI
+             $(rootDiv).append("<ul id='" + id_ul + "'></ul>");
+             $("#" + id_ul).append("<li id='" + id_li + "'></li>");
+             $("#" + id_li).append(childPlaceName);
 
-                 document.querySelector('#' + id_li).addEventListener("click", doSomething(id_li, "#" + id_ul), false);
-                 
-                 // funzione wrapper
-                 function doSomething(p, r) {
-                	 	return function (e) {
-                	 		e.stopPropagation();
-                         createTree(p,r);
-                     }
-                }
-    			}
-    		} 		
+             // Add listener
+             document.querySelector('#' + id_li).addEventListener("click", onClick(childPlaceUri, "#" + id_ul), false);
+             
+             // On tree element click
+             function onClick(p, r) {
+            	 	return function (e) {
+            	 		e.stopPropagation();
+                     
+            	 		createTree(p,r);
+                 }
+            }
+    		} 
+    		
+    		openNav();
     	});
     
-    // QUERY for observations of root
-    query = prefixes + " " + jsap["queries"]["OBSERVATIONS_BY_LOCATION"]["sparql"];
-    query.replace("?location","<"+place+">");
     
-    sepa.query(query,{host:jsap["host"]}).then((data)=>{
-    		if (data.results.bindings.length > 0) {
-    			// Create place UUID
-    			if (placeIds[place] == undefined) {
-    				placeIds[place] = id();	
-    			}
-    		
-    			$("#"+placeIds[place]).show();
-    		}
-    });
+    
+//    // QUERY for observations of root
+//    query = prefixes + " " + jsap["queries"]["OBSERVATIONS_BY_LOCATION"]["sparql"];
+//    query.replace("?location","<"+place+">");
+//    
+//    sepa.query(query,{host:jsap["host"]}).then((data)=>{
+//    		if (data.results.bindings.length > 0) {
+//    			// Create place UUID
+//    			if (placeIds[place] == undefined) {
+//    				placeIds[place] = id();	
+//    			}
+//    		
+//    			$("#"+placeIds[place]).show();
+//    		}
+//    });
 }
 
 //	const Jsap = Sepajs.Jsap

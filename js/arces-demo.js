@@ -54,9 +54,7 @@ jsap = {
 	"extended" : {
 		"simulate" : true,
 		"simulation" : {
-			"5CCF7F1B599E/temperature" : [ 15, 35 ],
-			"5CCF7F15676D/temperature" : [ 10, 20 ],
-			"5CCF7F1B599E/humidity" : [ 35, 90 ]
+			
 		},
 		"mqtt" : {
 			"url" : "giove.arces.unibo.it",
@@ -777,7 +775,7 @@ jsap = {
 			"sparql" : "SELECT * WHERE {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}"
 		},
 		"CONTAINED_PLACES" : {
-			"sparql" : "SELECT * where { ?root rdf:type schema:Place . ?root schema:name ?name . OPTIONAL {?root schema:containsPlace ?child . ?child schema:name ?childName}}",
+			"sparql" : "SELECT * where { ?root rdf:type schema:Place ; schema:containsPlace ?child . ?child schema:name ?childName}",
 			"forcedBindings" : {
 				"root" : {
 					"type" : "uri",

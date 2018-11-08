@@ -44,8 +44,6 @@ function liveMonitor() {
             for (index = 0; index < added; index++) {
                 binding = msg.notification.addedResults.results.bindings[index];
 
-                console.log(binding);
-
                 // Check value validity
                 if (binding.value.value == "NaN") continue;
                 valueAsFloat = parseFloat(binding.value.value);
@@ -55,6 +53,8 @@ function liveMonitor() {
                 let label = binding.label.value;
                 	let observation = binding.observation.value;
                 	let quantity = 	binding.quantity.value;
+                	
+                	console.log("Place: "+place+" Observation: "+observation)
                 	
                 // NEW PLACE
                 if (sensorData[place] == undefined) {		
@@ -125,8 +125,8 @@ function createNotificationsSvg() {
 function addPlace(place_id, name) {
 	$("#plot").append("<div id='"+place_id+"'>"+name+"</div>");
 	
-	// Hide place (commentato solo per debug)
-	//$("#"+place_id).hide();
+	// Hide place
+	$("#"+place_id).hide();
 }
 
 function addObservation(observation,place,data){
@@ -192,15 +192,6 @@ function updateNotifications() {
 	not.markers[1] = not.measures[0];
 	
 	if (not.measures[0] > not.ranges[1]) not.ranges[1] = not.ranges[1] * 2;
-	
-	// Notifications
-//	n = notifications[0]["measures"][0] + 1;
-//
-//	notifications[0]["measures"][0] = n;
-//	notifications[0]["markers"][1] = n;
-//	if (n > notifications[0]["ranges"][1]) {
-//		notifications[0]["ranges"][1] = notifications[0]["ranges"][1] * 2;
-//	}
 	
 	redrawSvg("notifications",notifications);
 }
