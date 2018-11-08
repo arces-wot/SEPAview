@@ -147,7 +147,11 @@ ul {
 }
 
 #graph{
-    background-color: #ffffff;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+    width: auto;
+    height: auto;
 }
 
 .graphic{

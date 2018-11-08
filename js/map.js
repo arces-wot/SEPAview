@@ -10,7 +10,7 @@ function initMap() {
         scaleControl: false
 	});
 	
-	const Jsap = Sepajs.Jsap
+	const Jsap = Sepajs.Jsap;
 	
 	app = new Jsap(jsap);
 	
@@ -20,18 +20,18 @@ function initMap() {
 		if (msg["notification"] !== undefined) {
             added = msg["notification"]["addedResults"]["results"]["bindings"].length;
             removed = msg["notification"]["removedResults"]["results"]["bindings"].length;
-            
+
             for (index = 0; index < added; index++) {
                 binding = msg.notification.addedResults.results.bindings[index];
 
                 place = binding.root.value;
                 name = binding.name.value;
-                lat = parseFloat(binding.lat.value);
-                lng = parseFloat(binding.long.value);
+                lat = parseFloat(binding.lat.value.replace(",","."));
+                lng = parseFloat(binding.long.value.replace(",","."));
 
                 add_marker(lat,lng,name,place);
             }
-            
+
             for (index = 0; index < removed; index++) {
                 binding = msg.notification.removedResults.results.bindings[index];
 
@@ -52,10 +52,10 @@ function refreshMap() {
 		positions.push({lat : markers[id].marker.getPosition().lat(), lng : markers[id].marker.getPosition().lng()});	
 	}
 		
-	if (positions.length == 0) {
+	if (positions.length === 0) {
 		map.setCenter({lat: 44.494048, lng: 11.343391});
 		map.setZoom(13);
-	} else if (positions.length == 1) {
+	} else if (positions.length === 1) {
 		map.setCenter(positions[0]);
 	} else {	
 		let neLat = positions[0].lat;
@@ -102,11 +102,11 @@ function add_marker(lat, lng, name, id) {
 	markers[id]["marker"].addListener('click', function() {
 		$('#tree').empty();
 
-		if (sensorData[place] !== undefined) {
+		/*if (sensorData[place] !== undefined) {
 			$("#"+sensorData[place]["div_id"]).show();
-		}
+		}*/
 		
-		createTree(markers[id].uri, "#tree");
+		createTree(markers[id].uri, "#tree", 0);
 	});
 }
 

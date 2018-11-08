@@ -1,8 +1,8 @@
-function createTree(place, rootDiv){
-	if (sensorData[place] !== undefined) {
-		$("#"+sensorData[place]["div_id"]).show();
-	}
-	
+function createTree(place, rootDiv,n){
+    if(sensorData[place] !== undefined) {
+        $("#"+sensorData[place]["div_id"]).show();
+    }
+
 	// QUERY for contained places
 	const sepa = Sepajs.client;
 	
@@ -22,36 +22,38 @@ function createTree(place, rootDiv){
     			
     			childPlaceUri = data.results.bindings[index].child.value;
     			childPlaceName = data.results.bindings[index].childName.value;
-    			
-			// Create place UUID if it do not exist
-			if (placeIds[childPlaceUri] == undefined) {
-				placeIds[childPlaceUri] = generateID();
+
+				// Create place UUID if it do not exist
+				if (placeIds[childPlaceUri] === undefined) {
+					placeIds[childPlaceUri] = generateID();
 			}
-			
+
 			// Using UUID as id
-			id_li = placeIds[childPlaceUri];
-            id_ul = id_li + "_ul";
+			id_li = placeIds[childPlaceUri] + "_li";
+            id_ul = placeIds[childPlaceUri] + "_ul";
 
             // Create <ul>
             // TODO : APPENDI SONO SE NON CI SONO GIA' FIGLI
              $(rootDiv).append("<ul id='" + id_ul + "'></ul>");
-             $("#" + id_ul).append("<li id='" + id_li + "'></li>");
+             $("#" + id_ul).append("<li id='" + id_li + "' style='margin-left:"+ n*15 +"px;'></li>");
              $("#" + id_li).append(childPlaceName);
 
+
              // Add listener
-             document.querySelector('#' + id_li).addEventListener("click", onClick(childPlaceUri, "#" + id_ul), false);
+             document.querySelector('#' + id_li).addEventListener("click", onClick(childPlaceUri, "#" + id_ul, n ), false);
              
              // On tree element click
-             function onClick(p, r) {
+             function onClick(p, r, counter) {
             	 	return function (e) {
             	 		e.stopPropagation();
-                     
-            	 		createTree(p,r);
+            	 		counter = counter + 1;
+            	 		createTree(p,r,counter);
                  }
             }
-    		} 
-    		
+    		}
+
     		openNav();
+
     	});
     
     

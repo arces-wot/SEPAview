@@ -61,6 +61,10 @@
 			"/ffa574972ab9/applink/107/001BC50C700009BB": [
 				35,
 				50
+			],
+			"5CCF7F15676D/temperature": [
+				35,
+				50
 			]
 		},
 		"mqtt": {

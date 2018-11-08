@@ -5,7 +5,7 @@
 //		"..." : {...}
 //   "location_uri2" : {...}
 //  }
-sensorData = {}
+sensorData = {};
 
 notifications = [ {
 	"title" : "Notifications",
@@ -15,7 +15,7 @@ notifications = [ {
 	"markers" : [ 0 ],
 	"place" : "",
 	"quantity" : ""
-} ]
+} ];
 
 let margin = {
 	top : 0,
@@ -31,7 +31,7 @@ let svg;
 function liveMonitor() {
 	createNotificationsSvg();
 	
-	const Jsap = Sepajs.Jsap
+	const Jsap = Sepajs.Jsap;
 	
 	app = new Jsap(jsap);
 
@@ -51,16 +51,16 @@ function liveMonitor() {
                 let place = binding.place.value;
                 let unit = binding.unit.value;
                 let label = binding.label.value;
-                	let observation = binding.observation.value;
-                	let quantity = 	binding.quantity.value;
-                	
-                	console.log("Place: "+place+" Observation: "+observation)
+				let observation = binding.observation.value;
+				let quantity = 	binding.quantity.value;
+
+				console.log("Place: "+place+" Observation: "+observation);
                 	
                 // NEW PLACE
-                if (sensorData[place] == undefined) {		
+                if (sensorData[place] === undefined) {
                 	    sensorData[place] = {};
                 	    
-                	    if (placeIds[place] == undefined) {
+                	    if (placeIds[place] === undefined) {
                 	    		placeIds[place] = generateID();
                 	    }
                 	    sensorData[place]["div_id"] = placeIds[place];
@@ -69,7 +69,7 @@ function liveMonitor() {
                 }
                 
                 // NEW OBSERVATION
-                if (sensorData[binding.place.value][binding.observation.value] == undefined) {
+                if (sensorData[binding.place.value][binding.observation.value] === undefined) {
 		            	// TODO: to be replaced with rdfs:label from qu-unit
 		        		if (unit.endsWith("Percent")) title = label + " (%)";
 		        		else if (unit.endsWith("DegreeCelsius")) title = label + " (°C)";
@@ -87,7 +87,8 @@ function liveMonitor() {
 	            			"markers" : [ valueAsFloat, valueAsFloat ],
 	            			"quantity" : quantity
 	            		});
-		        		
+
+
 		        		addObservation(observation,place,sensorData[place][observation]["data"]);
                 }
                 	   
@@ -101,7 +102,7 @@ function liveMonitor() {
 }
 
 function createNotificationsSvg() {
-	$("#plot").append("<div id='notifications'></div>");
+	$("#plot").append("<div id='notifications' style='margin-bottom: 30px'></div>");
 	
     let svg = d3.select("#notifications").selectAll("svg").data(notifications).enter().append(
     "svg").attr("class", "bullet").style("margin-top","30px").attr("width",
@@ -121,18 +122,27 @@ function createNotificationsSvg() {
 	        return d.subtitle;
 	    });
 }
+/*id='"+ place_id + "_closeButton_" + name +"'*/
 
 function addPlace(place_id, name) {
-	$("#plot").append("<div id='"+place_id+"'>"+name+"</div>");
-	
+	cls_btn_id = place_id + "_closeButton_" + name;
+    //div_btn_e_titolo_id = place_id + "_closeButtonETitolo_" + name + "_div";
+
+    $("#graph").append("<div class='graph' id='"+place_id+"'><h2>"+name+"</h2></div>");
+    //$("#"+place_id).append("<div id='"+ div_btn_e_titolo_id +"'></div>");
+    $("#"+place_id).append("<a href=\"javascript:void(0)\" id=\"" + cls_btn_id +"\"" +
+		"class=\"closebtn\" onClick=\"closeDiv($(this).parent().attr('id'))\"" +
+		"style=''>&times;</a>");
 	// Hide place
 	$("#"+place_id).hide();
+
+
 }
 
 function addObservation(observation,place,data){
-	let obs_id = sensorData[place][observation]["div_id"]
+	let obs_id = sensorData[place][observation]["div_id"];
 	
-	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"'></div>");
+	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"' style='margin-bottom: 20px'></div>");
 	
     let svg = d3.select("#"+obs_id).selectAll("svg").data(data).enter().append(
         "svg").attr("class", "bullet").style("margin-top","30px").attr("width",
@@ -152,8 +162,12 @@ function addObservation(observation,place,data){
             return d.subtitle;
         });
     
-    $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' style='position:relative;height:50px;width: 130px;border: #020202 1px solid; " + "margin-left: 45%;'></div>");
-	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' data-quantity='"+ sensorData[place][observation]["data"]["quantity"]+ "'" + "data-title='"+ sensorData[place][observation]["data"]["title"] +"' class='button' href='./indexAnalitics.html' target='_blank' >HISTORY</a>")
+    $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' style='position:relative;height:50px;" +
+		"width: 130px;border: #020202 1px solid; " + "margin-left: 45%;'></div>");
+	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
+		"data-quantity='"+sensorData[place][observation]["data"]["quantity"]+ "'" +
+		"data-title='"+ sensorData[place][observation]["data"]["title"] +"'" +
+		" class='button' href='./indexAnalitics.html' target='_blank' >HISTORY</a>");
 	
 	let buttons = document.getElementsByClassName("button");
     let buttonsCount = buttons.length;
