@@ -12,8 +12,8 @@
 
 	<script src="./lib/plotly-latest.min.js"></script>
 	<script src="./lib/color-scheme.js"></script>
-	<script src="./js/historicaldata.js"></script>
 	<script src="./js/arces-demo.js"></script>
+	<script src="./js/historicaldata.js"></script>
 </head>
 
 <body onload='onLoad()'>
@@ -23,13 +23,14 @@
 	<div id = "title"><p id="titleText">ARCES Sensors Monitoring</p></div>
     <div id="waiting"></div>
 
-	<button class="open-button" onclick="openForm()"><p>Change Date and Time</p></button>
-
-	<div class="form-popup" id="myForm">
-		<div class="form-container">
-			<div id="form"></div>
-			<div id="buttonCambia"></div>
-			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+	<div id="form_and_button" style="text-align: center" >
+		<button id="open-button" onclick="openForm()"><p>Change Date and Time</p></button>
+		<div class="form-popup" id="myForm">
+			<div class="form-container">
+				<div id="form"></div>
+				<div id="buttonCambia"></div>
+				<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+			</div>
 		</div>
 	</div>
 

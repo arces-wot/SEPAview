@@ -46,7 +46,7 @@ body {
 
 #titleText.shrink{
     opacity: 0.9;
-    transform: scale(0.5,0.5) translate(-1200px,-40px);
+    transform: scale(0.5,0.5) translate(-80%,-50%);
     transition: transform 1s;
 }
 
@@ -146,6 +146,10 @@ ul {
     position: relative;
 }
 
+#close_all:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
 #graph{
     margin-top: 20px;
     position: relative;
@@ -165,7 +169,7 @@ ul {
     transition-duration: 2s;
 }
 
-.button{
+/*.button{
     color: #020202;
     line-height: 50px;
     text-decoration: none;
@@ -176,13 +180,28 @@ ul {
 
 .div_button{
     background-color: #234d78;
+}*/
+.button{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.div_button{
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    border: solid black 2px;
+    line-height: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition-duration: 0.5s;
+    position: relative;
 }
 
 .div_button:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-}
-#close_all:hover{
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    background-color: #286585;
 }
 
 h2{
@@ -265,7 +284,7 @@ h2{
     }
 
     #titleText.shrink{
-        transform: scale(0.5,0.5) translate(-75%,-50%);
+        transform: scale(0.4,0.4) translate(-75%,-50%);
     }
 
     .sidenav li {

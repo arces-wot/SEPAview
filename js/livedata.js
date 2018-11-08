@@ -125,23 +125,24 @@ function createNotificationsSvg() {
 /*id='"+ place_id + "_closeButton_" + name +"'*/
 
 function addPlace(place_id, name) {
-	cls_btn_id = place_id + "_closeButton_" + name;
-    //div_btn_e_titolo_id = place_id + "_closeButtonETitolo_" + name + "_div";
+	cls_btn_id = place_id + "_closeButton";
+    div_btn_e_titolo_id = place_id + "_closeButtonETitolo";
 
-    $("#graph").append("<div class='graph' id='"+place_id+"'><h2>"+name+"</h2></div>");
-    //$("#"+place_id).append("<div id='"+ div_btn_e_titolo_id +"'></div>");
-    $("#"+place_id).append("<a href=\"javascript:void(0)\" id=\"" + cls_btn_id +"\"" +
-		"class=\"closebtn\" onClick=\"closeDiv($(this).parent().attr('id'))\"" +
-		"style=''>&times;</a>");
+    $("#graph").append("<div class='graph' id='"+place_id+"'></div>");
+    $("#"+place_id).append("<div id='"+ div_btn_e_titolo_id +"' style='margin-left: -60%'></div>");
+    $("#"+div_btn_e_titolo_id).append("<a href=\"javascript:void(0)\" id=\"" + div_btn_e_titolo_id +"\"" +
+		"class=\"closebtn\" onClick=\"closeDiv($(this).parent().parent().attr('id'))\"" +
+		"style='margin-right: 10px; text-decoration: none; color: #000; font-size: 30px'>&times;</a>");
+    $("#"+div_btn_e_titolo_id).append("<h2 style='display:inline-block'>"+name+"</h2>");
 	// Hide place
-	$("#"+place_id).hide();
+	//$("#"+place_id).hide();
 
 
 }
 
 function addObservation(observation,place,data){
 	let obs_id = sensorData[place][observation]["div_id"];
-	
+
 	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"' style='margin-bottom: 20px'></div>");
 	
     let svg = d3.select("#"+obs_id).selectAll("svg").data(data).enter().append(
@@ -161,12 +162,14 @@ function addObservation(observation,place,data){
         function(d) {
             return d.subtitle;
         });
+
+    console.log(sensorData[place][observation]["data"]["quantity"])
     
     $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' style='position:relative;height:50px;" +
 		"width: 130px;border: #020202 1px solid; " + "margin-left: 45%;'></div>");
 	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
-		"data-quantity='"+sensorData[place][observation]["data"]["quantity"]+ "'" +
-		"data-title='"+ sensorData[place][observation]["data"]["title"] +"'" +
+		"data-quantity='"+sensorData[place][observation]["data"][0]["quantity"]+ "'" +
+		"data-title='"+ sensorData[place][observation]["data"][0]["title"] +"'" +
 		" class='button' href='./indexAnalitics.html' target='_blank' >HISTORY</a>");
 	
 	let buttons = document.getElementsByClassName("button");
