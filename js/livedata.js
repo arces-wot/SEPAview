@@ -135,7 +135,7 @@ function addPlace(place_id, name) {
 		"style='margin-right: 10px; text-decoration: none; color: #000; font-size: 30px'>&times;</a>");
     $("#"+div_btn_e_titolo_id).append("<h2 style='display:inline-block'>"+name+"</h2>");
 	// Hide place
-	//$("#"+place_id).hide();
+	$("#"+place_id).hide();
 
 
 }
@@ -176,8 +176,8 @@ function addObservation(observation,place,data){
     let buttonsCount = buttons.length;
     for (let j = 0; j < buttonsCount; j++) {
         buttons[j].onclick = function() {
-            x = this.dataset.quantity;
-            tit = this.dataset.title;
+            quantity = this.dataset.quantity;
+            title = this.dataset.title;
         }
     }
 }

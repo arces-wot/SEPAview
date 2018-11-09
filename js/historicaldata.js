@@ -1,9 +1,9 @@
 let a = [];
-let y = window.opener.tit;
+let y = window.opener.title;
 var max =[];
 var min = [];
 
-	let queries = "{?log arces-monitor:refersTo arces-monitor:"+ window.opener.x +" ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp}";
+	let queries = "{?log arces-monitor:refersTo "+ window.opener.quantity +" ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp}";
 
 var host = jsap["host"];
 
