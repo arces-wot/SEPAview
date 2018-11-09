@@ -16,9 +16,9 @@ function createTree(place, rootDiv){
     query = query.replace("?root","<"+place+">");
     
     sepa.query(query,{host:jsap["host"]}).then((data)=>{    		
-    		for (index in data.results.bindings) {
+    		for of (index in data.results.bindings) {
     			
-    			if (isNaN(index)) continue;
+    			//if (isNaN(index)) continue;
     			
     			childPlaceUri = data.results.bindings[index].child.value;
     			childPlaceName = data.results.bindings[index].childName.value;
