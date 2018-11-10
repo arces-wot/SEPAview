@@ -53,31 +53,15 @@ body {
     cursor: pointer;
 }
 
+#form_and_button{
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
+
 .button:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
-
-/*.open-button{
-    margin-top: 10px;
-    padding: 16px 20px;
-    border: solid 1px #000000;
-    text-decoration: none;
-    cursor: pointer;
-    transition-duration: 0.5s;
-    position: relative;
-    background-color: #234d78;
-    z-index: 10;
-}
-
-.open-button p{
-    color: white;
-    font-size: 20px;
-}
-
-
-.open-button:hover{
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-}*/
 
 #open-button{
     padding: 16px 20px;
@@ -102,8 +86,6 @@ body {
 /* The popup form - hidden by default */
 .form-popup {
     display: none;
-   /* margin-left: 37.5%;
-    left: 15px;*/
     width: 300px;
     line-height: 40px;
     border: 3px solid #f1f1f1;
@@ -118,7 +100,6 @@ body {
 }
 
 #myForm{
-    position: fixed;
     z-index: 20;
     text-align: left;
 }

@@ -169,18 +169,6 @@ ul {
     transition-duration: 2s;
 }
 
-/*.button{
-    color: #020202;
-    line-height: 50px;
-    text-decoration: none;
-    cursor: pointer;
-    transition-duration: 0.5s;
-    position: relative;
-}
-
-.div_button{
-    background-color: #234d78;
-}*/
 .button{
     text-decoration: none;
     color: black;
