@@ -41,8 +41,7 @@ function liveMonitor() {
 		if (msg["notification"] !== undefined) {
             added = msg["notification"]["addedResults"]["results"]["bindings"].length;
             
-            for (index = 0; index < added; index++) {
-                binding = msg.notification.addedResults.results.bindings[index];
+            for (binding of msg.notification.addedResults.results.bindings) {
 
                 // Check value validity
                 if (binding.value.value == "NaN") continue;
@@ -162,24 +161,29 @@ function addObservation(observation,place,data){
         function(d) {
             return d.subtitle;
         });
-
-    console.log(sensorData[place][observation]["data"]["quantity"])
     
     $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' style='position:relative;height:50px;" +
 		"width: 130px;border: #020202 1px solid; " + "margin-left: 45%;'></div>");
-	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
-		"data-quantity='"+sensorData[place][observation]["data"][0]["quantity"]+ "'" +
-		"data-title='"+ sensorData[place][observation]["data"][0]["title"] +"'" +
-		" class='button' href='./indexAnalitics.html' target='_blank' >HISTORY</a>");
-	
-	let buttons = document.getElementsByClassName("button");
-    let buttonsCount = buttons.length;
-    for (let j = 0; j < buttonsCount; j++) {
-        buttons[j].onclick = function() {
-            quantity = this.dataset.quantity;
-            title = this.dataset.title;
-        }
-    }
+    
+    // USE FORM with hidden parameters
+    $("#button_"+obs_id).append("<form target=\"_blank\" action=\"./indexAnalitics.html\">" +
+    		"<input type=\"hidden\" name=\"observation\" value=\""+observation+"\" />" +
+    		"<input type=\"hidden\" name=\"title\" value=\""+escape(sensorData[place][observation]["data"][0]["title"])+"\" />" +
+    		"<input type=\"submit\" value=\"History\"></form>");
+    
+//	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
+//		"data-observation='"+observation+ "'" +
+//		"data-title='"+ sensorData[place][observation]["data"][0]["title"] +"'" +
+//		" class='button' href='./indexAnalitics.html?observation=3' target='_blank' >HISTORY</a>");
+    
+//	let buttons = document.getElementsByClassName("button");
+//    let buttonsCount = buttons.length;
+//    for (let j = 0; j < buttonsCount; j++) {
+//        buttons[j].onclick = function() {
+//            observation = this.dataset.observation;
+//            title = this.dataset.title;
+//        }
+//    }
 }
 
 function updateObservation(observation,place,valueAsFloat) {
@@ -221,47 +225,3 @@ function randomize(d){
 	 let svg = d3.select("#"+id).selectAll("svg").data(data);
 	 svg.datum(randomize).call(chart.duration(1000));
  }
- 
-//function createSvg2(data,index, l){
-//
-//    let svg = d3.select(l).selectAll("svg").data(data).enter().append(
-//        "svg").attr("class", "bullet").style("margin-top","30px").attr("width",
-//        width + margin.left + margin.right).attr("height",
-//        height + margin.top + margin.bottom).append("g").attr("transform",
-//        "translate(" + margin.left + "," + margin.top + ")").call(chart);
-//
-//    let title = svg.append("g").style("text-anchor", "end").attr("transform",
-//        "translate(940,27)");
-//
-//    title.append("text").attr("class", "title").text(function(d) {
-//        return d.title;
-//    });
-//
-//    title.append("text").attr("class", "subtitle").attr("dy", "1em").text(
-//        function(d) {
-//            return d.subtitle;
-//        });
-//
-//	if (index == 0) return;
-//	
-//	if (placeIds[data[index].place] == undefined) {
-//		placeIds[data[index].place] = id();
-//	}
-//	id_a = placeIds[data[index].place] + i || {} ;
-//	id_div = placeIds[data[index].place] + "_div_" + i;
-//
-//	if(document.getElementById(id_a) === null && document.getElementById(id_div) === null &&  data[index].title !== "Notifications"){
-//
-//		$(l).append("<div id='"+id_div+"' class='div_button' style='position:relative;height:50px;width: 130px;border: #020202 1px solid; " + "margin-left: 45%;'></div>");
-//		$("#"+id_div).append("<a id='"+ id_a +"' data-quantity='"+ data[index].quantity+ "'" + "data-title='"+ data[index].title +"' class='button' href='./indexAnalitics.html' target='_blank' >HISTORY</a>")
-//	}
-//
-//    let buttons = document.getElementsByClassName("button");
-//    let buttonsCount = buttons.length;
-//    for (let j = 0; j < buttonsCount; j++) {
-//        buttons[j].onclick = function() {
-//            x = this.dataset.quantity;
-//            tit = this.dataset.title;
-//        }
-//    }
-//}

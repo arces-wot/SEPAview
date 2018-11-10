@@ -10,10 +10,11 @@
 
     <link href = "./styleAnalitics.css" rel = "stylesheet" type="text/css">
 
-	<script src="./lib/plotly-latest.min.js"></script>
-	<script src="./lib/color-scheme.js"></script>
-	<script src="./js/arces-demo.js"></script>
-	<script src="./js/historicaldata.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.1.0/web/sepa.js"></script>
+	<script src="lib/plotly-latest.min.js"></script>
+	<script src="lib/color-scheme.js"></script>
+	<script src="js/arces-demo.js"></script>
+	<script src="js/historicaldata.js"></script>
 </head>
 
 <body onload='onLoad()'>
@@ -39,9 +40,14 @@
 </div>
 
 <script>
-    function onLoad() {
+    function onLoad() {   		
+    		var parameters = window.location.search.substring(1).split("&");
+
+    	    var observation = decodeURIComponent(parameters[0].split("=")[1]);
+    	    var title = unescape(unescape(parameters[1].split("=")[1]));
+		
         document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";
-        queryLiveData(results);
+        queryLiveData(observation,title);
     }
 
     function openForm() {

@@ -54,7 +54,9 @@ jsap = {
 	"extended" : {
 		"simulate" : true,
 		"simulation" : {
-			
+			"/ffa574972ab9/applink/107/001BC50C700009CD" : [ 10, 20 ],
+			"/ffa574972ab9/applink/107/001BC50C700009BB" : [ 35, 50 ],
+			"5CCF7F15676D/temperature" : [ 35, 50 ]
 		},
 		"mqtt" : {
 			"url" : "giove.arces.unibo.it",
@@ -169,7 +171,7 @@ jsap = {
 				"lon" : 11.330382
 			},
 			"arces-monitor:Star_Server_Room" : {
-				"name" : "Star",
+				"name" : "Server room",
 				"lat" : 44.492443,
 				"lon" : 11.330382
 			},
@@ -691,11 +693,11 @@ jsap = {
 			}
 		},
 		"LOG_QUANTITY" : {
-			"sparql" : "INSERT {GRAPH <http://wot.arces.unibo.it/monitor/mqtt/log> {_:log arces-monitor:refersTo ?observation ; qudt-1-1:numericValue ?value ; time:inXSDDateTimeStamp ?timestamp}} WHERE {BIND(now() AS ?timestamp)}",
+			"sparql" : "INSERT {GRAPH <http://wot.arces.unibo.it/monitor/mqtt/log> {_:log arces-monitor:refersTo ?quantity ; qudt-1-1:numericValue ?value ; time:inXSDDateTimeStamp ?timestamp}} WHERE {?observation sosa:hasResult ?quantity . BIND(now() AS ?timestamp)}",
 			"forcedBindings" : {
 				"observation" : {
 					"type" : "uri",
-					"value" : "arces-monitor:QuantityValueXYZ"
+					"value" : "arces-monitor:ObservationXYZ"
 				},
 				"value" : {
 					"type" : "literal",
@@ -759,10 +761,22 @@ jsap = {
 	},
 	"queries" : {
 		"LOG_QUANTITY" : {
-			"sparql" : "SELECT * WHERE {?log arces-monitor:refersTo ?quantity ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp}",
-			"graphs" : {
-				"default-graph-uri" : "http://wot.arces.unibo.it/monitor/mqtt/log",
-				"named-graph-uri" : "http://wot.arces.unibo.it/monitor/mqtt/log"
+			"sparql" : "SELECT * WHERE {?observation sosa:hasResult ?quantity . GRAPH <http://wot.arces.unibo.it/monitor/mqtt/log> {?log arces-monitor:refersTo ?quantity ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
+			"forcedBindings" : {
+				"from" : {
+					"datatype" : "xsd:dateTime",
+					"type" : "literal",
+					"value" : "2018-01-01T00:00:00"
+				},
+				"to" : {
+					"datatype" : "xsd:dateTime",
+					"type" : "literal",
+					"value" : "2018-01-01T00:00:00"
+				},
+				"observation" : {
+					"type" : "uri",
+					"value" : "arces-monitor:ObservationXYZ"
+				}
 			}
 		},
 		"PLACES" : {
@@ -775,7 +789,7 @@ jsap = {
 			"sparql" : "SELECT * WHERE {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}"
 		},
 		"CONTAINED_PLACES" : {
-			"sparql" : "SELECT * where { ?root rdf:type schema:Place ; schema:containsPlace ?child . ?child schema:name ?childName}",
+			"sparql" : "SELECT * where {?root rdf:type schema:Place ; schema:containsPlace ?child . ?child schema:name ?childName}",
 			"forcedBindings" : {
 				"root" : {
 					"type" : "uri",
