@@ -134,7 +134,7 @@ function addPlace(place_id, name) {
 		"style='margin-right: 10px; text-decoration: none; color: #000; font-size: 30px'>&times;</a>");
     $("#"+div_btn_e_titolo_id).append("<h2 style='display:inline-block'>"+name+"</h2>");
 	// Hide place
-	$("#"+place_id).hide();
+	//$("#"+place_id).hide();
 
 
 }
@@ -142,7 +142,8 @@ function addPlace(place_id, name) {
 function addObservation(observation,place,data){
 	let obs_id = sensorData[place][observation]["div_id"];
 
-	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"' style='margin-bottom: 20px'></div>");
+	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"' style='margin-bottom: 20px;  display:flex; align-items: center;" +
+		" flex-flow: row; justify-content: center'></div>");
 	
     let svg = d3.select("#"+obs_id).selectAll("svg").data(data).enter().append(
         "svg").attr("class", "bullet").style("margin-top","30px").attr("width",
@@ -162,14 +163,13 @@ function addObservation(observation,place,data){
             return d.subtitle;
         });
     
-    $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' style='position:relative;height:50px;" +
-		"width: 130px;border: #020202 1px solid; " + "margin-left: 45%;'></div>");
-    
+    $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' ></div>");
+
     // USE FORM with hidden parameters
     $("#button_"+obs_id).append("<form target=\"_blank\" action=\"./indexAnalitics.html\">" +
     		"<input type=\"hidden\" name=\"observation\" value=\""+observation+"\" />" +
     		"<input type=\"hidden\" name=\"title\" value=\""+escape(sensorData[place][observation]["data"][0]["title"])+"\" />" +
-    		"<input type=\"submit\" value=\"History\"></form>");
+    		"<input id='history_btn' type=\"submit\" value=\"History\"></form>");
     
 //	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
 //		"data-observation='"+observation+ "'" +

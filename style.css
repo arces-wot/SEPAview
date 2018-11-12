@@ -169,27 +169,20 @@ ul {
     transition-duration: 2s;
 }
 
-.button{
-    text-decoration: none;
+#history_btn{
+    transition-duration: 0.5s;
+    height:50px;
+    width: 130px;
+    border: #020202 1px solid;
     color: black;
     font-weight: bold;
+    background-color: white;
 }
 
-.div_button{
-    width: 100px;
-    height: 35px;
-    text-align: center;
-    border: solid black 2px;
-    line-height: 50px;
-    text-decoration: none;
-    cursor: pointer;
-    transition-duration: 0.5s;
-    position: relative;
-}
-
-.div_button:hover{
+#history_btn:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     background-color: #286585;
+    color: white;
 }
 
 h2{

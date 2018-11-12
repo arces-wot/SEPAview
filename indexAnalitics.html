@@ -45,6 +45,8 @@
 
     	    var observation = decodeURIComponent(parameters[0].split("=")[1]);
     	    var title = unescape(unescape(parameters[1].split("=")[1]));
+
+    	    console.log("-----------"+observation)
 		
         document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";
         queryLiveData(observation,title);

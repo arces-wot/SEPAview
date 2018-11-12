@@ -1,5 +1,5 @@
 jsap = {
-	"host" : "localhost",
+	"host" : "mml.arces.unibo.it",
 	"oauth" : {
 		"enable" : false,
 		"register" : "https://localhost:8443/oauth/register",
