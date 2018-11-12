@@ -170,20 +170,20 @@ function addObservation(observation,place,data){
     		"<input type=\"hidden\" name=\"observation\" value=\""+observation+"\" />" +
     		"<input type=\"hidden\" name=\"title\" value=\""+escape(sensorData[place][observation]["data"][0]["title"])+"\" />" +
     		"<input id='history_btn' type=\"submit\" value=\"History\"></form>");
+
+/*	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
+		"data-observation='"+observation+ "'" +
+		"data-title='"+ sensorData[place][observation]["data"][0]["title"] +"'" +
+		" class='button' href='./indexAnalitics.html?observation=3' target='_blank' >HISTORY</a>");
     
-//	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
-//		"data-observation='"+observation+ "'" +
-//		"data-title='"+ sensorData[place][observation]["data"][0]["title"] +"'" +
-//		" class='button' href='./indexAnalitics.html?observation=3' target='_blank' >HISTORY</a>");
-    
-//	let buttons = document.getElementsByClassName("button");
-//    let buttonsCount = buttons.length;
-//    for (let j = 0; j < buttonsCount; j++) {
-//        buttons[j].onclick = function() {
-//            observation = this.dataset.observation;
-//            title = this.dataset.title;
-//        }
-//    }
+	let buttons = document.getElementsByClassName("button");
+    let buttonsCount = buttons.length;
+    for (let j = 0; j < buttonsCount; j++) {
+        buttons[j].onclick = function() {
+            observation = this.dataset.observation;
+            title = this.dataset.title;
+        }
+    }*/
 }
 
 function updateObservation(observation,place,valueAsFloat) {

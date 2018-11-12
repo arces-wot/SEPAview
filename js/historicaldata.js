@@ -86,16 +86,15 @@ function queryLiveData(observation,title) {
 							return obj;
 						}, {});
 
-				console.log(timeAndDate.dateFrom + "T" + timeAndDate.timeFrom
+				console.log("----------->"+timeAndDate.dateFrom + "T" + timeAndDate.timeFrom
 						+ ":00");
 
-				from = timeAndDate.dateFrom + "T" + timeAndDate.timeFrom
-						+ ":00";
+				from = timeAndDate.dateFrom + "T" + timeAndDate.timeFrom + ":00";
 				to = timeAndDate.dateTo + "T" + timeAndDate.timeTo + ":00";
 
 				query = prefixes + " "
 						+ jsap["queries"]["LOG_QUANTITY"]["sparql"];
-				
+
 				// Forced bindings
 				query = query.replace("?observation", "<"+observation+">");
 				query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
