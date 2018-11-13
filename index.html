@@ -41,6 +41,10 @@
 
 <body onLoad='onLoad()'>
 
+<div class="loader_wrap" id="loader_wrap">
+	<div class="loader" id="loader"></div>
+</div>
+
 <div id="container">
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -74,7 +78,7 @@
 
 <script>
 
-	//funzione dei bottoni per ogni div
+    //funzione dei bottoni per ogni div
     function closeDiv(btn_id){
         $("#"+btn_id).hide();
     }

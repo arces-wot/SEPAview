@@ -96,8 +96,11 @@ function liveMonitor() {
                 
                 updateNotifications();
             }
+            $('#loader_wrap').addClass("hide-loader");
 		}
+
 	});
+
 }
 
 function createNotificationsSvg() {
@@ -121,7 +124,6 @@ function createNotificationsSvg() {
 	        return d.subtitle;
 	    });
 }
-/*id='"+ place_id + "_closeButton_" + name +"'*/
 
 function addPlace(place_id, name) {
 	cls_btn_id = place_id + "_closeButton";
@@ -134,7 +136,7 @@ function addPlace(place_id, name) {
 		"style='margin-right: 10px; text-decoration: none; color: #000; font-size: 30px'>&times;</a>");
     $("#"+div_btn_e_titolo_id).append("<h2 style='display:inline-block'>"+name+"</h2>");
 	// Hide place
-	//$("#"+place_id).hide();
+	$("#"+place_id).hide();
 
 
 }
@@ -204,6 +206,7 @@ function updateObservation(observation,place,valueAsFloat) {
 	}
 	
 	redrawSvg(sensorData[place][observation]["div_id"],sensorData[place][observation]["data"]);
+
 }
 
 function updateNotifications() {

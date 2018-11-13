@@ -33,10 +33,10 @@ function queryLiveData(observation,title) {
 	layout.title = title;
 	
 	 var form = "<form id=\"calendar\">\n"
-			+ " Date from: <input type=\"date\" name=\"dateFrom\"><br>\n"
-			+ " Time from: <input type=\"time\" name=\"timeFrom\"><br>\n"
-			+ " Date to: <input type=\"date\" name=\"dateTo\"><br>\n"
-			+ " Time to: <input type=\"time\" name=\"timeTo\"><br>\n"
+			+ " Date from: <input type=\"date\" name=\"dateFrom\" value='2018-11-12'><br>\n"
+			+ " Time from: <input type=\"time\" name=\"timeFrom\" value='00:00'><br>\n"
+			+ " Date to: <input type=\"date\" name=\"dateTo\" value='2018-11-13'><br>\n"
+			+ " Time to: <input type=\"time\" name=\"timeTo\" value='00:00'><br>\n"
 			+ " </form>";
 
 	var buttonCambia = "<button type=\"submit\" class=\"btn\">Go</button>";
@@ -86,9 +86,6 @@ function queryLiveData(observation,title) {
 							return obj;
 						}, {});
 
-				console.log("----------->"+timeAndDate.dateFrom + "T" + timeAndDate.timeFrom
-						+ ":00");
-
 				from = timeAndDate.dateFrom + "T" + timeAndDate.timeFrom + ":00";
 				to = timeAndDate.dateTo + "T" + timeAndDate.timeTo + ":00";
 
@@ -104,17 +101,18 @@ function queryLiveData(observation,title) {
 					 results(data);
 				 });
 			});
+    $('#loader_wrap').addClass("hide-loader");
 }
 
 var timer = window.setInterval(waitingTimer, 1000);
 var seconds = 0;
-
+/*
 function waitingTimer() {
 	seconds += 1;
 	document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...(elapsed seconds: "
 			+ seconds + ")</h3>";
 }
-
+*/
 function results(jsapObj) {
 	var traces = [];
 	var layouts = [];
