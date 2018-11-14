@@ -8,7 +8,7 @@ This instruction will give you a copy of this dashboard on your local machine fo
 This repository include a [demo](https://github.com/arces-wot/SEPAview/tree/master/demo) directory, which allows you to generate fake data.
 
 ### Prerequisites
-Before having fun with SEPA View, make sure you have a SEPA running on your machine. If it's not please go to [SEPABins](https://github.com/arces-wot/SEPABins) repository and follow the instruction, then come back here.
+Before having fun with SEPA View, make sure you have a SEPA running on your machine. If not, please go to [SEPABins](https://github.com/arces-wot/SEPABins) repository and follow the instructions, then come back here.
 
 ### Installing
 Clone the repository: ```https://github.com/arces-wot/SEPAview.git```
