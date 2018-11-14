@@ -35,10 +35,11 @@ body {
 }
 
 #load{
-    text-align: left;
-    font-size: 30px;
-    color: #060606;
-    position: relative;
+    font-weight: 100;
+    opacity: 0.9;
+    text-align: center;
+    line-height: 90px;
+    font-size: 15px;
 }
 
 .button{

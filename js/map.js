@@ -9,40 +9,87 @@ function initMap() {
 		zoomControl: false,
         scaleControl: false
 	});
+
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
 	
-	const Jsap = Sepajs.Jsap;
+	query = prefixes + " "
+	+ jsap["queries"]["MAP_PLACES"]["sparql"];
 	
-	app = new Jsap(jsap);
+	//const Jsap = Sepajs.Jsap;
+	const sepa = Sepajs.client;
+	//app = new Jsap(jsap);
+
 	
-	app.MAP_PLACES({},data => {
-		msg = JSON.parse(data);
-		
-		if (msg["notification"] !== undefined) {
-            added = msg["notification"]["addedResults"]["results"]["bindings"].length;
-            removed = msg["notification"]["removedResults"]["results"]["bindings"].length;
+	sepa.subscribe(query,{
+	    next(data) {
+	    		msg = JSON.parse(data);
+			
+			if (msg["notification"] !== undefined) {
+	            added = msg["notification"]["addedResults"]["results"]["bindings"].length;
+	            removed = msg["notification"]["removedResults"]["results"]["bindings"].length;
 
-            for (index = 0; index < added; index++) {
-                binding = msg.notification.addedResults.results.bindings[index];
+	            for (index = 0; index < added; index++) {
+	                binding = msg.notification.addedResults.results.bindings[index];
 
-                place = binding.root.value;
-                name = binding.name.value;
-                lat = parseFloat(binding.lat.value.replace(",","."));
-                lng = parseFloat(binding.long.value.replace(",","."));
+	                place = binding.root.value;
+	                name = binding.name.value;
+	                lat = parseFloat(binding.lat.value.replace(",","."));
+	                lng = parseFloat(binding.long.value.replace(",","."));
 
-                add_marker(lat,lng,name,place);
-            }
+	                add_marker(lat,lng,name,place);
+	            }
 
-            for (index = 0; index < removed; index++) {
-                binding = msg.notification.removedResults.results.bindings[index];
+	            for (index = 0; index < removed; index++) {
+	                binding = msg.notification.removedResults.results.bindings[index];
 
-                place = binding.root.value;
+	                place = binding.root.value;
 
-                remove_marker(place); 
-            }
+	                remove_marker(place); 
+	            }
 
-            if (added > 0 || removed > 0) refreshMap();
-        }
-	});
+	            if (added > 0 || removed > 0) refreshMap();
+	        }
+	    
+	    },
+	    error(err) { console.log("Received an error: " + err) },
+	    complete() { console.log("Server closed connection ") },
+	  },
+	  jsap)
+
+//	app.MAP_PLACES({},data => {
+//		msg = JSON.parse(data);
+//		
+//		if (msg["notification"] !== undefined) {
+//            added = msg["notification"]["addedResults"]["results"]["bindings"].length;
+//            removed = msg["notification"]["removedResults"]["results"]["bindings"].length;
+//
+//            for (index = 0; index < added; index++) {
+//                binding = msg.notification.addedResults.results.bindings[index];
+//
+//                place = binding.root.value;
+//                name = binding.name.value;
+//                lat = parseFloat(binding.lat.value.replace(",","."));
+//                lng = parseFloat(binding.long.value.replace(",","."));
+//
+//                add_marker(lat,lng,name,place);
+//            }
+//
+//            for (index = 0; index < removed; index++) {
+//                binding = msg.notification.removedResults.results.bindings[index];
+//
+//                place = binding.root.value;
+//
+//                remove_marker(place); 
+//            }
+//
+//            if (added > 0 || removed > 0) refreshMap();
+//        }
+//	});
 }
 
 function refreshMap() {

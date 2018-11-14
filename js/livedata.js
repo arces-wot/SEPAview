@@ -31,11 +31,23 @@ let svg;
 function liveMonitor() {
 	createNotificationsSvg();
 	
-	const Jsap = Sepajs.Jsap;
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
 	
-	app = new Jsap(jsap);
-
-	app.OBSERVATIONS({},data => {
+	query = prefixes + " "
+	+ jsap["queries"]["OBSERVATIONS"]["sparql"];
+	
+	const sepa = Sepajs.client;
+	sepa.subscribe(query,{
+	    next(data) {
+//	
+//	const Jsap = Sepajs.Jsap;
+//	app = new Jsap(jsap);
+//	app.OBSERVATIONS(jsap,data => {
 		msg = JSON.parse(data);
 		
 		if (msg["notification"] !== undefined) {
@@ -97,7 +109,11 @@ function liveMonitor() {
                 updateNotifications();
             }
 		}
-	});
+	    },error(err) { console.log("Received an error: " + err) },
+	    complete() { console.log("Server closed connection ") },
+	  },
+	  jsap)
+//	});
 }
 
 function createNotificationsSvg() {
