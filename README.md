@@ -1,7 +1,7 @@
 # SEPA View
 SEPA View is a web application developed to display live and historical data observed by heterogeneous sensor networks.
 It is a platform powered by SEPA (SPARQL Event Processing Architecture) which implements a publish-subscribe paradigm over Linked Data
-and is composed by a set of clients which can interoperate tanks to shared ontologies.
+and is composed by a set of clients which can interoperate thanks to shared ontologies.
 
 ## Getting Started
 This instruction will give you a copy of this dashboard on your local machine for development and testing purposes.
