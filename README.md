@@ -14,7 +14,7 @@ Before having fun with SEPA View, make sure you have a SEPA running on your mach
 Clone the repository: ```https://github.com/arces-wot/SEPAview.git```
 
 ### Testing
-1) From a command shell move to [demo](https://github.com/arces-wot/SEPAview/tree/master/demo) directory and run: ```java -jar MQTTDemo.jar arces-demo.jsap```. With this command you start a simulator or fake sensors data.
+1) From a command shell move to [demo](https://github.com/arces-wot/SEPAview/tree/master/demo) directory and run: ```java -jar MQTTDemo.jar arces-demo.jsap```. With this command you start simulating sensors data.
 2) Move to your cloned repository and open [index.html](https://github.com/arces-wot/SEPAview/blob/master/index.html) on your browser.
 
 ## Authors
