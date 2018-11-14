@@ -130,6 +130,9 @@ function refreshMap() {
 
 // IMPORTANT: the URI can be used as identifier, not the name
 function add_marker(lat, lng, name, id) {
+
+	//TODO:adding marker clustering.
+
 	markers[id] = {};
 	markers[id]["name"] = name;
 	markers[id]["uri"] = id;
@@ -139,20 +142,25 @@ function add_marker(lat, lng, name, id) {
 			lng : lng
 		},
 		title : name,
+		label: {
+			text: name,
+            color: "#000000",
+            fontSize: "17px",
+            fontWeight: "bold",
+            fontFamily: "Montserrat"
+		},
 		animation : google.maps.Animation.DROP,
-		icon : 'images/database24.png',
+		/*icon : {
+			url: 'images/database24.png'
+		},*/
 		map : map
 	});
+
 	
-	if (placeIds[place] == undefined) placeIds[place] = generateID();
+	if (placeIds[place] === undefined) placeIds[place] = generateID();
 	
 	markers[id]["marker"].addListener('click', function() {
 		$('#tree').empty();
-
-		/*if (sensorData[place] !== undefined) {
-			$("#"+sensorData[place]["div_id"]).show();
-		}*/
-		
 		createTree(markers[id].uri, "#tree", 0);
 	});
 }

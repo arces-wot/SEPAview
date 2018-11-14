@@ -8,6 +8,60 @@ body {
     background-color: #ffffff;
 }
 
+/*loader*/
+.loader_wrap{
+    background-color: #d8cbdb;
+    opacity: 0.9;
+    z-index: 10000;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top:0;
+    bottom:0;
+    right: 0;
+    left:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.loader {
+    opacity: 1;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hide-loader{
+    display:none;
+}
+
+/* scroll */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bababa;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0b2f3b;
+}
+
 #container{
     height: auto;
     position:relative;
@@ -42,19 +96,8 @@ body {
     font-size: 15px;
 }
 
-.button{
-    margin-left: 50px;
-    margin-top: 50px;
-    background-color: #4050c9;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    display: inline-block;
-    font-size: 12px;
-    cursor: pointer;
-}
-
 #form_and_button{
+    margin-top: 20px;
     display: flex;
     align-items: center;
     flex-flow: column;
@@ -67,7 +110,6 @@ body {
 #open-button{
     padding: 16px 20px;
     border: solid 1px #000000;
-
     text-decoration: none;
     cursor: pointer;
     transition-duration: 0.5s;
@@ -81,6 +123,7 @@ body {
 #open-button:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     background-color: #234d78;
+    color: white;
 }
 
 
