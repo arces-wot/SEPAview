@@ -15,7 +15,7 @@ Clone the repository: ```https://github.com/arces-wot/SEPAview.git```
 
 ### Testing
 1) From a command shell move to [demo](https://github.com/arces-wot/SEPAview/tree/master/demo) directory and run: ```java -jar MQTTDemo.jar arces-demo.jsap```. With this command you start simulating sensors data.
-2) Move to your cloned repository and open [index.html](https://github.com/arces-wot/SEPAview/blob/master/index.html) on your browser.
+2) Move to your cloned repository and open [index.html](https://github.com/arces-wot/SEPAview/blob/master/index.html) in your browser.
 
 ## Authors
 
