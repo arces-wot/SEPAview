@@ -108,6 +108,8 @@ function liveMonitor() {
                 
                 updateNotifications();
             }
+            
+            $('#loader_wrap').addClass("hide-loader");
 		}
 	    },error(err) { console.log("Received an error: " + err) },
 	    complete() { console.log("Server closed connection ") },
@@ -137,7 +139,6 @@ function createNotificationsSvg() {
 	        return d.subtitle;
 	    });
 }
-/*id='"+ place_id + "_closeButton_" + name +"'*/
 
 function addPlace(place_id, name) {
 	cls_btn_id = place_id + "_closeButton";
@@ -190,7 +191,7 @@ function addObservation(observation,place,data){
 /*	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
 		"data-observation='"+observation+ "'" +
 		"data-title='"+ sensorData[place][observation]["data"][0]["title"] +"'" +
-		" class='button' href='./indexAnalitics.html?observation=3' target='_blank' >HISTORY</a>");
+		" class='button' href='./indexAnalitics.html?observation=3' target='_blank' >HISTORY</a>");*/
     
 //	$("#button_"+obs_id).append("<a id=a_'"+ obs_id +"' " +
 //		"data-observation='"+observation+ "'" +
