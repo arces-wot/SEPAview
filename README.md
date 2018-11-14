@@ -14,7 +14,7 @@ Before having fun with SEPA View, make sure you have a SEPA running on your mach
 Clone the repository: ```https://github.com/arces-wot/SEPAview.git```
 
 ## Running Tests
-Now you can go on your cloned repository in local and you can open on your browser [index.html](https://github.com/arces-wot/SEPAview/blob/master/index.html).
+Now you can go on your cloned repository and open [index.html](https://github.com/arces-wot/SEPAview/blob/master/index.html) on your browser
 
 ### Demo
 From a command shell move to [demo](https://github.com/arces-wot/SEPAview/tree/master/demo) directory and run: ```java -jar MQTTDemo.jar arces-demo.jsap```
