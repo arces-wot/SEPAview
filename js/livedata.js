@@ -157,6 +157,8 @@ function addPlace(place_id, name) {
 }
 
 function addObservation(observation,place,data){
+	//TODO: add timestamp of last data.
+
 	let obs_id = sensorData[place][observation]["div_id"];
 
 	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"' style='margin-bottom: 20px;  display:flex; align-items: center;" +

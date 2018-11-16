@@ -31,30 +31,30 @@ var layout = {
 
 function queryLiveData(observation,title) {
 	layout.title = title;
+
+    utc = new Date();
+    dateTo = new Date(utc.getTime() + 2 * 3600 * 1000);
+    dateFrom = new Date(dateTo.getTime() - 24 * 3600 * 1000);
+
+    from = dateFrom.toISOString();
+    from = from.substring(0, from.length - 1);
+    console.log("FROM: "+from);
+
+    to = dateTo.toISOString();
+    to = to.substring(0, to.length - 1);
+    console.log("TO: "+to);
 	
 	 var form = "<form id=\"calendar\">\n"
-			+ " Date from: <input type=\"date\" name=\"dateFrom\" value='2018-11-12'><br>\n"
-			+ " Time from: <input type=\"time\" name=\"timeFrom\" value='00:00'><br>\n"
-			+ " Date to: <input type=\"date\" name=\"dateTo\" value='2018-11-13'><br>\n"
-			+ " Time to: <input type=\"time\" name=\"timeTo\" value='00:00'><br>\n"
+			+ " Date from: <input type=\"date\" name=\"dateFrom\" value='"+ from.slice(0,10) +"'><br>\n"
+			+ " Time from: <input type=\"time\" name=\"timeFrom\" value='"+ from.slice(11,16) +"'><br>\n"
+			+ " Date to: <input type=\"date\" name=\"dateTo\" value='"+ to.slice(0,10) +"'><br>\n"
+			+ " Time to: <input type=\"time\" name=\"timeTo\" value='"+ to.slice(11,16) +"'><br>\n"
 			+ " </form>";
 
 	var buttonCambia = "<button type=\"submit\" class=\"btn\">Go</button>";
 
 	$("#form").append(form);
 	$("#buttonCambia").append(buttonCambia);
-
-	utc = new Date();
-	dateTo = new Date(utc.getTime() + 2 * 3600 * 1000);
-	dateFrom = new Date(dateTo.getTime() - 24 * 3600 * 1000);
-
-	from = dateFrom.toISOString();
-	from = from.substring(0, from.length - 1);
-	console.log("FROM: "+from);
-
-	to = dateTo.toISOString();
-	to = to.substring(0, to.length - 1);
-	console.log("TO: "+to);
 
 	const sepa = Sepajs.client;
 
@@ -106,14 +106,15 @@ function queryLiveData(observation,title) {
 
 var timer = window.setInterval(waitingTimer, 1000);
 var seconds = 0;
-/*
+
 function waitingTimer() {
 	seconds += 1;
 	document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...(elapsed seconds: "
-			+ seconds + ")</h3>";
+			+ seconds + ") Number of samples: "+ jsapObj.results.bindings.length +"</h3>";
 }
-*/
+
 function results(jsapObj) {
+	//console.log(jsapObj.results.bindings.length)
 	var traces = [];
 	var layouts = [];
 
@@ -125,12 +126,12 @@ function results(jsapObj) {
 	var trace = {
 		x : [],
 		y : [],
+		mode :'lines',
 		name : "value",
 		line : {
 			width : 1,
 			color : colors[0]
-		},
-		type : 'scatter'
+		}
 	};
 	traces.push(trace);
 
@@ -156,8 +157,21 @@ function results(jsapObj) {
 			if (binding[traces[i].name] === undefined)
 				continue;
 			value = binding[traces[i].name].value;
-			traces[i].x.push(timestamp);
-			traces[i].y.push(value);
+
+            traces[i].x.push(timestamp);
+
+			if(value !== undefined){
+                //traces[i].x.push(timestamp);
+                traces[i].y.push(value);
+			}else if(value === undefined){
+                //traces[i].x.push(timestamp);
+                traces[i].y.push(0);
+			}
+			//console.log(value + "    " + timestamp)
+			//console.log(value);
+
+
+			//traces[i].y.push(value);
 
 			if (max[i] === undefined) {
 				max[i] = value;
