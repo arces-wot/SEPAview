@@ -110,11 +110,12 @@ var seconds = 0;
 function waitingTimer() {
 	seconds += 1;
 	document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...(elapsed seconds: "
-			+ seconds + ") Number of samples: "+ jsapObj.results.bindings.length +"</h3>";
+			+ seconds + ")</h3>";
 }
 
 function results(jsapObj) {
 	//console.log(jsapObj.results.bindings.length)
+    document.getElementById('samp').innerHTML = "<p id='sample'>Number of Samples: "+ jsapObj.results.bindings.length +"</p>";
 	var traces = [];
 	var layouts = [];
 
@@ -148,7 +149,6 @@ function results(jsapObj) {
 			size : 10
 		}
 	});
-	// }
 
 	for (binding of jsapObj.results.bindings) {
 		timestamp = binding.timestamp.value;
@@ -159,19 +159,7 @@ function results(jsapObj) {
 			value = binding[traces[i].name].value;
 
             traces[i].x.push(timestamp);
-
-			if(value !== undefined){
-                //traces[i].x.push(timestamp);
-                traces[i].y.push(value);
-			}else if(value === undefined){
-                //traces[i].x.push(timestamp);
-                traces[i].y.push(0);
-			}
-			//console.log(value + "    " + timestamp)
-			//console.log(value);
-
-
-			//traces[i].y.push(value);
+            traces[i].y.push(value);
 
 			if (max[i] === undefined) {
 				max[i] = value;
