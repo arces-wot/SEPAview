@@ -114,8 +114,6 @@ function waitingTimer() {
 }
 
 function results(jsapObj) {
-	//console.log(jsapObj.results.bindings.length)
-    document.getElementById('samp').innerHTML = "<p id='sample'>Number of Samples: "+ jsapObj.results.bindings.length +"</p>";
 	var traces = [];
 	var layouts = [];
 
@@ -127,12 +125,12 @@ function results(jsapObj) {
 	var trace = {
 		x : [],
 		y : [],
-		mode :'lines',
 		name : "value",
 		line : {
 			width : 1,
 			color : colors[0]
-		}
+		},
+		type : 'scatter'
 	};
 	traces.push(trace);
 
@@ -149,6 +147,7 @@ function results(jsapObj) {
 			size : 10
 		}
 	});
+	// }
 
 	for (binding of jsapObj.results.bindings) {
 		timestamp = binding.timestamp.value;
@@ -156,18 +155,11 @@ function results(jsapObj) {
 		for (i in traces) {
 			if (binding[traces[i].name] === undefined)
 				continue;
-<<<<<<< HEAD
 			
 			value = parseFloat(binding[traces[i].name].value);
 			
 			traces[i].x.push(timestamp);
 			traces[i].y.push(value);
-=======
-			value = binding[traces[i].name].value;
-
-            traces[i].x.push(timestamp);
-            traces[i].y.push(value);
->>>>>>> branch 'master' of https://github.com/arces-wot/SEPAview.git
 
 			console.log("Value: "+value+" Max: "+max[i]+" Min: "+min[i])
 			
