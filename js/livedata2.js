@@ -1,3 +1,23 @@
+displayWidth = 960; //960
+displayHeight = 75; // 75
+textWidth = 940; //940
+textHeight = 13; // 27
+
+mt = "15px";
+mb = "20px";
+mr = "10px";
+fontSize = "15px";
+dy ="1.5em";
+
+let margin = {
+		top : 15,
+		right : 10,
+		bottom : 30,
+		left : 5
+	}, 
+	width = displayWidth - margin.left - margin.right, 
+	height = displayHeight - margin.top - margin.bottom;
+
 sensorData = {};
 
 notifications = [ {
@@ -10,22 +30,12 @@ notifications = [ {
 	"quantity" : ""
 } ];
 
-let margin = {
-	top : 0,
-	right : 10,
-	bottom : 30,
-	left : 5
-}, width = 960 - margin.left - margin.right, height = 75 - margin.top
-		- margin.bottom;
-
 let chart = d3.bullet().width(width).height(height);
 let svg;
 
 nots = 0;
 
 function liveMonitor() {
-	//createNotificationsSvg();
-	
 	// PREFIXES
 	prefixes = "";
 	for (ns in jsap["namespaces"]) {
@@ -53,6 +63,26 @@ function liveMonitor() {
     		if (binding.count != undefined) updateLiveGraphSize(binding.count.value);
     }
     });
+	
+	query = prefixes + " "
+	+ jsap["queries"]["PLACES_COUNT"]["sparql"];
+	
+	let places = sepa.subscribe(query,jsap);
+	places.on("added",addedResults=>{
+		for (binding of addedResults.results.bindings) {
+    		if (binding.count != undefined) updatePlacesCount(binding.count.value);
+    }
+    });
+	
+	query = prefixes + " "
+	+ jsap["queries"]["OBSERVATIONS_COUNT"]["sparql"];
+	
+	let obs = sepa.subscribe(query,jsap);
+	obs.on("added",addedResults=>{
+		for (binding of addedResults.results.bindings) {
+    		if (binding.count != undefined) updateObservationsCount(binding.count.value);
+    }
+    });
 	  
 	query = prefixes + " "
 	+ jsap["queries"]["OBSERVATIONS"]["sparql"];
@@ -61,6 +91,9 @@ function liveMonitor() {
 	a.on("added",addedResults=>{
 		added = addedResults.results.bindings.length;
         
+		let date = new Date();
+		let timestamp = date.toLocaleString();
+		
         for (binding of addedResults.results.bindings) {
 
             // Check value validity
@@ -68,6 +101,7 @@ function liveMonitor() {
             valueAsFloat = parseFloat(binding.value.value);
             
             let place = binding.location.value;
+            let name = binding.name.value;
             let unit = binding.unit.value;
             let label = binding.label.value;
 			let observation = binding.observation.value;
@@ -84,7 +118,7 @@ function liveMonitor() {
             	    }
             	    sensorData[place]["div_id"] = placeIds[place];
             	    
-            	    addPlace(sensorData[place]["div_id"],label);
+            	    addPlace(sensorData[place]["div_id"],name);
             }
             
             // NEW OBSERVATION
@@ -98,6 +132,7 @@ function liveMonitor() {
 	        		sensorData[place][observation] = {};
 	        		sensorData[place][observation]["div_id"] = generateID();
 	        		sensorData[place][observation]["data"] = [];
+	       
 	        		
 	        		sensorData[place][observation]["data"].push({
             			"title" : title,
@@ -117,62 +152,57 @@ function liveMonitor() {
         }
         
         updateNotifications();
-        
-        //$('#loader_wrap').addClass("hide-loader");
     });
 }
 
+function showObservations(place) {
+	if (sensorData[place] != undefined)
+		$("#"+sensorData[place]["div_id"]).show();	
+}
+
 function addPlace(place_id, name) {
-	cls_btn_id = place_id + "_closeButton";
-    div_btn_e_titolo_id = place_id + "_closeButtonETitolo";
-
-    $("#graph").append("<div class='graph' id='"+place_id+"'></div>");
-    $("#"+place_id).append("<div id='"+ div_btn_e_titolo_id +"' style='margin-left: -60%'></div>");
-    $("#"+div_btn_e_titolo_id).append("<a href=\"javascript:void(0)\" id=\"" + div_btn_e_titolo_id +"\"" +
-		"class=\"closebtn\" onClick=\"closeDiv($(this).parent().parent().attr('id'))\"" +
-		"style='margin-right: 10px; text-decoration: none; color: #000; font-size: 30px'>&times;</a>");
-    $("#"+div_btn_e_titolo_id).append("<h2 style='display:inline-block'>"+name+"</h2>");
-	// Hide place
-	//$("#"+place_id).hide();
-
-
+	$("#graph").append("<div class='collapse' id='"+place_id+"'><div class='card card-body'>"+name+"</div></div>");
 }
 
 function addObservation(observation,place,data){
 	let obs_id = sensorData[place][observation]["div_id"];
 
-	$("#"+sensorData[place]["div_id"]).append("<div id='"+obs_id+"' style='margin-bottom: 20px;  display:flex; align-items: center;" +
-		" flex-flow: row; justify-content: center'></div>");
-	
+	$("#"+sensorData[place]["div_id"]).append("<div class='container'>" +
+			"<div class='row flex-row-reverse'><div id='"+obs_id+"'></div></div>" +
+			"<div class='row flex-row-reverse'>" +
+				"<form target='_blank' action='./indexAnalitics.html'>" +
+    					"<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+observation+"\" />" +
+    					"<input type='hidden' name='title' value='"+escape(sensorData[place][observation]["data"][0]["title"])+"' />" +
+    					"<input class='btn btn-primary' type='submit' value='History'></form>" +
+    			"<button type='button' class='btn btn-info mr-3'> Last update <span class='badge badge-light' id='timestamp_"+obs_id+"'>---</span></button>");
+    
     let svg = d3.select("#"+obs_id).selectAll("svg").data(data).enter().append(
-        "svg").attr("class", "bullet").style("margin-top","30px").attr("width",
+        "svg").attr("class", "bullet").style("margin-top",mt).attr("width",
         width + margin.left + margin.right).attr("height",
         height + margin.top + margin.bottom).append("g").attr("transform",
         "translate(" + margin.left + "," + margin.top + ")").call(chart);
 
     let title = svg.append("g").style("text-anchor", "end").attr("transform",
-        "translate(940,27)");
+        "translate("+textWidth+","+textHeight+")");
 
     title.append("text").attr("class", "title").text(function(d) {
         return d.title;
     });
 
-    title.append("text").attr("class", "subtitle").attr("dy", "1em").text(
+    title.append("text").attr("class", "subtitle").attr("dy", dy).text(
         function(d) {
             return d.subtitle;
         });
-    
-    $("#"+obs_id).append("<div id='button_"+obs_id+"' class='div_button' ></div>");
-
-    // USE FORM with hidden parameters
-    $("#button_"+obs_id).append("<form target=\"_blank\" action=\"./indexAnalitics.html\">" +
-    		"<input type=\"hidden\" name=\"observation\" value=\""+observation+"\" />" +
-    		"<input type=\"hidden\" name=\"title\" value=\""+escape(sensorData[place][observation]["data"][0]["title"])+"\" />" +
-    		"<input id='history_btn' type=\"submit\" value=\"History\"></form>");
 }
 
 function updateObservation(observation,place,valueAsFloat) {
 	let data = sensorData[place][observation]["data"][0];
+	
+	// Timestamp
+	let obs_id = sensorData[place][observation]["div_id"];
+	let date = new Date();
+	let timestamp = date.toLocaleString();	
+	$("#timestamp_"+obs_id).html(timestamp);
 	
 	data["measures"][0] = valueAsFloat;
 	
@@ -191,6 +221,14 @@ function updateObservation(observation,place,valueAsFloat) {
 	redrawSvg(sensorData[place][observation]["div_id"],sensorData[place][observation]["data"]);
 }
 
+function updateObservationsCount(count) {
+	$("#odoObservations").html(count);	
+}
+
+function updatePlacesCount(count) {
+	$("#odoPlaces").html(count);	
+}
+
 function updateHistoryGraphSize(count) {
 	$("#odoHistorySize").html(count);	
 }
@@ -201,7 +239,6 @@ function updateLiveGraphSize(count) {
 
 function updateNotifications() {
 	nots++;
-	
 	$("#odoNotifications").html(nots);
 }
 

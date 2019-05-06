@@ -1,5 +1,5 @@
 {
-	"host": "localhost",
+	"host": "mml.arces.unibo.it",
 	"oauth": {
 		"enable": false,
 		"register": "https://localhost:8443/oauth/register",
@@ -34,9 +34,7 @@
 	},
 	"graphs": {
 		"default-graph-uri": "http://wot.arces.unibo.it/monitor/mqtt",
-		"named-graph-uri": "http://wot.arces.unibo.it/monitor/mqtt",
-		"using-graph-uri": "http://wot.arces.unibo.it/monitor/mqtt",
-		"using-named-graph-uri": "http://wot.arces.unibo.it/monitor/mqtt"
+		"named-graph-uri": "http://wot.arces.unibo.it/monitor/mqtt"
 	},
 	"namespaces": {
 		"schema": "http://schema.org/",
@@ -52,28 +50,29 @@
 		"gn": "http://www.geonames.org/ontology#"
 	},
 	"extended": {
-		"simulate": false,
-		"simulation": {
-			"/ffa574972ab9/applink/107/001BC50C700009CD": [
-				10,
-				20
-			],
-			"/ffa574972ab9/applink/107/001BC50C700009BB": [
-				35,
-				50
-			],
-			"5CCF7F15676D/temperature": [
-				35,
-				50
+		"adapters": {
+			"mqtt": [
+				{
+					"url": "giove.arces.unibo.it",
+					"port": 52877,
+					"topics": [
+						"#"
+					],
+					"ssl": false
+				},
+				{
+					"url": "eu.thethings.network",
+					"port": 1883,
+					"topics": [
+						"swamp/devices/moisture1/up/Moisture_Signal_to_Supply_Perc",
+						"swamp/devices/moisture1/up/Moisture_Supply_Voltage",
+						"swamp/devices/moisture1/up/Node_Supply_Voltage"
+					],
+					"ssl": false,
+					"username": "swamp",
+					"password": "ttn-account-v2.ES-s-MdMIHv8Z8HI5BR0FHzRjLD0WEmySE7cYM-Kepg"
+				}
 			]
-		},
-		"mqtt": {
-			"url": "giove.arces.unibo.it",
-			"port": 52877,
-			"topics": [
-				"#"
-			],
-			"ssl": false
 		},
 		"regexTopics": {
 			"pepoli:6lowpan:network": [
@@ -661,7 +660,7 @@
 			}
 		},
 		"ADD_PLACE": {
-			"sparql": "INSERT DATA {GRAPH <http://wot.arces.unibo.it/monitor/mqtt> {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:coordinate . _:coordinate schema:latitude ?lat ; schema:longitude ?lon}}",
+			"sparql": "INSERT {GRAPH <http://wot.arces.unibo.it/monitor/mqtt> {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:coordinate . _:coordinate schema:latitude ?lat ; schema:longitude ?lon}} WHERE {}",
 			"forcedBindings": {
 				"place": {
 					"type": "uri",
@@ -750,7 +749,7 @@
 			}
 		},
 		"ADD_OBSERVATION": {
-			"sparql": "INSERT DATA {GRAPH <http://wot.arces.unibo.it/monitor/mqtt> {?observation rdf:type sosa:Observation ; rdfs:label ?label ; rdfs:comment ?comment ; sosa:hasFeatureOfInterest ?location ; arces-monitor:hasMqttTopic ?topic ; sosa:hasResult _:quantity . _:quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit ; qudt-1-1:numericValue 'NaN'}}",
+			"sparql": "INSERT {GRAPH <http://wot.arces.unibo.it/monitor/mqtt> {?observation rdf:type sosa:Observation ; rdfs:label ?label ; rdfs:comment ?comment ; sosa:hasFeatureOfInterest ?location ; arces-monitor:hasMqttTopic ?topic ; sosa:hasResult _:quantity . _:quantity rdf:type qudt-1-1:QuantityValue ; qudt-1-1:unit ?unit ; qudt-1-1:numericValue 'NaN'}} WHERE {}",
 			"forcedBindings": {
 				"observation": {
 					"type": "uri",
@@ -794,22 +793,22 @@
 		}
 	},
 	"queries": {
-		"LOG_QUANTITY": {
-			"sparql": "SELECT * WHERE {?observation sosa:hasResult ?quantity . GRAPH <http://wot.arces.unibo.it/monitor/mqtt/log> {?log arces-monitor:refersTo ?quantity ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
-			"forcedBindings": {
-				"from": {
-					"datatype": "xsd:dateTime",
-					"type": "literal",
-					"value": "2018-01-01T00:00:00"
+		"LOG_QUANTITY" : {
+			"sparql" : "SELECT * WHERE {?observation sosa:hasResult ?quantity . GRAPH <http://wot.arces.unibo.it/monitor/mqtt/log> {?log arces-monitor:refersTo ?quantity ; qudt-1-1:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
+			"forcedBindings" : {
+				"from" : {
+					"datatype" : "xsd:dateTime",
+					"type" : "literal",
+					"value" : "2018-01-01T00:00:00"
 				},
-				"to": {
-					"datatype": "xsd:dateTime",
-					"type": "literal",
-					"value": "2018-01-01T00:00:00"
+				"to" : {
+					"datatype" : "xsd:dateTime",
+					"type" : "literal",
+					"value" : "2018-01-01T00:00:00"
 				},
-				"observation": {
-					"type": "uri",
-					"value": "arces-monitor:ObservationXYZ"
+				"observation" : {
+					"type" : "uri",
+					"value" : "arces-monitor:ObservationXYZ"
 				}
 			}
 		},

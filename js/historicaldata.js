@@ -73,7 +73,7 @@ function queryLiveData(observation,title) {
 	query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
 	query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
 
-	 sepa.query(query,{host:jsap["host"]}).then((data)=>{ 
+	 sepa.query(query,jsap).then((data)=>{ 
 		 results(data);
 	 });
 	 
@@ -97,7 +97,7 @@ function queryLiveData(observation,title) {
 				query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
 				query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
 				
-				 sepa.query(query,{host:jsap["host"]}).then((data)=>{ 
+				 sepa.query(query,jsap).then((data)=>{ 
 					 results(data);
 				 });
 			});
@@ -106,13 +106,13 @@ function queryLiveData(observation,title) {
 
 var timer = window.setInterval(waitingTimer, 1000);
 var seconds = 0;
-/*
+
 function waitingTimer() {
 	seconds += 1;
 	document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...(elapsed seconds: "
 			+ seconds + ")</h3>";
 }
-*/
+
 function results(jsapObj) {
 	var traces = [];
 	var layouts = [];
@@ -155,18 +155,24 @@ function results(jsapObj) {
 		for (i in traces) {
 			if (binding[traces[i].name] === undefined)
 				continue;
-			value = binding[traces[i].name].value;
+			
+			value = parseFloat(binding[traces[i].name].value);
+			
 			traces[i].x.push(timestamp);
 			traces[i].y.push(value);
 
+			console.log("Value: "+value+" Max: "+max[i]+" Min: "+min[i])
+			
 			if (max[i] === undefined) {
 				max[i] = value;
 				min[i] = value;
 			} else {
-				if (value > max[i])
+				if (value > max[i]) {
 					max[i] = value;
-				else if (value < min[i])
+				}
+				else if (value < min[i]) {
 					min[i] = value;
+				}
 			}
 
 			if (i !== "0") {

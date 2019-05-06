@@ -2,118 +2,93 @@
 <html>
 <head>
 
-	<meta charset="utf-8">
-	<title>SEPAView - Live Linked Sensor Data</title>
+<meta charset="utf-8">
+<title>SEPAView</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Montserrat"
+	rel="stylesheet">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/odometer-theme-plaza.css" />
 
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
-	<link href = "./style.css" rel = "stylesheet" type="text/css">
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.1.0/web/sepa.js"></script>
-	<script src="https://d3js.org/d3.v3.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-	<script src="lib/bullet.js"></script>
-	<script src="js/map.js"></script>
-	<script src="js/other-function.js"></script>
-	<script src="js/arces-demo.js"></script>
-	
-    <script src="js/tree.js"></script>
-<!--  
-	<script src="js/createSvg.js"></script>
-	<script src="js/sepa-api.js"></script>
--->
-
-	<script>
-        $(window).scroll(function() {
-            if($(document).scrollTop() > 45){
-                $("#title").addClass("shrink");
-                $("#titleText").addClass("shrink");
-            }else {
-                $("#title").removeClass("shrink");
-                $("#titleText").removeClass("shrink");
-            }
-        });
-	</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script src="js/odometer.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.4.0/web/sepa.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="lib/bullet.js"></script>
+<script src="js/map.js"></script>
+<script src="js/other-function.js"></script>
+<script src="js/arces-demo.js"></script>
+<script src="js/tree.js"></script>
+<script src="js/livedata2.js"></script>
+<script>
+	function onLoad() {
+		liveMonitor();
+	}
+</script>
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHgZRudu8jTxJgJ3IXCVyfrTH1RLdPOgI&callback=initMap"></script>
 
 </head>
 
 <body onLoad='onLoad()'>
+	<nav class="navbar">
+		<a class="navbar-brand" href="#"> <img src="icon/newFullLogo.png"
+			width="100" class="d-inline-block align-top" alt=""> Linked
+			Open Sensor Data Viewer
+		</a>
+		<button type="button" class="btn btn-info">
+			Observations <span class="badge badge-light"><div
+					id="odoObservations" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-primary">
+			Places <span class="badge badge-light"><div
+					id="odoPlaces" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-secondary">
+			Notifications <span class="badge badge-light"><div
+					id="odoNotifications" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-warning">
+			Live triples <span class="badge badge-light"><div
+					id="odoLiveSize" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-success">
+			Historical triples <span class="badge badge-light"><div
+					id="odoHistorySize" class="odometer"></div></span>
+		</button>
+	</nav>
 
-<div class="loader_wrap" id="loader_wrap">
-	<div class="loader" id="loader"></div>
-</div>
-
-<div id="container">
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <div id="tree"></div>
-
-    </div>
-
-    <div id="main">
-
-        <div id = "title"><p id="titleText">SEPAView - Linked Sensor Data</p></div>
-        <div id="map"></div>
-        <div id="plot"></div>
-		<div id="close_all" onclick="closeAll()">Close All</div>
-        <div id="graph"></div>
-
+	<div class="container-fluid">
+		<div class="row pt-3">
+			<div class="col-3">
+				<h2>Places</h2>
+				<ul id="tree" class="nav nav-pills pt-0">
+				</ul>
+			</div>
+			<div class="col">
+				<div id="map"></div>
+			</div>
+		</div>
 	</div>
-
-</div>
-
-<script>
-    function onLoad() {
-        liveMonitor();
-    }
-</script>
-
-<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHgZRudu8jTxJgJ3IXCVyfrTH1RLdPOgI&callback=initMap"></script>
-
-<!--  questo script va messo dopo la dichiarazione dei div necessari ai svg  -->
-<script src="js/livedata.js"></script>
-
-<script>
-
-    //funzione dei bottoni per ogni div
-    function closeDiv(btn_id){
-        $("#"+btn_id).hide();
-    }
-
-    //bottone di chiusura completa
-	function closeAll(){
-        var elems = document.getElementsByClassName('graph');
-        for(var i = 0; i < elems.length; i++) {
-			if(elems[i].style.display = 'block'){
-                elems[i].style.display = 'none';
-			}
-        }
-	}
-
-	if(screen.width >= 1025){
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft= "0";
-        }
-	}else if(screen.width < 1025){
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "75%";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
-    }
-
-</script>
+	<div class="container-fluid">
+		<div id="graph"></div>
+	</div>
 
 </body>
 </html>

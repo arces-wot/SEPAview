@@ -7,9 +7,12 @@ function initMap() {
 		center : {lat : 44.494048, lng :  11.343391},
 		zoom : 13,
 		zoomControl: false,
-        scaleControl: false
+        scaleControl: false,
+        draggable: false,
+	    scrollwheel: false,
+	    panControl: false,
 	});
-
+	
 	// PREFIXES
 	prefixes = "";
 	for (ns in jsap["namespaces"]) {
@@ -19,77 +22,37 @@ function initMap() {
 	
 	query = prefixes + " "
 	+ jsap["queries"]["MAP_PLACES"]["sparql"];
-	
-	//const Jsap = Sepajs.Jsap;
+
 	const sepa = Sepajs.client;
-	//app = new Jsap(jsap);
-
 	
-	sepa.subscribe(query,{
-	    next(data) {
-	    		msg = JSON.parse(data);
-			
-			if (msg["notification"] !== undefined) {
-	            added = msg["notification"]["addedResults"]["results"]["bindings"].length;
-	            removed = msg["notification"]["removedResults"]["results"]["bindings"].length;
+	let places = sepa.subscribe(query,jsap);
+	places.on("added",addedResults=>{
+		added = addedResults["results"]["bindings"].length;
+		for (index = 0; index < added; index++) {
+            binding = addedResults.results.bindings[index];
 
-	            for (index = 0; index < added; index++) {
-	                binding = msg.notification.addedResults.results.bindings[index];
+            place = binding.root.value;
+            name = binding.name.value;
+            lat = parseFloat(binding.lat.value.replace(",","."));
+            lng = parseFloat(binding.long.value.replace(",","."));
 
-	                place = binding.root.value;
-	                name = binding.name.value;
-	                lat = parseFloat(binding.lat.value.replace(",","."));
-	                lng = parseFloat(binding.long.value.replace(",","."));
+            add_marker(lat,lng,name,place);
+        }
+		if (added > 0) refreshMap();
+	});
+	
+	places.on("removed",removedResults=>{
+		removed = removedResults["results"]["bindings"].length;
+		for (index = 0; index < removed; index++) {
+            binding = removedResults.results.bindings[index];
 
-	                add_marker(lat,lng,name,place);
-	            }
+            place = binding.root.value;
 
-	            for (index = 0; index < removed; index++) {
-	                binding = msg.notification.removedResults.results.bindings[index];
+            remove_marker(place); 
+        }
 
-	                place = binding.root.value;
-
-	                remove_marker(place); 
-	            }
-
-	            if (added > 0 || removed > 0) refreshMap();
-	        }
-	    
-	    },
-	    error(err) { console.log("Received an error: " + err) },
-	    complete() { console.log("Server closed connection ") },
-	  },
-	  jsap)
-
-//	app.MAP_PLACES({},data => {
-//		msg = JSON.parse(data);
-//		
-//		if (msg["notification"] !== undefined) {
-//            added = msg["notification"]["addedResults"]["results"]["bindings"].length;
-//            removed = msg["notification"]["removedResults"]["results"]["bindings"].length;
-//
-//            for (index = 0; index < added; index++) {
-//                binding = msg.notification.addedResults.results.bindings[index];
-//
-//                place = binding.root.value;
-//                name = binding.name.value;
-//                lat = parseFloat(binding.lat.value.replace(",","."));
-//                lng = parseFloat(binding.long.value.replace(",","."));
-//
-//                add_marker(lat,lng,name,place);
-//            }
-//
-//            for (index = 0; index < removed; index++) {
-//                binding = msg.notification.removedResults.results.bindings[index];
-//
-//                place = binding.root.value;
-//
-//                remove_marker(place); 
-//            }
-//
-//            if (added > 0 || removed > 0) refreshMap();
-//        }
-//	});
+        if (removed > 0) refreshMap();	
+	});
 }
 
 function refreshMap() {
@@ -144,15 +107,16 @@ function add_marker(lat, lng, name, id) {
 		title : name,
 		label: {
 			text: name,
-            color: "#000000",
-            fontSize: "17px",
+            color: '#234d78',
+            fontSize: "20px",
             fontWeight: "bold",
-            fontFamily: "Montserrat"
+            fontFamily: "Montserrat",
 		},
 		animation : google.maps.Animation.DROP,
-		/*icon : {
-			url: 'images/database24.png'
-		},*/
+		icon : {
+			url: 'http://mml.arces.unibo.it/apps/sepaview2/images/rdf_icon32.png',
+			labelOrigin : new google.maps.Point(40,40)
+		},
 		map : map
 	});
 
@@ -161,7 +125,8 @@ function add_marker(lat, lng, name, id) {
 	
 	markers[id]["marker"].addListener('click', function() {
 		$('#tree').empty();
-		createTree(markers[id].uri, "#tree", 0);
+		//createTree(markers[id].uri, "#tree", 0);
+		createObservationsNav(markers[id].uri,markers[id].name,"#tree");
 	});
 }
 
