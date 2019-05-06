@@ -22,10 +22,11 @@
 <div id="container">
 
 	<div id = "title"><p id="titleText">SEPAView - Historical Linked Sensor Data</p></div>
-    
+
+	<div id="waiting"></div>
+	<div id="samp"></div>
+
     <div id="plot"></div>
-    
-    <div id="waiting"></div>
 
 	<div id="form_and_button" style="text-align: center" >
 		<button id="open-button" onclick="openForm()"><p>Change Date and Time</p></button>
@@ -47,7 +48,7 @@
     	    var observation = decodeURIComponent(parameters[0].split("=")[1]);
     	    var title = unescape(unescape(parameters[1].split("=")[1]));
 		
-        //document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading data...please wait...</h3>";
+        document.getElementById('waiting').innerHTML = "<h4 id='load'>Loading data...please wait...</h4>";
         queryLiveData(observation,title);
     }
 
