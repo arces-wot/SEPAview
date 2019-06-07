@@ -27,7 +27,7 @@ function createNav(placeUri,placeName,id, n) {
     		
 		for (index = 0; index < places ; index++) {
 			childUri = data.results.bindings[index].child.value;
-			childName = data.results.bindings[index].childName.value;
+			childName = data.results.bindings[index].name.value;
 		    // Create place UUID if it do not exist
 			if (placeIds[childUri] === undefined) {
 				placeIds[childUri] = generateID();

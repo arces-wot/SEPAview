@@ -6,11 +6,11 @@ function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center : {lat : 44.494048, lng :  11.343391},
 		zoom : 13,
-		zoomControl: false,
-        scaleControl: false,
-        draggable: false,
-	    scrollwheel: false,
-	    panControl: false,
+		zoomControl: true,
+        scaleControl: true,
+        draggable: true,
+	    scrollwheel: true,
+	    panControl: true,
 	});
 	
 	// PREFIXES
@@ -108,7 +108,7 @@ function add_marker(lat, lng, name, id) {
 		label: {
 			text: name,
             color: '#234d78',
-            fontSize: "20px",
+            fontSize: "15px",
             fontWeight: "bold",
             fontFamily: "Montserrat",
 		},

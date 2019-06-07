@@ -77,18 +77,18 @@ function liveMonitor() {
 	query = prefixes + " "
 	+ jsap["queries"]["OBSERVATIONS_COUNT"]["sparql"];
 	
-	let obs = sepa.subscribe(query,jsap);
-	obs.on("added",addedResults=>{
+	let observation_count = sepa.subscribe(query,jsap);
+	observation_count.on("added",addedResults=>{
 		for (binding of addedResults.results.bindings) {
     		if (binding.count != undefined) updateObservationsCount(binding.count.value);
     }
     });
-	  
+	
 	query = prefixes + " "
 	+ jsap["queries"]["OBSERVATIONS"]["sparql"];
 	
-	let a = sepa.subscribe(query,jsap);
-	a.on("added",addedResults=>{
+	const observation = sepa.subscribe(query,jsap);
+	observation.on("added",addedResults=>{
 		added = addedResults.results.bindings.length;
         
 		let date = new Date();
@@ -102,7 +102,7 @@ function liveMonitor() {
             
             let place = binding.location.value;
             let name = binding.name.value;
-            let unit = binding.unit.value;
+            let unit = binding.symbol.value;
             let label = binding.label.value;
 			let observation = binding.observation.value;
 			let quantity = 	binding.quantity.value;
@@ -123,17 +123,18 @@ function liveMonitor() {
             
             // NEW OBSERVATION
             if (sensorData[place][observation] === undefined) {
+            		title = label + " (" + unit + ")";
+            		
 	            	// TODO: to be replaced with rdfs:label from qu-unit
-	        		if (unit.endsWith("Percent")) title = label + " (%)";
-	        		else if (unit.endsWith("DegreeCelsius")) title = label + " (°C)";
-	        		else if (unit.endsWith("Millibar")) title = label + " (mBar)";
-	        		else if (unit.endsWith("Volt")) title = label + " (V)";
+//	        		if (unit.endsWith("Percent")) title = label + " (%)";
+//	        		else if (unit.endsWith("DegreeCelsius")) title = label + " (°C)";
+//	        		else if (unit.endsWith("Millibar")) title = label + " (mBar)";
+//	        		else if (unit.endsWith("Volt")) title = label + " (V)";
 	        		
 	        		sensorData[place][observation] = {};
 	        		sensorData[place][observation]["div_id"] = generateID();
 	        		sensorData[place][observation]["data"] = [];
-	       
-	        		
+	               		
 	        		sensorData[place][observation]["data"].push({
             			"title" : title,
             			"subtitle" : observation,
@@ -161,7 +162,7 @@ function showObservations(place) {
 }
 
 function addPlace(place_id, name) {
-	$("#graph").append("<div class='collapse' id='"+place_id+"'><div class='card card-body'>"+name+"</div></div>");
+	$("#graph").append("<div class='collapse' id='"+place_id+"'><div class='card card-body mt-3'>"+name+"</div></div>");
 }
 
 function addObservation(observation,place,data){
