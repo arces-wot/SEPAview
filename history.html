@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="icon/newLogo.png">
+<title>SEPAView - History</title>
+
+<link rel="stylesheet"
+	href="fontawesome-free-5.0.6/web-fonts-with-css/css/fontawesome-all.css">
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.4.0/web/sepa.js"></script>
+<script src="lib/plotly-latest.min.js"></script>
+<script src="lib/color-scheme.js"></script>
+<script src="js/jsap.js"></script>
+<script src="js/history.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+</head>
+
+<body onload='onLoad()'>
+	<nav class="navbar">
+		<a class="navbar-brand" href="#"> <img src="icon/newFullLogo.png"
+			width="100" class="d-inline-block align-top" alt=""> Historical
+			Linked Open Sensor Data
+		</a>
+	</nav>
+
+	<div id="plot"></div>
+
+	<div class="container mt-4">
+		<form id="form">
+			<div class="form-row justify-content-end">
+				<div class="col-auto">
+					<h4>
+						<span class="badge badge-secondary mt-1">Local time range</span>
+					</h4>
+				</div>
+				<div class="col-auto">
+					<label class="sr-only" for="inlineFormInputGroup">From:</label>
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text">From:</div>
+						</div>
+						<input type="text" class="form-control" id="from" name="from"
+							placeholder="from">
+					</div>
+				</div>
+				<div class="col-auto">
+					<label class="sr-only" for="inlineFormInputGroup">To:</label>
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text">To:</div>
+						</div>
+						<input type="text" class="form-control" id="to" name="to"
+							placeholder="to">
+					</div>
+				</div>
+				<div class="col-auto">
+					<button type="button" onclick="javascript:onRefresh();"
+						id="refresh" class="btn btn-primary mb-2">
+						<i class="fas fa-search"></i>&nbsp;Zoom
+					</button>
+				</div>
+				<div class="col-auto">
+					<button type="submit" id="last24h" class="btn btn-primary mb-2">
+						<i class="fas fa-sync-alt"></i>&nbsp;6h
+					</button>
+				</div>
+				<div class="col-auto">
+					<button type="button" class="btn btn-primary"
+						onclick="javascript:downloadCSV();">
+						<small><i class="fas fa-download"></i>&nbsp;CSV</small>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+</body>
+</html>

@@ -5,8 +5,6 @@ function createObservationsNav(placeUri,placeName,div) {
 	}
 	id = placeIds[placeUri];
 	
-	//$(div).append("<div class='container' id='"+id+"'></div>");
-	
 	$(div).append("<div class='container' id='"+id+"'></div>");
 	
 	createNav(placeUri,placeName,id,0);
@@ -33,11 +31,8 @@ function createNav(placeUri,placeName,id, n) {
 				placeIds[childUri] = generateID();
 			}
 			childDiv = placeIds[childUri];
-			
-//			$("#"+id).append("<div class='row mt-1 ml-'"+n*3+"><a class='btn btn-primary' data-toggle='collapse' href='#"+childDiv+"' role='button' aria-expanded='true' aria-controls='"+childDiv+"'>"+childName+"</a></div>");
-//			$("#"+id).append("<div class='container' id='"+childDiv+"'></div>");
-			
-			$("#"+id).append("<div class='row mt-1 ml-'"+n*3+"><a class='btn btn-primary' data-toggle='collapse' href='#"+childDiv+"' role='button' aria-expanded='true' aria-controls='"+childDiv+"'>"+childName+"</a></div>");
+						
+			$("#"+id).append("<div class='row mb-1 mt-1 ml-'"+n*3+"><a class='btn btn-primary' data-toggle='collapse' href='#"+childDiv+"' role='button' aria-expanded='true' aria-controls='"+childDiv+"'>"+childName+"</a></div>");
 			$("#"+id).append("<div class='container' id='"+childDiv+"'></div>");			
 			
 			createNav(childUri,childName,childDiv,n+1);

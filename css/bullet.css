@@ -1,0 +1,42 @@
+.bullet {
+	font: 12px sans-serif;
+}
+
+.bullet .marker {
+	stroke: #080b10;
+	stroke-width: 2px;
+}
+
+.bullet .tick line {
+	stroke: #666;
+	stroke-width: .1px;
+}
+
+.bullet .range.s0 {
+	fill: #eee;
+}
+
+.bullet .range.s1 {
+	fill: #ddd;
+}
+
+.bullet .range.s2 {
+	fill: #ccc;
+}
+
+.bullet .measure.s0 {
+	fill: lightsteelblue;
+}
+
+.bullet .measure.s1 {
+	fill: #286585;
+}
+
+.bullet .title {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.bullet .subtitle {
+	fill: #999;
+}
