@@ -1,5 +1,5 @@
 let serverUTCOffset = 2;
-let lastHours = 6;
+let lastHours = 24;
 
 let a = [];
 var max = [];
@@ -63,7 +63,7 @@ function onLoad() {
 	var parameters = window.location.search.substring(1).split("&");
 
     var localTo = new Date();
-    var localFrom = new Date(localTo.getTime() - 6 * 3600 * 1000);
+    var localFrom = new Date(localTo.getTime() - lastHours * 3600 * 1000);
     
 	var i;
 	for (i=0; i < parameters.length; i++) {

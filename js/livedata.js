@@ -155,7 +155,7 @@ function showObservations(place) {
 }
 
 function addPlace(place_id, name) {
-	$("#graph").append("<div class='collapse' id='"+place_id+"'><div class='card mt-3'><div class='card-header'>"+name+"</div></div></div>");
+	$("#graph").append("<div class='tab-pane fade' id='"+place_id+"' role='tabpanel' aria-labelledby='"+place_id+"-tab'><div class='card mt-3'><div class='card-header'>"+name+"</div></div></div>");
 }
 
 function addObservation(observation,place,data){
@@ -167,7 +167,6 @@ function addObservation(observation,place,data){
 				"<form target='_blank' action='./history.html'>" +
     					"<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+observation+"\" />" +
     					"<input class='form-control form-control-sm' type='hidden' name='title' value='"+escape(sensorData[place][observation]["data"][0]["title"])+"' />" +
-//    					"<input class='btn btn-primary' type='submit' value='History'/></form>" +
     					"<button class='btn btn-primary' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;History</small></button></form>" +
     			"<button type='button' class='btn btn-success mr-3' id='value_+"+obs_id+"'><span class='badge badge-light' id='value_"+obs_id+"'>---</span><span class='badge badge-light ml-3' id='timestamp_"+obs_id+"'>---</span></button>");
     

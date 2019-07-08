@@ -140,9 +140,9 @@ function add_marker(lat, lng, name, id) {
 	
 //	
 	markers[id]["marker"].on('click', function() {
-		$('#tree').empty();
+//		$('#tree').empty();
 		//createTree(markers[id].uri, "#tree", 0);
-		createObservationsNav(markers[id].uri,markers[id].name,"#tree");
+		createObservationsNav(markers[id].uri,markers[id].name);
 	});
 }
 

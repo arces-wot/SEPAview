@@ -7,7 +7,7 @@
 
 <link rel="stylesheet"
 	href="fontawesome-free-5.0.6/web-fonts-with-css/css/fontawesome-all.css">
-	
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -43,8 +43,9 @@
 <script src="js/tree.js"></script>
 <script src="js/livedata.js"></script>
 
-<script	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.4.0/web/sepa.js"></script>
-		
+<script
+	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.4.0/web/sepa.js"></script>
+
 <script>
 	function onLoad() {
 		initMap();
@@ -52,13 +53,14 @@
 	}
 </script>
 
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-   crossorigin=""></script>
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	crossorigin=""></script>
 
 </head>
 
@@ -80,6 +82,20 @@
 			Historical triples <span class="badge badge-light"><div
 					id="odoHistorySize" class="odometer"></div></span>
 		</button>
+		<button type="button" class="btn btn-info">
+			Observations <span class="badge badge-light"><div
+					id="odoObservations" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-primary">
+			Places <span class="badge badge-light"><div id="odoPlaces"
+					class="odometer"></div></span>
+		</button>
+
+		<!-- 		<div class="alert alert-info" role="alert"> -->
+		<!-- 			Observations<span class="badge badge-light ml-3"><div -->
+		<!-- 					id="odoObservations" class="odometer"></div></span> -->
+		<!-- 		</div> -->
+
 	</nav>
 
 	<div class="container-fluid">
@@ -90,15 +106,13 @@
 		</div>
 		<div class="row pt-3">
 			<div class="col-3">
-				<div class="alert alert-primary" role="alert">Places<span class="badge badge-light ml-3"><div
-					id="odoPlaces" class="odometer"></div></span></div>
+				<div class="alert alert-primary" role="alert">Place</div>
 				<ul id="tree" class="nav nav-pills pt-0">
 				</ul>
 			</div>
 			<div class="col">
-				<div class="alert alert-info" role="alert">Observations<span class="badge badge-light ml-3"><div
-					id="odoObservations" class="odometer"></div></span></div>
-				<div id="graph"></div>
+				<div class="alert alert-info" role="alert">Observation</div>
+				<div class="tab-content" id="graph"></div>
 			</div>
 		</div>
 	</div>
