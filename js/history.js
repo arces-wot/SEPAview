@@ -1,4 +1,4 @@
-let serverUTCOffset = 2;
+let serverUTCOffset = 0;
 let lastHours = 24;
 
 let a = [];
@@ -20,10 +20,11 @@ var calendar;
 
 var layout = {
 	title : "Title",
+	mode: 'lines+markers',
 	xaxis : {
 		domain : [ 0.15, 1.0 ],
 		showgrid: true,
-	    zeroline: true,
+	    zeroline: false,
 	    showline: false
 	},
 	titlefont : {
@@ -40,7 +41,7 @@ var layout = {
 			color : colors[0]
 		},
 		showgrid: true,
-	    zeroline: true,
+	    zeroline: false,
 	    showline: false
 	},
 	width : 0.9 * window.innerWidth,
@@ -96,16 +97,17 @@ function onLoad() {
 		time_24hr : true
 	});
 	
-	// Convert to SERVER local time
-	serverTo = new Date();
-	serverTo.setTime(localTo.getTime()+ (serverUTCOffset*60 + localTo.getTimezoneOffset()) * 60 * 1000);
-	sparqlTo = flatpickr.formatDate(serverTo,"Y-m-dTH:i:S.000");
+//	// Convert to SERVER local time
+//	serverTo = new Date();
+//	serverTo.setTime(localTo.getTime());
+//	sparqlTo = serverTo.toISOString();
+//	
+//	serverFrom = new Date();
+//	serverFrom.setTime(localFrom.getTime());
+//	sparqlForm = ;
+//	sparqlFrom = serverFrom.toISOString();
 	
-	serverFrom = new Date();
-	serverFrom.setTime(localFrom.getTime()+ (serverUTCOffset*60 + localFrom.getTimezoneOffset()) * 60 * 1000);
-	sparqlFrom = flatpickr.formatDate(serverFrom,"Y-m-dTH:i:S.000");
-	
-    doQuery(observation,sparqlFrom,sparqlTo);
+    doQuery(observation,localFrom.toISOString(),localTo.toISOString());
 }
 
 function doQuery(observation,from,to) {
@@ -138,13 +140,17 @@ function doQuery(observation,from,to) {
 
 function onRefresh() {
 	// Convert to SERVER local time
-	serverTo = new Date();
-	serverTo.setTime(calendarTo.selectedDates[0].getTime()+ (serverUTCOffset*60 + calendarTo.selectedDates[0].getTimezoneOffset()) * 60 * 1000);
-	sparqlTo = flatpickr.formatDate(serverTo,"Y-m-dTH:i:S.000");
+	serverTo = new Date(calendarTo.selectedDates[0].getTime());
+//	serverTo.setTime(calendarTo.selectedDates[0].getTime()+ (serverUTCOffset*60 + calendarTo.selectedDates[0].getTimezoneOffset()) * 60 * 1000);
+//	serverTo.setTime(calendarTo.selectedDates[0].getTime());
+//	sparqlTo = flatpickr.formatDate(serverTo,"Y-m-dTH:i:S.000");
+	sparqlTo = serverTo.toISOString();
 	
-	serverFrom = new Date();
-	serverFrom.setTime(calendarFrom.selectedDates[0].getTime()+ (serverUTCOffset*60 + calendarFrom.selectedDates[0].getTimezoneOffset()) * 60 * 1000);
-	sparqlFrom = flatpickr.formatDate(serverFrom,"Y-m-dTH:i:S.000");
+	serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
+//	serverFrom.setTime(calendarFrom.selectedDates[0].getTime()+ (serverUTCOffset*60 + calendarFrom.selectedDates[0].getTimezoneOffset()) * 60 * 1000);
+//	serverFrom.setTime(calendarFrom.selectedDates[0].getTime());
+//	sparqlFrom = flatpickr.formatDate(serverFrom,"Y-m-dTH:i:S.000");
+	sparqlFrom = serverFrom.toISOString();
 	
     doQuery(observation,sparqlFrom,sparqlTo);
     
@@ -204,14 +210,20 @@ function results(jsapObj) {
 	for (binding of jsapObj.results.bindings) {
 		timestamp = binding.timestamp.value;
 
+		// To local time
+		localTime = new Date(timestamp);
+		//localTime = new Date();
+		//localTime.setTime(localTime.getTime()+ localTime.getTimezoneOffset() * 60 * 1000);
+		//localTimestamp = flatpickr.formatDate(localTime,"Y-m-dTH:i:S.000");
+		
 		for (i in traces) {
 			if (binding[traces[i].name] === undefined)
 				continue;
 			
 			value = parseFloat(binding[traces[i].name].value);
 			
-			// To local time
-			traces[i].x.push(timestamp);
+			//timestamp = timestamp.substring(0,timestamp.length-1);
+			traces[i].x.push(localTime);
 			traces[i].y.push(value);
 			
 			// CSV
