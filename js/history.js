@@ -97,16 +97,6 @@ function onLoad() {
 		time_24hr : true
 	});
 	
-//	// Convert to SERVER local time
-//	serverTo = new Date();
-//	serverTo.setTime(localTo.getTime());
-//	sparqlTo = serverTo.toISOString();
-//	
-//	serverFrom = new Date();
-//	serverFrom.setTime(localFrom.getTime());
-//	sparqlForm = ;
-//	sparqlFrom = serverFrom.toISOString();
-	
     doQuery(observation,localFrom.toISOString(),localTo.toISOString());
 }
 
@@ -141,20 +131,12 @@ function doQuery(observation,from,to) {
 function onRefresh() {
 	// Convert to SERVER local time
 	serverTo = new Date(calendarTo.selectedDates[0].getTime());
-//	serverTo.setTime(calendarTo.selectedDates[0].getTime()+ (serverUTCOffset*60 + calendarTo.selectedDates[0].getTimezoneOffset()) * 60 * 1000);
-//	serverTo.setTime(calendarTo.selectedDates[0].getTime());
-//	sparqlTo = flatpickr.formatDate(serverTo,"Y-m-dTH:i:S.000");
 	sparqlTo = serverTo.toISOString();
 	
 	serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
-//	serverFrom.setTime(calendarFrom.selectedDates[0].getTime()+ (serverUTCOffset*60 + calendarFrom.selectedDates[0].getTimezoneOffset()) * 60 * 1000);
-//	serverFrom.setTime(calendarFrom.selectedDates[0].getTime());
-//	sparqlFrom = flatpickr.formatDate(serverFrom,"Y-m-dTH:i:S.000");
 	sparqlFrom = serverFrom.toISOString();
 	
-    doQuery(observation,sparqlFrom,sparqlTo);
-    
-//	doQuery(observation,calendar.formatDate(calendar.selectedDates[0],"Z"),calendar.formatDate(calendar.selectedDates[1],"Z"));	
+    doQuery(observation,sparqlFrom,sparqlTo);	
 }
 
 // LOADING...
@@ -212,9 +194,6 @@ function results(jsapObj) {
 
 		// To local time
 		localTime = new Date(timestamp);
-		//localTime = new Date();
-		//localTime.setTime(localTime.getTime()+ localTime.getTimezoneOffset() * 60 * 1000);
-		//localTimestamp = flatpickr.formatDate(localTime,"Y-m-dTH:i:S.000");
 		
 		for (i in traces) {
 			if (binding[traces[i].name] === undefined)
@@ -222,7 +201,6 @@ function results(jsapObj) {
 			
 			value = parseFloat(binding[traces[i].name].value);
 			
-			//timestamp = timestamp.substring(0,timestamp.length-1);
 			traces[i].x.push(localTime);
 			traces[i].y.push(value);
 			
