@@ -5,9 +5,11 @@ let a = [];
 var max = [];
 var min = [];
 
-//To be used for a color palette
-//var s = new ColorScheme;
-// var colors = s.from_hue(10).scheme('analogic').variation("pastel").distance(0.5).colors();
+var s = new ColorScheme;
+
+// To be used for a color palette
+// var colors = s.from_hue(10).scheme('analogic').variation("pastel")
+// .distance(0.5).colors();
 var colors = ['rgb(16,125,246)'];
 
 var csvData;
@@ -15,8 +17,6 @@ var csvData;
 var observation;
 var title;
 var calendar;
-var place = null;
-var forecast = false;
 
 var layout = {
 	title : "Title",
@@ -75,12 +75,6 @@ function onLoad() {
 		case "title":
 			title = unescape(unescape(parameters[i].split("=")[1]));
 			break;
-		case "forecast":
-			if (parameters[i].split("=")[1] == "true") forecast = true;
-			break;
-		case "place":
-			place = decodeURIComponent(parameters[i].split("=")[1]);
-			break;
 		}
 	}
 	
@@ -88,9 +82,7 @@ function onLoad() {
 	
 	 $("#form").append("<input type='hidden' name='observation' value=\""+observation+"\" />");
 	 $("#form").append("<input type='hidden' name='title' value='"+escape(title)+"'/>");
-	 if (forecast) $("#form").append("<input type='hidden' name='forecast' value=\"true\" />");
-	 if (place != null) $("#form").append("<input type='hidden' name='place' value=\""+place+"\" />");
-	 
+	
 	calendarFrom = flatpickr("#from", {
 		mode : "single",
 		enableTime : true,
@@ -105,36 +97,7 @@ function onLoad() {
 		time_24hr : true
 	});
 	
-	if(forecast) doForecastQuery(place, observation,localFrom.toISOString(),localTo.toISOString());
-	else doQuery(observation,localFrom.toISOString(),localTo.toISOString());
-}
-
-function doForecastQuery(place,property,from,to) {
-	const sepa = Sepajs.client;
-
-	// PREFIXES
-	prefixes = "";
-	for (ns in jsap["namespaces"]) {
-		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
-				+ ">";
-	}
-	
-	query = prefixes + " "
-	+ jsap["queries"]["DAILY_FORECAST"]["sparql"];
-
-	// Forced bindings
-	query = query.replace("?place", "<"+place+">");
-	query = query.replace("?property", "<"+property+">");
-	query = query.replace("?from", "'" + from.substr(0,10) + "'");
-	query = query.replace("?to", "'" + to.substr(0,10) + "'");
-
-	console.log("FORECAST Place: "+place + " Property: "+property);
-	console.log("From: "+from);
-	console.log("To: "+to);
-	 
-	sepa.query(query,jsap).then((data)=>{ 
-		 results(data);
-	 });	
+    doQuery(observation,localFrom.toISOString(),localTo.toISOString());
 }
 
 function doQuery(observation,from,to) {
@@ -172,10 +135,7 @@ function onRefresh() {
 	serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
 	sparqlFrom = serverFrom.toISOString();
 	
-//    doQuery(observation,sparqlFrom,sparqlTo);
-    
-    if (forecast) doForecastQuery(place, observation,sparqlFrom,sparqlTo);
-	else doQuery(observation,sparqlFrom,sparqlTo);
+    doQuery(observation,sparqlFrom,sparqlTo);	
 }
 
 // LOADING...

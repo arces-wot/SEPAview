@@ -36,12 +36,14 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script>
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
+
 <script src="lib/bullet.js"></script>
 <script src="js/map.js"></script>
 <script src="js/other-function.js"></script>
 <script src="js/jsap.js"></script>
 <script src="js/tree.js"></script>
 <script src="js/livedata.js"></script>
+<script src="js/liveforecast.js"></script>
 
 <script
 	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.4.0/web/sepa.js"></script>
@@ -50,6 +52,7 @@
 	function onLoad() {
 		initMap();
 		liveMonitor();
+		liveForecasts();
 	}
 </script>
 
@@ -91,30 +94,53 @@
 					class="odometer"></div></span>
 		</button>
 
-		<!-- 		<div class="alert alert-info" role="alert"> -->
-		<!-- 			Observations<span class="badge badge-light ml-3"><div -->
-		<!-- 					id="odoObservations" class="odometer"></div></span> -->
-		<!-- 		</div> -->
-
 	</nav>
 
 	<div class="container-fluid">
-		<div class="row pt-3">
+		<div id="mapid"></div>
+		<div class="row mt-3">
 			<div class="col">
-				<div id="mapid"></div>
-			</div>
-		</div>
-		<div class="row pt-3">
-			<div class="col-3">
 				<div class="alert alert-primary" role="alert">Place</div>
-				<ul id="tree" class="nav nav-pills pt-0">
-				</ul>
+				<ul id="tree" class="nav nav-pills pt-0"></ul>
 			</div>
 			<div class="col">
 				<div class="alert alert-info" role="alert">Observation</div>
 				<div class="tab-content" id="graph"></div>
 			</div>
 		</div>
+
+
+
+		<!-- 		<div class="row"> -->
+
+		<!-- 		</div> -->
+		<!-- 		<div class="row"> -->
+		<!-- 			<ul id="tree" class="nav nav-pills pt-0"></ul> -->
+		<!-- 			<div class="tab-content" id="graph">Graph</div> -->
+		<!-- 		</div> -->
+
+
+
+		<!-- 		<div class="row pt-3"> -->
+		<!-- 			<div class="col"> -->
+		<!-- 				<div id="mapid"></div> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
+		<!-- 		<div class="alert alert-primary" role="alert">Place</div> -->
+		<!-- 		<div class="row pt-3"> -->
+		<!-- 			<ul id="tree" class="nav nav-pills pt-0"></ul> -->
+		<!-- 		</div> -->
+		<!-- 		<div class="tab-content"> -->
+		<!-- 			<div id="graph">Graph</div> -->
+		<!-- 		</div>  -->
+		<!-- 		<div class="row"> -->
+		<!-- 			<div class="alert alert-info" role="alert">Observation</div> -->
+
+		<!-- 		</div> -->
+		<!-- 		<div class="row"> -->
+		<!-- 			<div class="alert alert-warning mt-3" role="alert">Forecast</div> -->
+		<!-- 			<div class="tab-content" id="forecast">Forecast</div> -->
+		<!-- 		</div> -->
 	</div>
 </body>
 </html>
