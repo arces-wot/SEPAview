@@ -1,9 +1,3 @@
-//var count = 0;
-
-//function generateID() {
-//	count = count + 1;
-//	return CSS.escape(""+count);
-//}
 
 function generateID(){
     var dt = new Date().getTime();
