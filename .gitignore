@@ -2,3 +2,6 @@
 
 # ignore vscode files
 .vscode/
+
+# ignore idea files
+.idea/
