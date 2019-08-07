@@ -346,6 +346,37 @@ jsap = {
 			}
 		},
 		"queries": {
+			"DAILY_FORECAST": {
+				"sparql": "SELECT ?value ?timestamp WHERE {graph <http://wot.arces.unibo.it/forecast> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type <http://swamp-project.org/ns#Forecast>; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?timestamp ; sosa:observedProperty ?property ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit FILTER (xsd:dateTime(?timestamp) >= xsd:dateTime(concat(?from,'T00:00:00Z')) && xsd:dateTime(?timestamp) <= xsd:dateTime(concat(?to,'T00:00:00Z')) && xsd:dateTime(?timestamp) = xsd:dateTime(?resultTime))}}",
+				"forcedBindings": {
+					"from": {
+						"type": "literal",
+						"value": "2019-07-17"
+					},
+					"to": {
+						"type": "literal",
+						"value": "2019-07-17"
+					},
+					"place": {
+						"type": "uri",
+						"value": "swamp:Bertacchini"
+					},
+					"property": {
+						"type": "uri",
+						"value": "swamp:LeafAreaIndex"
+					}
+				}
+			},
+			"LAST_FORECASTS": {
+				"sparql": "SELECT ?place ?name ?property ?label ?value ?symbol ?prediction WHERE {graph <http://wot.arces.unibo.it/forecast> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty ?property ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit OPTIONAL {?property rdfs:label ?label}} . OPTIONAL {?unit qudt:symbol ?symbol} . ?place schema:name ?name .  FILTER (xsd:dateTime(?prediction) = xsd:dateTime(?resultTime) && ?prediction >= xsd:dateTime(?day))} ORDER BY DESC(?prediction) ?place",
+				"forcedBindings": {
+					"day": {
+						"type": "literal",
+						"value": "2019-07-23T00:00:00Z",
+						"datatype" : "xsd:dateTime"
+					}
+				}
+			},
 			"MQTT_MAPPINGS" : {
 				"sparql" : "SELECT * {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
 			},
@@ -379,21 +410,21 @@ jsap = {
 				}
 			},
 			"LOG_QUANTITY": {
-				"sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/observation/history> {?result sosa:isResultOf ?observation ; qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
+				"sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/observation/history> {?result sosa:isResultOf ?observation ; qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > xsd:dateTime(?from) && xsd:dateTime(?timestamp) < xsd:dateTime(?to))} ORDER BY ?timestamp",
 				"forcedBindings": {
 					"from": {
 						"datatype": "xsd:dateTime",
 						"type": "literal",
-						"value": "2018-01-01T00:00:00"
+						"value": "2019-07-15T00:00:00Z"
 					},
 					"to": {
 						"datatype": "xsd:dateTime",
 						"type": "literal",
-						"value": "2018-01-01T00:00:00"
+						"value": "2019-07-15T23:59:59Z"
 					},
 					"observation": {
 						"type": "uri",
-						"value": "arces-monitor:ObservationXYZ"
+						"value": "arces-monitor:SanMicheleLevelsL1"
 					}
 				}
 			},

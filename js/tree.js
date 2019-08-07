@@ -64,7 +64,6 @@ function createNav(placeUri, parentId,n) {
 						
 			$("#v-pills-tab").append("<a class='nav-link ml-"+n*3+"' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
 			$("#"+id+"-tab").insertAfter("#"+parentId);
-//			$("<a class='nav-link ml-"+n*3+" id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>").insertAfter("#"+parentId);
 			
 			createNav(childUri,id+"-tab",n+1);
 		}

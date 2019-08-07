@@ -1,19 +1,14 @@
 var placeIds = {};
 var markers = {};
 var map ;
+var icons = {};
 
-function initMap() {
-//	map = new google.maps.Map(document.getElementById('map'), {
-//		center : {lat : 44.494048, lng :  11.343391},
-//		zoom : 13,
-//		zoomControl: true,
-//        scaleControl: true,
-//        draggable: true,
-//	    scrollwheel: true,
-//	    panControl: true,
-//	});
+function initMap() {	
+	// Bologna
+	//map = L.map('mapid').setView([44.494048,11.343391], 13);
 	
-	map = L.map('mapid').setView([44.494048,11.343391], 13);
+	// Bertacchini
+	map = L.map('mapid').setView([44.776585,10.717520], 15);
 	
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -21,6 +16,12 @@ function initMap() {
 	    id: 'mapbox.streets',
 	    accessToken: 'pk.eyJ1IjoibHJvZmZpYSIsImEiOiJjanhiZjVxemkwYzZlM3pvODZjcGJlYjdtIn0.cD3reeNMoDGpiRBDTHn5_w'
 	}).addTo(map);
+	
+	// Init markers
+	initMarkers();
+	
+	// Draw layers
+	drawVectorLayers();
 	
 	// PREFIXES
 	prefixes = "";
@@ -64,6 +65,67 @@ function initMap() {
 	});
 }
 
+function initMarkers() {
+	var leaf = L.icon({
+	    iconUrl: 'icon/Hoja.png',
+	    iconSize: [48, 48]
+	});
+	
+	icons["http://swamp-project.org/ns#Bertacchini"] = leaf;
+	icons["http://swamp-project.org/ns#Ferrari"] = leaf;
+	icons["http://swamp-project.org/ns#Bonacini"] = leaf;
+}
+
+function drawVectorLayers() {
+	var latlngs = [
+	    [[44.774522,10.723393],
+	     [44.779529, 10.723236],
+	     [44.785722, 10.715394],[44.788486,10.708209]]
+	];
+	
+	var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map);
+	// zoom the map to the polyline
+	map.fitBounds(polyline.getBounds());
+}
+
+
+
+function add_marker(lat, lng, name, id) {
+	if (placeIds[id] === undefined) placeIds[id] = generateID();
+	
+	var leaf = L.icon({
+	    iconUrl: 'icon/Hoja.png',
+	    iconSize: [24, 24]
+	});
+	
+	if (icons[id] != undefined) {
+		var marker = L.marker([lat, lng],{"title": name,"icon" : icons[id]}).addTo(map);
+		//marker.bindTooltip(name,{"permanent" : true});
+	}
+	else {
+		var marker = L.marker([lat, lng],{"title": name,}).addTo(map);
+		//marker.bindTooltip(name,{"permanent" : true});
+	}
+	
+	//TODO:adding marker clustering.
+	markers[id] = {};
+	markers[id]["name"] = name;
+	markers[id]["uri"] = id;
+	markers[id]["marker"] = marker;
+	
+	markers[id]["marker"].on('click', function() {
+		createObservationsNav(markers[id].uri,markers[id].name);
+	});
+}
+
+function remove_marker(id) {
+	markers[id].marker.removeFrom(map);
+	
+	delete placeIds[markers[id].uri];
+	
+	delete markers[id];
+}
+
 function refreshMap() {
 //	positions = [];
 //	
@@ -98,58 +160,4 @@ function refreshMap() {
 //		
 //		map.fitBounds(latlngbounds);	
 //	}
-}
-
-// IMPORTANT: the URI can be used as identifier, not the name
-function add_marker(lat, lng, name, id) {
-	if (placeIds[id] === undefined) placeIds[id] = generateID();
-	
-	var marker = L.marker([lat, lng],{"title": name}).addTo(map);
-//	marker.bindPopup("<b>"+name+"</b>");
-	marker.bindTooltip(name,{"permanent" : true});
-	
-//	//TODO:adding marker clustering.
-//
-	markers[id] = {};
-	markers[id]["name"] = name;
-	markers[id]["uri"] = id;
-	markers[id]["marker"] = marker;
-	
-//	markers[id]["marker"] = new google.maps.Marker({
-//		position : {
-//			lat : lat,
-//			lng : lng
-//		},
-//		title : name,
-//		label: {
-//			text: name,
-//            color: '#234d78',
-//            fontSize: "15px",
-//            fontWeight: "bold",
-//            fontFamily: "Montserrat",
-//		},
-//		animation : google.maps.Animation.DROP,
-//		icon : {
-//			url: 'http://mml.arces.unibo.it/apps/sepaview2/images/rdf_icon32.png',
-//			labelOrigin : new google.maps.Point(40,40)
-//		},
-//		map : map
-//	});
-//
-//	
-	
-//	
-	markers[id]["marker"].on('click', function() {
-//		$('#tree').empty();
-		//createTree(markers[id].uri, "#tree", 0);
-		createObservationsNav(markers[id].uri,markers[id].name);
-	});
-}
-
-function remove_marker(id) {
-	markers[id].marker.removeFrom(map);
-	
-	delete placeIds[markers[id].uri];
-	
-	delete markers[id];
 }

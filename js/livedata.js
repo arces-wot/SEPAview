@@ -1,6 +1,6 @@
-displayWidth = 960; //960
+displayWidth = 960; // 960
 displayHeight = 75; // 75
-textWidth = 940; //940
+textWidth = 940; // 940
 textHeight = 13; // 27
 
 mt = "15px";
@@ -89,8 +89,8 @@ function liveMonitor() {
 	
 	const observation = sepa.subscribe(query,jsap);
 	observation.on("added",addedResults=>{      
-		let date = new Date();
-		let timestamp = date.toLocaleString();
+// let date = new Date();
+// let timestamp = date.toLocaleString();
 		
         for (binding of addedResults.results.bindings) {
 
@@ -161,11 +161,16 @@ function addPlace(place_id, name) {
 function addObservation(observation,place,data){
 	let obs_id = sensorData[place][observation]["div_id"];
 	
+	if(data[0]["forecast"] != undefined) forecast = "true";
+	else forecast = "false";
+	
 	$("#"+sensorData[place]["div_id"]).append("<div class='container'>" +
 			"<div class='row flex-row-reverse'><div id='"+obs_id+"'></div></div>" +
 			"<div class='row flex-row-reverse'>" +
 				"<form target='_blank' action='./history.html'>" +
     					"<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+observation+"\" />" +
+    					"<input class='form-control form-control-sm' type='hidden' name='place' value=\""+place+"\" />" +
+    					"<input class='form-control form-control-sm' type='hidden' name='forecast' value=\""+forecast+"\" />" +
     					"<input class='form-control form-control-sm' type='hidden' name='title' value='"+escape(sensorData[place][observation]["data"][0]["title"])+"' />" +
     					"<button class='btn btn-primary' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;History</small></button></form>" +
     			"<button type='button' class='btn btn-success mr-3' id='value_+"+obs_id+"'><span class='badge badge-light' id='value_"+obs_id+"'>---</span><span class='badge badge-light ml-3' id='timestamp_"+obs_id+"'>---</span></button>");
@@ -194,9 +199,15 @@ function updateObservation(observation,place,valueAsFloat) {
 	
 	// Timestamp
 	let obs_id = sensorData[place][observation]["div_id"];
-	let date = new Date();
-	let timestamp = date.toLocaleString();	
-	$("#timestamp_"+obs_id).html(timestamp);
+	
+	if (data["timestamp"] != undefined) $("#timestamp_"+obs_id).html(data["timestamp"]);
+	else {
+		let date = new Date();
+		let timestamp = date.toLocaleString();	
+		$("#timestamp_"+obs_id).html(timestamp);
+	}
+	
+	
 	$("#value_"+obs_id).html(valueAsFloat);
 	
 	data["measures"][0] = valueAsFloat;

@@ -20,6 +20,8 @@ const selection = [];
 var traces = [];
 const axisLabels = ["y", "y2"]
 
+var place = null;
+var forecast = false;
 
 var layout = {
 	title : "No data",
@@ -127,11 +129,21 @@ function onLoad() {
 		case "title":
 			title = unescape(unescape(parameters[i].split("=")[1]));
 			break;
+		case "forecast":
+			if (parameters[i].split("=")[1] == "true") forecast = true;
+			break;
+		case "place":
+			place = decodeURIComponent(parameters[i].split("=")[1]);
+			break;
 		}
 	}
 	
 	layout.title = title;
-
+	
+	// TODO: use updateFormUI
+	 if (forecast) $("#form").append("<input type='hidden' name='forecast' value=\"true\" />");
+	 if (place != null) $("#form").append("<input type='hidden' name='place' value=\""+place+"\" />");
+	 
 	calendarFrom = flatpickr("#from", {
 		mode : "single",
 		enableTime : true,
@@ -209,6 +221,39 @@ function updateUIForm() {
 
 function retriveObservedData(observation,from,to) {
 	// TIMESTAMPS are stored as local time using now() of SPARQL (e.g. "2019-06-26T12:32:47.0023")
+	if(forecast) return doForecastQuery(place, observation,from,to);
+	else return doQuery(observation,from,to);
+}
+
+function doForecastQuery(place,property,from,to) {
+	const sepa = Sepajs.client;
+
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
+	
+	query = prefixes + " "
+	+ jsap["queries"]["DAILY_FORECAST"]["sparql"];
+
+	// Forced bindings
+	query = query.replace("?place", "<"+place+">");
+	query = query.replace("?property", "<"+property+">");
+	query = query.replace("?from", "'" + from.substr(0,10) + "'");
+	query = query.replace("?to", "'" + to.substr(0,10) + "'");
+
+	console.log("FORECAST Place: "+place + " Property: "+property);
+	console.log("From: "+from);
+	console.log("To: "+to);
+	 
+	return sepa.query(query,jsap).then((data)=>{ 
+		 return results(data);
+	 });	
+}
+
+function doQuery(observation,from,to) {
 	const sepa = Sepajs.client;
 
 	// PREFIXES
@@ -242,7 +287,6 @@ function onRefresh() {
 	serverTo = new Date(calendarTo.selectedDates[0].getTime());
 
 	serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
-
 
 	retriveObservedData(selection[0].uri, serverFrom.toISOString(), serverTo.toISOString())
 		.then((data) => {
