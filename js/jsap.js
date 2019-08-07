@@ -416,7 +416,7 @@ jsap = {
 				}
 			},
 			"ROOT_PLACES": {
-				"sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place .  FILTER NOT EXISTS{?root schema:containedInPlace ?place} }}"
+				"sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place . ?root schema:name ?name .  FILTER NOT EXISTS{?root schema:containedInPlace ?place} }}"
 			},
 			"OBSERVATIONS": {
 				"sparql": "SELECT * WHERE {?unit qudt:symbol ?symbol . GRAPH <http://wot.arces.unibo.it/observation> {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}} . GRAPH <http://wot.arces.unibo.it/context> {?location schema:name ?name} }"
