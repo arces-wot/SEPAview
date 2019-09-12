@@ -34,7 +34,21 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+<style>
+	
+	.tree::-webkit-scrollbar {
+    	width: 3px;
+    	background-color: #F5F5F5;
+	}
+	
+	.tree::-webkit-scrollbar-thumb {
+    	background-color: #0088f8c7;
+	}
 
+	.tree::-webkit-scrollbar-track {
+		background-color: #F5F5F5;
+	}
+</style>
 </head>
 
 <body onload='onLoad()'>
@@ -47,7 +61,7 @@
 	
 	<div class="container-fluid">
 		<div class="row">
-			<div id="observations" class=" order-12 order-lg-1  col-lg-2" style="max-height: 100vh;overflow-y: auto" ></div>
+			<div id="observations" class="tree order-12 order-lg-1  col-lg-2" style="max-height: 100vh;overflow-y: auto" ></div>
 			<div class="order-1 order-lg-12  col-lg-10">
 				<div class="row col-12">
 					<div class="row col-12">
