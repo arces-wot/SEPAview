@@ -7,7 +7,7 @@ jsap = {
 		},
 		"sparql11protocol": {
 			"protocol": "http",
-			"port": 8000,
+			"port": 8666,
 			"query": {
 				"path": "/query",
 				"method": "POST",
@@ -23,7 +23,7 @@ jsap = {
 			"protocol": "ws",
 			"availableProtocols": {
 				"ws": {
-					"port": 9000,
+					"port": 9666,
 					"path": "/subscribe"
 				},
 				"wss": {
