@@ -217,26 +217,18 @@ function updateUIForm() {
 
 	$("#form > input[name='observation']").attr("value", obs)
 	$("#form > input[name='title']").attr("value", escape(title))
-
-	//var parentId = selection[0].parentId;
-	//var original = parseInt(parentId, 10);
-
-	//alert(original);
-	//alert(parentId);
 }
 
 function redirectMap() {
-	//var currentNodeId = selection[0].nodeId;
-	var parentId = selection[0].parentId;
+	var parentId = selection[0].parentId;	//ottengo la radice dell'elemento selezionato
 
-	location.href = "../SEPAview-master/index.html";
+	location.href = "../SEPAview-master/index.html";	//redirect nella pagina html
 
 	var long = 10.717520;
-	var lat = 44.776585;
+	var lat = 44.776585;	//da modificare con i valori della radice selezionata
 	localStorage.setItem('lat', lat);
-	localStorage.setItem('long', long);
-	//map = L.map('mapid').setView([44.776585,10.717520], 15);
-	
+	localStorage.setItem('long', long);		/*inserisco nell'oggetto localstorage le due variabili con le chiavi rispettive,
+											uso queste perchè i dati allocati persistono nelle diverse sessioni*/
 }
 
 function retriveObservedData(observation,from,to) {

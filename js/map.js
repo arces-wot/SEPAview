@@ -7,20 +7,20 @@ function initMap() {
 	// Bologna
 	//map = L.map('mapid').setView([44.494048,11.343391], 13);
 	
-	// Bertacchini
+	
 	var lat = localStorage.getItem('lat');
 	var long = localStorage.getItem('long');
 
-	if(lat != null || long != null)
+	if(lat != null || long != null)	//se non sono presenti dati
 	{
-		map = L.map('mapid').setView([lat,long], 12);
-		//alert('mia');
+		map = L.map('mapid').setView([lat,long], 12);	//zoom su lat/long che determino io con i dati appena ricavati
 
 		localStorage.removeItem('lat');
-		localStorage.removeItem('long');
+		localStorage.removeItem('long');	/*rimuovo le due variabili dall'oggetto, se ricarico la pagina 
+											la mappa non sarà zoomata sul nodo precedentemente selezionata*/
 	}else{
+		// Bertacchini
 		map = L.map('mapid').setView([44.776585,10.717520], 15);
-		//alert('sua');
 	}
 	
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
