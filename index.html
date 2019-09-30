@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="icon" href="icon/newLogo.png">
+<meta charset="utf-8">
+<title>SEPAView</title>
+
+<link rel="stylesheet"
+	href="fontawesome-free-5.0.6/web-fonts-with-css/css/fontawesome-all.css">
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<link href="css/bullet.css" rel="stylesheet" type="text/css">
+<link href="css/map.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="css/odometer-theme-plaza.css" />
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+
+<script src="lib/odometer.js"></script>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<script src="lib/bullet.js"></script>
+<script src="js/map.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/jsap.js"></script>
+<script src="js/tree.js"></script>
+<script src="js/livedata.js"></script>
+<script src="js/liveforecast.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.4.0/web/sepa.js"></script>
+
+<script>
+	function onLoad() {
+		initMap();
+		liveMonitor();
+		liveForecasts();
+	}
+</script>
+
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	crossorigin=""></script>
+
+</head>
+
+<body onLoad='onLoad()'>
+	<nav class="navbar">
+		<a class="navbar-brand" href="#"> <img src="icon/newFullLogo.png"
+			width="100" class="d-inline-block align-top" alt=""> Linked
+			Open Sensor Data Viewer
+		</a>
+		<button type="button" class="btn btn-secondary">
+			Notifications <span class="badge badge-light"><div
+					id="odoNotifications" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-warning">
+			Live triples <span class="badge badge-light"><div
+					id="odoLiveSize" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-success">
+			Historical triples <span class="badge badge-light"><div
+					id="odoHistorySize" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-info">
+			Observations <span class="badge badge-light"><div
+					id="odoObservations" class="odometer"></div></span>
+		</button>
+		<button type="button" class="btn btn-primary">
+			Places <span class="badge badge-light"><div id="odoPlaces"
+					class="odometer"></div></span>
+		</button>
+
+	</nav>
+
+	<div class="container-fluid">
+		<div id="mapid"></div>
+		<div class="row mt-3">
+			<div class="col">
+				<div class="alert alert-primary" role="alert">Place</div>
+				<ul id="tree" class="nav nav-pills pt-0"></ul>
+			</div>
+			<div class="col">
+				<div class="alert alert-info" role="alert">Observation</div>
+				<div class="tab-content" id="graph"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
