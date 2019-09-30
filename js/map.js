@@ -63,7 +63,6 @@ function initMap() {
         }
 		if (added > 0) refreshMap();
 	});
-
 	places.on("removed",removedResults=>{
 		removed = removedResults["results"]["bindings"].length;
 		for (index = 0; index < removed; index++) {
@@ -76,10 +75,6 @@ function initMap() {
 
         if (removed > 0) refreshMap();	
 	});
-
-	//var temp = localStorage.getItem('coordinate'); coordinate per la mappa
-	//alert(temp);
-
 }
 
 

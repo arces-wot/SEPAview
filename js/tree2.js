@@ -6,7 +6,11 @@ function loadPlaceTree() {
     for (ns in jsap["namespaces"]) {
         prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns] + ">";
     }
+<<<<<<< HEAD
     let allRootPlaces = prefixes + " " + jsap["queries"]["ROOT_PLACES"]["sparql"];
+=======
+    let allRootPlaces = prefixes + " " + jsap["queries"]["MAP_PLACES"]["sparql"];
+>>>>>>> f6e59935277c396fea4d4cc05eece236a2910e0a
     let allObservations = prefixes + " " + jsap["queries"]["OBSERVATIONS"]["sparql"];
     
     let tree  = []
@@ -36,7 +40,13 @@ function loadPlaceTree() {
                 let parentNode = {
                     text: binding.name.value,
                     uri: binding.root.value,
+<<<<<<< HEAD
                     selectable : false
+=======
+                    selectable : false,
+                    lat : binding.lat.value,
+                    long : binding.long.value
+>>>>>>> f6e59935277c396fea4d4cc05eece236a2910e0a
 
                 }
 
