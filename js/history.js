@@ -355,14 +355,21 @@ function results(jsapObj) {
 }
 
 function redirectMap() {
-	var parentId = selection[0].parentId;	//ottengo la radice dell'elemento selezionato
-
-	location.href = "../Sepaview/index.html";	//redirect nella pagina html
-
-	var long = 2.717520;
-	var lat = 20.776585;	//da modificare con i valori della radice selezionata
+	let t = $('#observations').treeview(true)
+	let node = t.getParents(selection[0])[0]
+	let id = node.nodeId.split(".")
+	
+	while(id.length > 2){
+		node = $('#observations').treeview(true).getParents(node)[0]
+		id = node.nodeId.split(".")
+	}
+	
+	var long = node.long;
+	var lat = node.lat;
 
 	localStorage.setItem('lat', lat);
 	localStorage.setItem('long', long);		/*inserisco nell'oggetto localstorage le due variabili con le chiavi rispettive,
 											uso queste perchè i dati allocati persistono nelle diverse sessioni*/
+
+	location.href = "../Sepaview/index.html";	//redirect nella pagina html
 }
