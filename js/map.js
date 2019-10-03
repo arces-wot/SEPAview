@@ -16,7 +16,6 @@ function initMap() {
 	if(lat != null || long != null)	//se non sono presenti dati
 	{
 		map = L.map('mapid').setView([lat,long], 15);	//zoom su lat/long che determino io con i dati appena ricavati
-		alert(lat);
 		localStorage.removeItem('lat');
 		localStorage.removeItem('long');	/*rimuovo le due variabili dall'oggetto, se ricarico la pagina 
 											la mappa non sarà zoomata sul nodo precedentemente selezionata*/
@@ -99,8 +98,6 @@ function drawVectorLayers() {
 	];
 	
 	var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map);
-	// zoom the map to the polyline
-	map.fitBounds(polyline.getBounds());
 }
 
 
