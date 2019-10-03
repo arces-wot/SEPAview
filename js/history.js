@@ -371,5 +371,5 @@ function redirectMap() {
 	localStorage.setItem('long', long);		/*inserisco nell'oggetto localstorage le due variabili con le chiavi rispettive,
 											uso queste perchè i dati allocati persistono nelle diverse sessioni*/
 
-	location.href = "../Sepaview/index.html";	//redirect nella pagina html
+	location.href = "./index.html";	//redirect nella pagina html
 }
