@@ -168,9 +168,11 @@ function selectObservation(node,from,to) {
 		// finding the node retrives the real one.
 		const treeNode = t.findNodes(oldNode.nodeId,"nodeId")
 		t.toggleNodeSelected(treeNode,{silent:true})
-	} 
+	}
 
 	selection.push(node)
+
+	disableBottomMap();
 	
 	updateUIForm()
 
@@ -354,15 +356,47 @@ function results(jsapObj) {
 	return trace
 }
 
+function disableBottomMap(){
+
+	if(selection.length==2)
+	{
+		var parentId = selection[0].parentId;
+		var parentId2 = selection[1].parentId;
+
+		if(parentId == parentId2){
+
+			switch(selection.length)
+			{
+				case 0:
+					document.getElementById("map").disabled = true;
+					break;
+				case 1: case 2:
+					document.getElementById("map").disabled = false;
+					break;
+			}
+
+		}/*else{
+			alert('parent diversi!');
+		}*/
+	}
+}
+
 function redirectMap() {
-	var parentId = selection[0].parentId;	//ottengo la radice dell'elemento selezionato
-
-	location.href = "../Sepaview/index.html";	//redirect nella pagina html
-
-	var long = 2.717520;
-	var lat = 20.776585;	//da modificare con i valori della radice selezionata
+	let t = $('#observations').treeview(true)
+	let node = t.getParents(selection[0])[0]
+	let id = node.nodeId.split(".")
+	
+	while(id.length > 2){
+		node = $('#observations').treeview(true).getParents(node)[0]
+		id = node.nodeId.split(".")
+	}
+	
+	var long = node.long;
+	var lat = node.lat;
 
 	localStorage.setItem('lat', lat);
 	localStorage.setItem('long', long);		/*inserisco nell'oggetto localstorage le due variabili con le chiavi rispettive,
 											uso queste perchè i dati allocati persistono nelle diverse sessioni*/
+
+	location.href = "./index.html";	//redirect nella pagina html
 }
