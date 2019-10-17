@@ -375,9 +375,7 @@ function disableBottomMap(){
 					break;
 			}
 
-		}/*else{
-			alert('parent diversi!');
-		}*/
+		}
 	}
 }
 
