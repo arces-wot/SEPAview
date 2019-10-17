@@ -8,6 +8,7 @@ function createObservationsNav(placeUri,placeName) {
 	}
 	id = placeIds[placeUri];
 	
+	
 	if($("#" + id).length == 0) {
 		$("#graph").append("<div class='tab-pane fade' id='"+id+"' role='tabpanel' aria-labelledby='"+id+"-tab'></div>");
 	}
@@ -28,7 +29,8 @@ function createNav(placeUri, parentId,n) {
         prefixes += " PREFIX " + ns + ":<"+ jsap["namespaces"][ns] + ">";
     }
     query = prefixes + " " + jsap["queries"]["CONTAINED_PLACES"]["sparql"];
-    query = query.replace("?root","<"+placeUri+">");
+	query = query.replace("?root","<"+placeUri+">");
+	
 	
     sepa.query(query,jsap).then((data)=>{ 
 		let places = data.results.bindings.length;
@@ -42,11 +44,13 @@ function createNav(placeUri, parentId,n) {
 				placeIds[childUri] = generateID();
 			}
 			id = placeIds[childUri];
+			link = 'www.google.it';
 						
-			$("#v-pills-tab").append("<a class='nav-link ml-"+n*3+"' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
+			$("#v-pills-tab").append("<a class='nav-link ml-"+n*3+"' id='"+id+"-tab' data-toggle='pill' href='#"+link+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
 			$("#"+id+"-tab").insertAfter("#"+parentId);
 			
-			createNav(childUri,id+"-tab",n+1);
+			createNav(childUri,id+"-tab",n+1); 
 		}
+		
 	});
 }

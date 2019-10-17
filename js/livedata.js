@@ -167,7 +167,7 @@ function addObservation(observation,place,data){
 	$("#"+sensorData[place]["div_id"]).append("<div class='container'>" +
 			"<div class='row flex-row-reverse'><div id='"+obs_id+"'></div></div>" +
 			"<div class='row flex-row-reverse'>" +
-				"<form target='_blank' action='./history.html'>" +
+				"<form action='./history.html'>" +
     					"<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+observation+"\" />" +
     					"<input class='form-control form-control-sm' type='hidden' name='place' value=\""+place+"\" />" +
     					"<input class='form-control form-control-sm' type='hidden' name='forecast' value=\""+forecast+"\" />" +
