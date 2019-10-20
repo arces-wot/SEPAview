@@ -375,9 +375,6 @@ function disableBottomMap(){
 						document.getElementById("map").disabled = false;
 					}else{
 						document.getElementById("map").disabled = true;
-
-						if(selection[1] == null)
-							document.getElementById("map").disabled = false;
 					}
 					break;
 			}
