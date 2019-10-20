@@ -44,9 +44,8 @@ function createNav(placeUri, parentId,n) {
 				placeIds[childUri] = generateID();
 			}
 			id = placeIds[childUri];
-			link = 'www.google.it';
 						
-			$("#v-pills-tab").append("<a class='nav-link ml-"+n*3+"' id='"+id+"-tab' data-toggle='pill' href='#"+link+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
+			$("#v-pills-tab").append("<a class='nav-link ml-"+n*3+"' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
 			$("#"+id+"-tab").insertAfter("#"+parentId);
 			
 			createNav(childUri,id+"-tab",n+1); 
