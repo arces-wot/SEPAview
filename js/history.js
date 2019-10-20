@@ -358,27 +358,29 @@ function results(jsapObj) {
 
 function disableBottomMap(){
 
-	if(selection.length==2)
-	{
-		var parentId = selection[0].parentId;
-		var parentId2 = selection[1].parentId;
-
-		if(parentId == parentId2){
-
-			switch(selection.length)
+	switch(selection.length)
 			{
 				case 0:
 					document.getElementById("map").disabled = true;
 					break;
-				case 1: case 2:
+				case 1:
 					document.getElementById("map").disabled = false;
 					break;
-			}
 
-		}/*else{
-			alert('parent diversi!');
-		}*/
-	}
+				case 2:
+					var parentId = selection[0].parentId;
+					var parentId2 = selection[1].parentId;
+
+					if(parentId == parentId2){
+						document.getElementById("map").disabled = false;
+					}else{
+						document.getElementById("map").disabled = true;
+
+						if(selection[1] == null)
+							document.getElementById("map").disabled = false;
+					}
+					break;
+			}
 }
 
 function redirectMap() {
