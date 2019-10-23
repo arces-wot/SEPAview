@@ -5,21 +5,26 @@ let a = [];
 var max = [];
 var min = [];
 
-//To be used for a color palette
-//var s = new ColorScheme;
-// var colors = s.from_hue(10).scheme('analogic').variation("pastel").distance(0.5).colors();
-var colors = ['rgb(16,125,246)'];
+var s = new ColorScheme;
+
+// Using a fixed palette 
+var colors = ["#2980b9","#16a085"]
+
 
 var csvData;
 
-var observation;
+var observation = [];
 var title;
 var calendar;
+const selection = [];
+var traces = [];
+const axisLabels = ["y", "y2"]
+
 var place = null;
 var forecast = false;
 
 var layout = {
-	title : "Title",
+	title : "No data",
 	mode: 'lines+markers',
 	xaxis : {
 		domain : [ 0.15, 1.0 ],
@@ -40,12 +45,28 @@ var layout = {
 			size : 16,
 			color : colors[0]
 		},
+		title: 'yaxis',
 		showgrid: true,
 	    zeroline: false,
 	    showline: false
 	},
-	width : 0.9 * window.innerWidth,
-	height : 0.7 * window.innerHeight
+	yaxis2: {
+		title: 'yaxis2',
+		titlefont: { color: 'rgb(148, 103, 189)' },
+		tickfont: {
+			family: 'Verdana',
+			size: 16,
+			color: colors[1]
+		},
+		overlaying: 'y',
+		side: 'right',
+		showgrid: true,
+		zeroline: false,
+		showline: false
+	},
+	margin:{
+		l : 0
+	}
 };
 
 function downloadCSV() {
@@ -61,6 +82,39 @@ function downloadCSV() {
 }
 
 function onLoad() {
+	//Init plot
+	Plotly.newPlot("plot", [], layout, { responsive: true });
+
+	loadPlaceTree().then((tree) => {
+		$('#observations').treeview({
+			data: tree, 
+			levels: 1, //Define how many levels to expand
+			multiSelect : true, 
+			expandIcon: "fas fa-plus",
+			collapseIcon: "fas fa-minus",
+			onNodeSelected: function (event, data) {
+				serverTo = new Date(calendarTo.selectedDates[0].getTime());
+				
+				serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
+			
+				selectObservation(data,serverFrom,serverTo)
+			},
+
+			onNodeUnselected: function (event,data) {
+				unselectObservation(data)
+				Plotly.newPlot("plot", traces, layout);
+			}
+		});
+		console.log();
+		
+		for (const obs of observation) {
+			const nodes =  $('#observations').treeview(true).findNodes(obs, "uri")
+			$('#observations').treeview(true).toggleNodeSelected(nodes)
+			$('#observations').treeview(true).revealNode(nodes)
+		}
+
+	})
+	
 	var parameters = window.location.search.substring(1).split("&");
 
     var localTo = new Date();
@@ -70,7 +124,7 @@ function onLoad() {
 	for (i=0; i < parameters.length; i++) {
 		switch(parameters[i].split("=")[0]) {
 		case "observation":
-			observation = decodeURIComponent(parameters[i].split("=")[1]);
+			observation = decodeURIComponent(parameters[i].split("=")[1]).split(",");
 			break;
 		case "title":
 			title = unescape(unescape(parameters[i].split("=")[1]));
@@ -86,8 +140,7 @@ function onLoad() {
 	
 	layout.title = title;
 	
-	 $("#form").append("<input type='hidden' name='observation' value=\""+observation+"\" />");
-	 $("#form").append("<input type='hidden' name='title' value='"+escape(title)+"'/>");
+	// TODO: use updateFormUI
 	 if (forecast) $("#form").append("<input type='hidden' name='forecast' value=\"true\" />");
 	 if (place != null) $("#form").append("<input type='hidden' name='place' value=\""+place+"\" />");
 	 
@@ -104,9 +157,74 @@ function onLoad() {
 		defaultDate: [localTo],
 		time_24hr : true
 	});
+}
+
+function selectObservation(node,from,to) {
+	if (selection.length > 1) {
+		const oldNode = selection.shift();
+		const t = $('#observations').treeview(true)
+		
+		// oldNode is just a clone of the real node cotained inside the tree.
+		// finding the node retrives the real one.
+		const treeNode = t.findNodes(oldNode.nodeId,"nodeId")
+		t.toggleNodeSelected(treeNode,{silent:true})
+	}
+
+	selection.push(node)
+
+	disableBottomMap();
 	
-	if(forecast) doForecastQuery(place, observation,localFrom.toISOString(),localTo.toISOString());
-	else doQuery(observation,localFrom.toISOString(),localTo.toISOString());
+	updateUIForm()
+
+	retriveObservedData(node.uri, from.toISOString(), to.toISOString())
+		.then((data) => {
+			data.name = node.text
+
+			updateTraces(data,node.symbol)
+			Plotly.newPlot("plot", traces, layout);
+		})
+}
+
+function unselectObservation(node) {
+	if(selection.length < 2){
+		traces.pop() 
+		selection.pop()
+		return
+	} 
+
+	if(node.nodeId === selection[0].nodeId){
+		traces.shift()
+		selection.shift()
+	}else{
+		traces.pop()
+		selection.pop()
+	}
+
+	updateUIForm()
+
+}
+
+function updateUIForm() {
+	let obs = ""
+	let title = ""
+	
+	for (const node of selection) {
+		obs += node.uri + ","
+		title += `${node.text}&`
+	}
+
+	obs = obs.substr(0, obs.length - 1)
+	title = title.substr(0,title.length -1)
+	layout.title = title
+
+	$("#form > input[name='observation']").attr("value", obs)
+	$("#form > input[name='title']").attr("value", escape(title))
+}
+
+function retriveObservedData(observation,from,to) {
+	// TIMESTAMPS are stored as local time using now() of SPARQL (e.g. "2019-06-26T12:32:47.0023")
+	if(forecast) return doForecastQuery(place, observation,from,to);
+	else return doQuery(observation,from,to);
 }
 
 function doForecastQuery(place,property,from,to) {
@@ -132,8 +250,8 @@ function doForecastQuery(place,property,from,to) {
 	console.log("From: "+from);
 	console.log("To: "+to);
 	 
-	sepa.query(query,jsap).then((data)=>{ 
-		 results(data);
+	return sepa.query(query,jsap).then((data)=>{ 
+		 return results(data);
 	 });	
 }
 
@@ -159,72 +277,64 @@ function doQuery(observation,from,to) {
 	console.log("From: "+from);
 	console.log("To: "+to);
 	 
-	sepa.query(query,jsap).then((data)=>{ 
-		 results(data);
+	return sepa.query(query,jsap).then((data)=>{ 
+		 return results(data);
 	 });	
 }
 
 function onRefresh() {
-	// Convert to SERVER local time
+
+	traces = []
+
 	serverTo = new Date(calendarTo.selectedDates[0].getTime());
-	sparqlTo = serverTo.toISOString();
-	
+
 	serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
-	sparqlFrom = serverFrom.toISOString();
-	
-//    doQuery(observation,sparqlFrom,sparqlTo);
-    
-    if (forecast) doForecastQuery(place, observation,sparqlFrom,sparqlTo);
-	else doQuery(observation,sparqlFrom,sparqlTo);
+
+	retriveObservedData(selection[0].uri, serverFrom.toISOString(), serverTo.toISOString())
+		.then((data) => {
+			data.name = selection[0].text
+
+			updateTraces(data, selection[0].symbol)
+			Plotly.newPlot("plot", traces, layout);
+		}).then(() => {
+			retriveObservedData(selection[1] ? selection[1].uri : undefined, serverFrom.toISOString(), serverTo.toISOString())
+				.then((data) => {
+					data.name = selection[1].text
+
+					updateTraces(data, selection[1].symbol)
+					Plotly.newPlot("plot", traces, layout);
+				})
+		})	
+
 }
 
-// LOADING...
-// var timer = window.setInterval(waitingTimer, 1000);
-// var seconds = 0;
-//
-// function waitingTimer() {
-// seconds += 1;
-// document.getElementById('waiting').innerHTML = "<h3 id='load'>Loading
-// data...please wait...(elapsed seconds: "
-// + seconds + ")</h3>";
-// }
+function updateTraces(newTrace,unit) {
+	const layoutAxisKeys = ["yaxis","yaxis2"]
+	newTrace.unit = unit
+	
+	if (traces.length > 1) {
+		traces.shift()
+	}
+	traces.push(newTrace)
+
+	for (let i = 0; i < traces.length; i++) {
+		traces[i].line.color = colors[i]
+		traces[i].yaxis = axisLabels[i]
+		layout[layoutAxisKeys[i]].title = traces[i].unit
+	}
+}
 
 function results(jsapObj) {
-	var traces = [];
-	var layouts = [];
-
-	// LOADING...
-	// window.clearInterval(timer);
-
-	// This was supposed to be used to visualize multiple graphs. Now we have
-	// just one graph to show.
-	// for (i in a) {
+	
 	var trace = {
 		x : [],
 		y : [],
-		name : "value",
 		line : {
-			width : 1,
-			color : colors[0]
+			width : 1.25,
 		},
-		type : 'scatter'
+		type : 'scatter',
 	};
-	traces.push(trace);
-
-	layouts.push({
-		title : layout.title,
-		titlefont : {
-			family : 'Verdana',
-			size : 10,
-			color : 'rgb(17,57,177)'
-		},
-		color : colors[0],
-		tickfont : {
-			family : 'Verdana',
-			size : 10
-		}
-	});
-	// }
+	
 	
 	csvData = [];
 
@@ -234,68 +344,58 @@ function results(jsapObj) {
 		// To local time
 		localTime = new Date(timestamp);
 		
-		for (i in traces) {
-			if (binding[traces[i].name] === undefined)
-				continue;
+		value = parseFloat(binding.value.value);
 			
-			value = parseFloat(binding[traces[i].name].value);
+		trace.x.push(localTime);
+		trace.y.push(value);
 			
-			traces[i].x.push(localTime);
-			traces[i].y.push(value);
-			
-			// CSV
-			csvData.push([timestamp,value]);
+		// CSV
+		csvData.push([timestamp,value]);
+	}
 
-			console.log("Value: "+value+" Max: "+max[i]+" Min: "+min[i])
-			
-			if (max[i] === undefined) {
-				max[i] = value;
-				min[i] = value;
-			} else {
-				if (value > max[i]) {
-					max[i] = value;
-				}
-				else if (value < min[i]) {
-					min[i] = value;
-				}
+	return trace
+}
+
+function disableBottomMap(){
+
+	switch(selection.length)
+			{
+				case 0:
+					document.getElementById("map").disabled = true;
+					break;
+				case 1:
+					document.getElementById("map").disabled = false;
+					break;
+
+				case 2:
+					var parentId = selection[0].parentId;
+					var parentId2 = selection[1].parentId;
+
+					if(parentId == parentId2){
+						document.getElementById("map").disabled = false;
+					}else{
+						document.getElementById("map").disabled = true;
+					}
+					break;
 			}
+}
 
-			if (i !== "0") {
-				index = parseInt(i, 10) + 1;
-				traces[i].yaxis = "y" + index;
-
-				if (i === 1) {
-					layout.yaxis2.range[0] = min[i];
-					layout.yaxis2.range[1] = max[i];
-				}
-			} else {
-				layout.yaxis.range[0] = min[i];
-				layout.yaxis.range[1] = max[i];
-			}
-		}
+function redirectMap() {
+	let t = $('#observations').treeview(true)
+	let node = t.getParents(selection[0])[0]
+	let id = node.nodeId.split(".")
+	
+	while(id.length > 2){
+		node = $('#observations').treeview(true).getParents(node)[0]
+		id = node.nodeId.split(".")
 	}
 	
-	layout.yaxis.range[1] = layout.yaxis.range[1] + (layout.yaxis.range[1]-layout.yaxis.range[0])*0.25;
-	layout.yaxis.range[0] = layout.yaxis.range[0] - (layout.yaxis.range[1]-layout.yaxis.range[0])*0.25;
-	
-	// Overview (all traces)
-	var data = [];
-	for (i in traces) {
-		data.push(traces[i]);
-	}
+	var long = node.long;
+	var lat = node.lat;
 
-	Plotly.newPlot("plot", data, layout);
+	localStorage.setItem('lat', lat);
+	localStorage.setItem('long', long);		/*inserisco nell'oggetto localstorage le due variabili con le chiavi rispettive,
+											uso queste perchè i dati allocati persistono nelle diverse sessioni*/
 
-	// Trace by trace
-	for (i in traces - 1) {
-		var data = [ traces[i] ];
-		Plotly.newPlot(traces[i].name, data, layouts[i]);
-	}
-
-	window.onresize = function() {
-		Plotly.relayout("plot", {
-			width : 0.9 * window.innerWidth,
-			height : 0.7 * window.innerHeight
-		})
-	}
+	location.href = "./index.html";	//redirect nella pagina html
 }

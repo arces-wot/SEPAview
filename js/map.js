@@ -7,8 +7,22 @@ function initMap() {
 	// Bologna
 	//map = L.map('mapid').setView([44.494048,11.343391], 13);
 	
-	// Bertacchini
-	map = L.map('mapid').setView([44.776585,10.717520], 15);
+	var lat = localStorage.getItem('lat');
+	var long = localStorage.getItem('long');
+	
+	/*viene previsto il caso in cui ci sono due radici differenti che vengono selezionate
+	in questo caso viene presa in considerazione l'ultima selezionata*/
+
+	if(lat != null || long != null)	//se non sono presenti dati
+	{
+		map = L.map('mapid').setView([lat,long], 15);	//zoom su lat/long che determino io con i dati appena ricavati
+		localStorage.removeItem('lat');
+		localStorage.removeItem('long');	/*rimuovo le due variabili dall'oggetto, se ricarico la pagina 
+											la mappa non sarà zoomata sul nodo precedentemente selezionata*/
+	}else{
+		// Bertacchini
+		map = L.map('mapid').setView([44.776585,10.717520], 15);
+	}
 	
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -84,8 +98,6 @@ function drawVectorLayers() {
 	];
 	
 	var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map);
-	// zoom the map to the polyline
-	map.fitBounds(polyline.getBounds());
 }
 
 
