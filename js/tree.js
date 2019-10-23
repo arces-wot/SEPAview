@@ -36,7 +36,7 @@ function createObservationsNav(placeUri,placeName) {
 	$("#v-pills-tab").append("<a class='nav-link' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+placeName+"</a>");
 	$("#"+id+"-tab").tab('show');
 	
-	createNav(placeUri,id+"-tab",0);
+	createNav(placeUri,id+"-tab",1);
 }
 
 function createNav(placeUri, parentId,n) {
@@ -61,8 +61,10 @@ function createNav(placeUri, parentId,n) {
 				placeIds[childUri] = generateID();
 			}
 			id = placeIds[childUri];
+			
+			for (i=0; i < n;i++) {childName = "&nbsp&nbsp&nbsp" + childName};
 						
-			$("#v-pills-tab").append("<a class='nav-link ml-"+n*3+"' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
+			$("#v-pills-tab").append("<a class='nav-link' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+childName+"</a>");		
 			$("#"+id+"-tab").insertAfter("#"+parentId);
 			
 			createNav(childUri,id+"-tab",n+1);
