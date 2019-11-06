@@ -17,7 +17,7 @@ function createObservationsNav(placeUri,placeName) {
 	$("#tree").append("<div class='nav flex-column nav-pills' id='v-pills-tab' role='tablist' aria-orientation='vertical'/>");
 	$("#v-pills-tab").append("<a class='nav-link' id='"+id+"-tab' data-toggle='pill' href='#"+id+"' role='tab' aria-controls='"+id+"' aria-selected='false'>"+placeName+"</a>");
 	$("#"+id+"-tab").tab('show');
-	
+
 	createNav(placeUri,id+"-tab",0);
 }
 

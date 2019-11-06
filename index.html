@@ -53,6 +53,10 @@
 		initMap();
 		liveMonitor();
 		liveForecasts();
+		let n = localStorage.getItem('name');
+		let u = localStorage.getItem('uri');
+		//createNav();
+		createObservationsNav(u,n);
 	}
 </script>
 
