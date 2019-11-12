@@ -104,6 +104,9 @@ function liveMonitor() {
             let label = binding.label.value;
 			let observation = binding.observation.value;
 			let quantity = 	binding.quantity.value;
+			
+			// TIMESTAMP
+			let timestamp = binding.timestamp.value;
 
 			console.log("Place: "+place+" Observation: "+observation);
             	
@@ -134,7 +137,8 @@ function liveMonitor() {
             			"ranges" : [ valueAsFloat, valueAsFloat, valueAsFloat*2 ],
             			"measures" : [valueAsFloat, valueAsFloat ],
             			"markers" : [ valueAsFloat, valueAsFloat ],
-            			"quantity" : quantity
+            			"quantity" : quantity,
+            			"timestamp" : timestamp
             		});
 
 
@@ -142,7 +146,7 @@ function liveMonitor() {
             }
             	   
             // UPDATE data
-            updateObservation(observation,place,valueAsFloat);
+            updateObservation(observation,place,valueAsFloat,timestamp);
         }
         
         updateNotifications();
@@ -194,18 +198,20 @@ function addObservation(observation,place,data){
         });
 }
 
-function updateObservation(observation,place,valueAsFloat) {
+function updateObservation(observation,place,valueAsFloat,timestamp) {
 	let data = sensorData[place][observation]["data"][0];
 	
 	// Timestamp
 	let obs_id = sensorData[place][observation]["div_id"];
 	
-	if (data["timestamp"] != undefined) $("#timestamp_"+obs_id).html(data["timestamp"]);
-	else {
-		let date = new Date();
-		let timestamp = date.toLocaleString();	
-		$("#timestamp_"+obs_id).html(timestamp);
-	}
+	$("#timestamp_"+obs_id).html(timestamp);
+	
+//	if (data["timestamp"] != undefined) $("#timestamp_"+obs_id).html(data["timestamp"]);
+//	else {
+//		let date = new Date();
+//		let timestamp = date.toLocaleString();	
+//		$("#timestamp_"+obs_id).html(timestamp);
+//	}
 	
 	
 	$("#value_"+obs_id).html(valueAsFloat);
