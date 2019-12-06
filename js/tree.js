@@ -1,6 +1,7 @@
 // DEPRECATED - this file mixes UI and data loding, to retrive a tree
 // of Observations and Places use tree2.js. Then render it within your 
 // UI logic.
+
 function createObservationsNav(placeUri,placeName) {
 	// Create place UUID if it do not exist
 	if (placeIds[placeUri] === undefined) {

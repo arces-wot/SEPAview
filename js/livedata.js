@@ -149,10 +149,10 @@ function liveMonitor() {
     });
 }
 
-function showObservations(place) {
-	if (sensorData[place] != undefined)
-		$("#"+sensorData[place]["div_id"]).show();	
-}
+//function showObservations(place) {
+//	if (sensorData[place] != undefined)
+//		$("#"+sensorData[place]["div_id"]).show();	
+//}
 
 function addPlace(place_id, name) {
 	$("#graph").append("<div class='tab-pane fade' id='"+place_id+"' role='tabpanel' aria-labelledby='"+place_id+"-tab'><div class='card mt-3'><div class='card-header'>"+name+"</div></div></div>");
