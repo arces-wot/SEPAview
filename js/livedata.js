@@ -105,7 +105,7 @@ function liveMonitor() {
 			let observation = binding.observation.value;
 			let quantity = 	binding.quantity.value;
 
-			console.log("Place: "+place+" Observation: "+observation);
+//			console.log("Place: "+place+" Observation: "+observation);
             	
             // NEW PLACE
             if (sensorData[place] === undefined) {
@@ -116,7 +116,7 @@ function liveMonitor() {
             	    }
             	    sensorData[place]["div_id"] = placeIds[place];
             	    
-            	    addPlace(sensorData[place]["div_id"],name);
+            	    addPlace(sensorData[place]["div_id"],name,place);
             }
             
             // NEW OBSERVATION
@@ -154,9 +154,43 @@ function liveMonitor() {
 //		$("#"+sensorData[place]["div_id"]).show();	
 //}
 
-function addPlace(place_id, name) {
-	$("#graph").append("<div class='tab-pane fade' id='"+place_id+"' role='tabpanel' aria-labelledby='"+place_id+"-tab'><div class='card mt-3'><div class='card-header'>"+name+"</div></div></div>");
+// 
+
+function addPlace(place_id, name,place) {
+	var today = new Date();
+	var tomorrow = new Date();
+	tomorrow.setDate(tomorrow.getDate()+1);
+	var dat = new Date();
+	dat.setDate(dat.getDate()+2);
+	
+	$("#graph").append("<div class='tab-pane fade' id='"+place_id+"' role='tabpanel' aria-labelledby='"+place_id+"-tab'>" +
+	"<div id='live_"+place_id+"'></div>" +
+	"<div class='container flex-row-reverse' id='forecast_"+place_id+"'>" +
+			"<div class='alert alert-danger mt-3' role='alert'>Forecast</div>" +
+			"<div class='alert alert-secondary mt-3' id='forecast_"+place_id+"_0' role='alert'><h6 class='alert-heading'>Today ("+today.toDateString()+")</h6><hr></div>" +
+			"<div class='alert alert-secondary mt-3' id='forecast_"+place_id+"_1' role='alert'><h6 class='alert-heading'>Tomorrow ("+tomorrow.toDateString()+")</h6><hr></div>" +
+			"<div class='alert alert-secondary mt-3' id='forecast_"+place_id+"_2' role='alert'><h6 class='alert-heading'>Day after tomorrow ("+dat.toDateString()+")</h6><hr></div>" +
+		"</div>" +
+	"</div>" +
+	"</div>");
+
+	$("#forecast_"+place_id).hide();
+	
+	// Query forecast
+	queryForecast(place,place_id,name);
 }
+
+//function addDayCard(place_id,day) {
+//	if ($("#forecast_"+place_id+"_"+day).length == 0) {
+//		if (day == 0) title = "Today";
+//		else if (day == 1) title = "Tomorrow";
+//		else title = "Day after tomorrow"
+//		$("#forecast_"+place_id).append("<div class='card'>" +
+//				"<div class='card-header'>"+title+"</div>" +
+//				"<div class='card-body id='forecast_"+place_id+"_"+day+"'></div>" +
+//		"</div>");
+//	}
+//}
 
 function addObservation(observation,place,data){
 	let obs_id = sensorData[place][observation]["div_id"];
@@ -164,10 +198,10 @@ function addObservation(observation,place,data){
 	if(data[0]["forecast"] != undefined) forecast = "true";
 	else forecast = "false";
 	
-	$("#"+sensorData[place]["div_id"]).append("<div class='container'>" +
+	$("#live_"+sensorData[place]["div_id"]).append("<div class='container'>" +
 			"<div class='row flex-row-reverse'><div id='"+obs_id+"'></div></div>" +
 			"<div class='row flex-row-reverse'>" +
-				"<form action='./history.html'>" +
+				"<form target='_blank' action='./history.html'>" +
     					"<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+observation+"\" />" +
     					"<input class='form-control form-control-sm' type='hidden' name='place' value=\""+place+"\" />" +
     					"<input class='form-control form-control-sm' type='hidden' name='forecast' value=\""+forecast+"\" />" +

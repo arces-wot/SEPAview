@@ -21,7 +21,7 @@ var traces = [];
 const axisLabels = ["y", "y2"]
 
 var place = null;
-var forecast = false;
+var forecast = null;
 
 var layout = {
 	title : "No data",
@@ -130,7 +130,7 @@ function onLoad() {
 			title = unescape(unescape(parameters[i].split("=")[1]));
 			break;
 		case "forecast":
-			if (parameters[i].split("=")[1] == "true") forecast = true;
+			forecast = parameters[i].split("=")[1];
 			break;
 		case "place":
 			place = decodeURIComponent(parameters[i].split("=")[1]);
@@ -141,7 +141,7 @@ function onLoad() {
 	layout.title = title;
 	
 	// TODO: use updateFormUI
-	 if (forecast) $("#form").append("<input type='hidden' name='forecast' value=\"true\" />");
+	 if (forecast != null) $("#form").append("<input type='hidden' name='forecast' value='"+forecast+"' />");
 	 if (place != null) $("#form").append("<input type='hidden' name='place' value=\""+place+"\" />");
 	 
 	calendarFrom = flatpickr("#from", {
@@ -223,11 +223,11 @@ function updateUIForm() {
 
 function retriveObservedData(observation,from,to) {
 	// TIMESTAMPS are stored as local time using now() of SPARQL (e.g. "2019-06-26T12:32:47.0023")
-	if(forecast) return doForecastQuery(place, observation,from,to);
+	if(forecast != null) return doForecastQuery(place, observation,from,to,forecast);
 	else return doQuery(observation,from,to);
 }
 
-function doForecastQuery(place,property,from,to) {
+function doForecastQuery(place,property,from,to,n) {
 	const sepa = Sepajs.client;
 
 	// PREFIXES
@@ -245,7 +245,8 @@ function doForecastQuery(place,property,from,to) {
 	query = query.replace("?property", "<"+property+">");
 	query = query.replace("?from", "'" + from.substr(0,10) + "'");
 	query = query.replace("?to", "'" + to.substr(0,10) + "'");
-
+	query = query.replace("?n", n);
+	
 	console.log("FORECAST Place: "+place + " Property: "+property);
 	console.log("From: "+from);
 	console.log("To: "+to);
