@@ -22,6 +22,7 @@ Clone the repository: ```https://github.com/arces-wot/SEPAview.git```
 * **Martina Verardi** - *Initial work* - [Shady96](https://github.com/Shady96)
 * **Cristiano Aguzzi** - *Initial work* - [relu91](https://github.com/relu91)
 * **Luca Roffia** - *Initial work* - [lroffia](https://github.com/lroffia)
+* **Lorenzo Pisanò** - *Contributor* - [lorenzo0](https://github.com/lorenzo0)
 
 See also the list of [contributors](https://github.com/arces-wot/SEPAview/graphs/contributors) who participated in this project.
 
