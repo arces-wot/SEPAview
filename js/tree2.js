@@ -11,7 +11,6 @@ function loadPlaceTree() {
     
     let tree  = []
    
-
     return sepa.query(allObservations,jsap).then((data) => {
         let obsMapping = {}
 

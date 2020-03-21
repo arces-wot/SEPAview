@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="icon/swamp.png">
+<title>SEPAView - Forecasts</title>
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet"
+	href="fontawesome-free-5.0.6/web-fonts-with-css/css/fontawesome-all.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/patternfly-bootstrap-treeview@2.1.8/dist/bootstrap-treeview.min.css">
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.10.6/web/sepa.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/patternfly-bootstrap-treeview@2.1.8/dist/bootstrap-treeview.js"></script>
+	
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- <script src="js/tree2.js"></script> -->
+<script src="lib/color-scheme.js"></script>
+<script src="js/model/jsap.js"></script>
+<script src="js/view/forecasthistory.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<style>
+	
+	.tree::-webkit-scrollbar {
+    	width: 3px;
+    	background-color: #F5F5F5;
+	}
+	
+	.tree::-webkit-scrollbar-thumb {
+    	background-color: #0088f8c7;
+	}
+
+	.tree::-webkit-scrollbar-track {
+		background-color: #F5F5F5;
+	}
+</style>
+</head>
+
+<body onload='onLoad()'>
+	<nav class="navbar">
+		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
+			width="28" class="d-inline-block align-top" alt=""> SWAMP - Smart Water Management Platform
+		</a>
+	</nav>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="order-1 order-lg-12  col-lg-10">
+				<div class="row col-12">
+					<div class="row col-12">
+						<div id="plot" class="container-fluid col-12 align-self-center" style="width: 100%;height: 100%;"></div>
+					</div>
+					<div class="row col-12 justify-content-center">
+						<div class="col-12 mt-4">
+							<form id="form">
+								<div class="form-row justify-content-lg-center">
+									<div class="col-auto">
+										<h4>
+											<span class="badge badge-secondary mt-1">Local time range</span>
+										</h4>
+									</div>
+									<div class="col-auto">
+										<label class="sr-only" for="inlineFormInputGroup">From:</label>
+										<div class="input-group mb-2">
+											<div class="input-group-prepend">
+												<div class="input-group-text">From:</div>
+											</div>
+											<input type="text" class="form-control" id="from" name="from" placeholder="from">
+										</div>
+									</div>
+									<div class="col-auto">
+										<label class="sr-only" for="inlineFormInputGroup">To:</label>
+										<div class="input-group mb-2">
+											<div class="input-group-prepend">
+												<div class="input-group-text">To:</div>
+											</div>
+											<input type="text" class="form-control" id="to" name="to" placeholder="to">
+										</div>
+									</div>
+									<div class="col-auto">
+										<button type="button" onclick="javascript:onRefresh();" id="refresh" class="btn btn-primary mb-2">
+											<i class="fas fa-search"></i>&nbsp;Zoom
+										</button>
+									</div>
+									<div class="col-auto">
+										<button type="submit" id="last24h" class="btn btn-primary mb-2">
+											<i class="fas fa-sync-alt"></i>&nbsp;24h
+										</button>
+									</div>
+									<div class="col-auto">
+										<button type="button" class="btn btn-primary" onclick="javascript:downloadCSV();">
+											<small><i class="fas fa-download"></i>&nbsp;CSV</small>
+										</button>
+									</div>
+								</div>
+								<input type='hidden' name='title' />
+								<input type='hidden' name='observation' />
+							</form>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		
+	</div>
+
+
+</body>
+</html>

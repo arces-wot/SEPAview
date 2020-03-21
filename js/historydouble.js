@@ -1,4 +1,3 @@
-let serverUTCOffset = 0;
 let lastHours = 24;
 
 let a = [];
@@ -7,21 +6,73 @@ var min = [];
 
 var s = new ColorScheme;
 
-// Using a fixed palette 
+// Using a fixed palette
 var colors = ["#2980b9","#16a085"]
-
 
 var csvData;
 
 var observation = [];
 var title;
-var calendar;
+var calendarFrom,calendarTo;
 const selection = [];
 var traces = [];
 const axisLabels = ["y", "y2"]
 
 var place = null;
-var forecast = null;
+var tz = "UTC";
+var localTzOffset = 0;
+var remoteTzOffset = 0;
+var tzOffset = 0;
+
+function changeHistoryTimeZone() {
+	var newTz = document.getElementById("historyTimeZone").value;
+	
+	var from = moment(calendarFrom.selectedDates[0]);
+	var to = moment(calendarTo.selectedDates[0]);
+	
+	if (tz == "UTC") {	
+		if (newTz == "Local") {
+			tzOffset = localTzOffset;
+		}
+		else {
+			tzOffset = remoteTzOffset;
+		}
+	} else if (tz == "Local") {
+		if (newTz == "UTC") {
+			tzOffset = -localTzOffset;
+		}
+		else {
+			tzOffset =  remoteTzOffset - localTzOffset;
+		}
+	} else {
+		if (newTz == "UTC") {
+			tzOffset = -remoteTzOffset;
+		}
+		else {
+			tzOffset =  localTzOffset - remoteTzOffset;
+		}
+	}
+	
+	tz = newTz;
+	
+	if (tzOffset == 0) return;
+	
+	from.add(tzOffset,'m');
+	to.add(tzOffset,'m');
+	
+	calendarFrom.setDate(new Date(from.format()));
+	calendarTo.setDate(new Date(to.format()));	
+	
+	for (trace of traces) {
+		for (i=0 ; i < trace.x.length; i++) {
+			var timestamp = moment(trace.x[i]).utc();
+			timestamp.add(tzOffset,'m');
+			trace.x[i] = timestamp.format();
+		}
+	}
+	
+	Plotly.newPlot("plot", traces, layout);	
+}
 
 var layout = {
 	title : "No data",
@@ -82,27 +133,22 @@ function downloadCSV() {
 }
 
 function onLoad() {
-	//Init plot
+	// Init plot
 	Plotly.newPlot("plot", [], layout, { responsive: true });
 
 	loadPlaceTree().then((tree) => {
 		$('#observations').treeview({
 			data: tree, 
-			levels: 1, //Define how many levels to expand
+			levels: 1, // Define how many levels to expand
 			multiSelect : true, 
 			expandIcon: "fas fa-plus",
 			collapseIcon: "fas fa-minus",
 			onNodeSelected: function (event, data) {
-				serverTo = new Date(calendarTo.selectedDates[0].getTime());
-				
-				serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
-			
-				selectObservation(data,serverFrom,serverTo)
+				selectObservation(data)
 			},
 
 			onNodeUnselected: function (event,data) {
 				unselectObservation(data)
-				Plotly.newPlot("plot", traces, layout);
 			}
 		});
 		console.log();
@@ -117,9 +163,6 @@ function onLoad() {
 	
 	var parameters = window.location.search.substring(1).split("&");
 
-    var localTo = new Date();
-    var localFrom = new Date(localTo.getTime() - lastHours * 3600 * 1000);
-    
 	var i;
 	for (i=0; i < parameters.length; i++) {
 		switch(parameters[i].split("=")[0]) {
@@ -128,9 +171,6 @@ function onLoad() {
 			break;
 		case "title":
 			title = unescape(unescape(parameters[i].split("=")[1]));
-			break;
-		case "forecast":
-			forecast = parameters[i].split("=")[1];
 			break;
 		case "place":
 			place = decodeURIComponent(parameters[i].split("=")[1]);
@@ -141,25 +181,54 @@ function onLoad() {
 	layout.title = title;
 	
 	// TODO: use updateFormUI
-	 if (forecast != null) $("#form").append("<input type='hidden' name='forecast' value='"+forecast+"' />");
 	 if (place != null) $("#form").append("<input type='hidden' name='place' value=\""+place+"\" />");
+
+	 var to = moment(); 
+	 var from = moment();
+	 
+	 to.subtract(to.utcOffset(),'m'); 
+	 from.subtract(from.utcOffset(),'m');		 
+	 from.subtract(1,'days');
+	
+	 to = new Date(to.format()); 
+	 from = new Date(from.format());
 	 
 	calendarFrom = flatpickr("#from", {
 		mode : "single",
 		enableTime : true,
-		defaultDate: [localFrom],
+		defaultDate: [from],
 		time_24hr : true
 	});
 	
 	calendarTo = flatpickr("#to", {
 		mode : "single",
 		enableTime : true,
-		defaultDate: [localTo],
+		defaultDate: [to],
 		time_24hr : true
 	});
+
+	
+	// Remote TZ (from observation lat & lon)
+	var request = new XMLHttpRequest()
+
+	request.open('GET', 'http://api.timezonedb.com/v2.1/get-time-zone?key=BXF3O46O8VBW&format=json&by=position&lat=44.776585&lng=10.717520', true)
+	request.onload = function() {
+	  // Begin accessing JSON data here
+	  var data = JSON.parse(this.response)
+
+	  if (request.status >= 200 && request.status < 400) {
+		  remoteTzOffset = data["gmtOffset"]/60;
+	  } else {
+	    console.log('error')
+	  }
+	}
+
+	request.send()
+	
+	localTzOffset = moment().utcOffset();
 }
 
-function selectObservation(node,from,to) {
+function selectObservation(node) {
 	if (selection.length > 1) {
 		const oldNode = selection.shift();
 		const t = $('#observations').treeview(true)
@@ -171,16 +240,13 @@ function selectObservation(node,from,to) {
 	}
 
 	selection.push(node)
-
-	disableBottomMap();
 	
 	updateUIForm()
-
-	retriveObservedData(node.uri, from.toISOString(), to.toISOString())
+	
+	doQuery(node.uri)
 		.then((data) => {
-			data.name = node.text
-
-			updateTraces(data,node.symbol)
+			data.name = node.text;
+			updateTraces(data,node.symbol);
 			Plotly.newPlot("plot", traces, layout);
 		})
 }
@@ -189,6 +255,7 @@ function unselectObservation(node) {
 	if(selection.length < 2){
 		traces.pop() 
 		selection.pop()
+		Plotly.newPlot("plot", traces, layout);
 		return
 	} 
 
@@ -201,7 +268,8 @@ function unselectObservation(node) {
 	}
 
 	updateUIForm()
-
+	
+	Plotly.newPlot("plot", traces, layout);
 }
 
 function updateUIForm() {
@@ -221,42 +289,26 @@ function updateUIForm() {
 	$("#form > input[name='title']").attr("value", escape(title))
 }
 
-function retriveObservedData(observation,from,to) {
-	// TIMESTAMPS are stored as local time using now() of SPARQL (e.g. "2019-06-26T12:32:47.0023")
-	if(forecast != null) return doForecastQuery(place, observation,from,to,forecast);
-	else return doQuery(observation,from,to);
-}
-
-function doForecastQuery(place,property,from,to,n) {
-	const sepa = Sepajs.client;
-
-	// PREFIXES
-	prefixes = "";
-	for (ns in jsap["namespaces"]) {
-		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
-				+ ">";
+function doQuery(observation) {
+	console.log("Calendar from: "+calendarFrom.selectedDates[0]);
+	console.log("Calendar to: "+calendarTo.selectedDates[0]);
+	
+	if (tz == "UTC") {
+		from = flatpickr.formatDate(calendarFrom.selectedDates[0],"Y-m-dTH:i\\Z");
+		to = flatpickr.formatDate(calendarTo.selectedDates[0],"Y-m-dTH:i\\Z");
+	}
+	else if (tz == "Local") {
+		from = calendarFrom.selectedDates[0].toISOString();
+		to = calendarTo.selectedDates[0].toISOString();
+	}
+	else {
+		
 	}
 	
-	query = prefixes + " "
-	+ jsap["queries"]["DAILY_FORECAST"]["sparql"];
-
-	// Forced bindings
-	query = query.replace("?place", "<"+place+">");
-	query = query.replace("?property", "<"+property+">");
-	query = query.replace("?from", "'" + from.substr(0,10) + "'");
-	query = query.replace("?to", "'" + to.substr(0,10) + "'");
-	query = query.replace("?n", n);
-	
-	console.log("FORECAST Place: "+place + " Property: "+property);
+	console.log("Observation: "+observation);
 	console.log("From: "+from);
 	console.log("To: "+to);
-	 
-	return sepa.query(query,jsap).then((data)=>{ 
-		 return results(data);
-	 });	
-}
-
-function doQuery(observation,from,to) {
+	
 	const sepa = Sepajs.client;
 
 	// PREFIXES
@@ -273,10 +325,6 @@ function doQuery(observation,from,to) {
 	query = query.replace("?observation", "<"+observation+">");
 	query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
 	query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
-
-	console.log("Observation: "+observation);
-	console.log("From: "+from);
-	console.log("To: "+to);
 	 
 	return sepa.query(query,jsap).then((data)=>{ 
 		 return results(data);
@@ -284,27 +332,25 @@ function doQuery(observation,from,to) {
 }
 
 function onRefresh() {
-
 	traces = []
 
-	serverTo = new Date(calendarTo.selectedDates[0].getTime());
-
-	serverFrom = new Date(calendarFrom.selectedDates[0].getTime());
-
-	retriveObservedData(selection[0].uri, serverFrom.toISOString(), serverTo.toISOString())
-		.then((data) => {
+	doQuery(selection[0].uri)
+		.then((data) => {	
 			data.name = selection[0].text
-
 			updateTraces(data, selection[0].symbol)
-			Plotly.newPlot("plot", traces, layout);
+			//Plotly.newPlot("plot", traces, layout);
 		}).then(() => {
-			retriveObservedData(selection[1] ? selection[1].uri : undefined, serverFrom.toISOString(), serverTo.toISOString())
+			if (selection[1] != undefined){
+			doQuery(selection[1].uri)
 				.then((data) => {
 					data.name = selection[1].text
-
 					updateTraces(data, selection[1].symbol)
 					Plotly.newPlot("plot", traces, layout);
 				})
+			}
+			else {
+				Plotly.newPlot("plot", traces, layout);
+			}
 		})	
 
 }
@@ -341,62 +387,29 @@ function results(jsapObj) {
 
 	for (binding of jsapObj.results.bindings) {
 		timestamp = binding.timestamp.value;
-
-		// To local time
-		localTime = new Date(timestamp);
-		
 		value = parseFloat(binding.value.value);
-			
-		trace.x.push(localTime);
-		trace.y.push(value);
-			
+		
 		// CSV
 		csvData.push([timestamp,value]);
+			
+		traceTime = moment(timestamp).utc();
+		traceTime.add(tzOffset,'m');
+//		// Format date according to TZ
+//		if (tz == "UTC"){
+//			//traceTime = flatpickr.parseDate(timestamp,"Y-m-dTH:i\\Z");
+//			traceTime = timestamp;
+//		}
+//		else if (tz == "Local") {
+//			var t = moment(timestamp);
+//			t.
+//		}
+//		else if (tz == "Remote") {
+//				
+//		}
+					
+		trace.x.push(traceTime.format());
+		trace.y.push(value);		
 	}
 
 	return trace
-}
-
-function disableBottomMap(){
-
-	switch(selection.length)
-			{
-				case 0:
-					document.getElementById("map").disabled = true;
-					break;
-				case 1:
-					document.getElementById("map").disabled = false;
-					break;
-
-				case 2:
-					var parentId = selection[0].parentId;
-					var parentId2 = selection[1].parentId;
-
-					if(parentId == parentId2){
-						document.getElementById("map").disabled = false;
-					}else{
-						document.getElementById("map").disabled = true;
-					}
-					break;
-			}
-}
-
-function redirectMap() {
-	let t = $('#observations').treeview(true)
-	let node = t.getParents(selection[0])[0]
-	let id = node.nodeId.split(".")
-	
-	while(id.length > 2){
-		node = $('#observations').treeview(true).getParents(node)[0]
-		id = node.nodeId.split(".")
-	}
-	
-	var long = node.long;
-	var lat = node.lat;
-
-	localStorage.setItem('lat', lat);
-	localStorage.setItem('long', long);		/*inserisco nell'oggetto localstorage le due variabili con le chiavi rispettive,
-											uso queste perchè i dati allocati persistono nelle diverse sessioni*/
-
-	location.href = "./index.html";	//redirect nella pagina html
 }
