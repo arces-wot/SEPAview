@@ -9,7 +9,7 @@ function queryHistory(observation,from,to) {
 	}
 	
 	query = prefixes + " "
-	+ jsap["queries"]["LOG_QUANTITY"]["sparql"];
+	+ jsap["queries"]["OBSERVATION_HISTORY"]["sparql"];
 
 	// Forced bindings
 	query = query.replace("?observation", "<"+observation+">");

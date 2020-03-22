@@ -52,9 +52,6 @@ jsap = {
 			"PLACES_COUNT": {
 				"sparql": "SELECT (COUNT(?place) AS ?count) WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature}}"
 			},
-			"PLACES": {
-				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?place gn:parentFeature ?parent}}}"
-			},
 			"MAP_PLACES": {
 				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent}}}"
 			},
@@ -67,11 +64,11 @@ jsap = {
 					}
 				}
 			},
-			"OBSERVATIONS": {
-				"sparql": "SELECT * WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:hasSimpleResult ?value ; sosa:observedProperty ?property . ?property rdfs:label ?label} GRAPH <http://covid19/context> {?place gn:name ?name ;  gn:lat ?lat ; gn:long ?lon}}"
-			},
 			"OBSERVATIONS_COUNT": {
 				"sparql": "SELECT (COUNT(?observation) AS ?count) WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation}}"
+			},
+			"OBSERVATIONS": {
+				"sparql": "SELECT * WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:resultTime ?timestamp ; sosa:hasResult ?result ; sosa:observedProperty ?property . ?result rdf:type qudt:QuantityValue ; qudt:unit ?unit ; qudt:numericValue ?value . ?property rdfs:label ?label} GRAPH <http://covid19/context> {?place gn:name ?name ;  gn:lat ?lat ; gn:long ?lon} OPTIONAL {?unit qudt:symbol ?symbol}}"
 			}
 		}
 	}
