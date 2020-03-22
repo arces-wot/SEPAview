@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="icon" href="icon/swamp.png">
+<link rel="icon" href="icon/covid-19-icon.png">
 <meta charset="utf-8">
-<title>SWAMP - Water Distribution</title>
+<title>COVID-19 Linked Open Data</title>
 
 <link rel="stylesheet"
 	href="fontawesome-free-5.0.6/web-fonts-with-css/css/fontawesome-all.css">
@@ -36,8 +36,6 @@
 <script src="lib/moment.js"></script>
 <script src="lib/moment-timezone-with-data.js"></script>
 <script src="lib/odometer.js"></script>
-<!-- <script src="lib/d3.min.js"></script> -->
-<!-- <script src="lib/bullet.js"></script> -->
 <script src="lib/tz.js"></script>
 
 
@@ -68,7 +66,7 @@
 
 <script>
 	function onLoad() {
-		initMap("swamp");
+		initMap("italy");
 		subscribe();
 	}
 </script>
@@ -77,8 +75,8 @@
 
 <body onLoad='onLoad()'>
 	<nav class="navbar">
-		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
-			width=28 class="d-inline-block align-top" alt=""> SWAMP - Smart Water Management Platform
+		<a class="navbar-brand" href="#"> <img src="icon/covid-19-icon.png"
+			width=28 class="d-inline-block align-top" alt=""> COVID-19 Linked Open Data Portal
 		</a>
 		<button type="button" class="btn btn-secondary">
 			Notifications<span class="badge badge-light ml-3"><div
@@ -95,29 +93,29 @@
 				</div>
 			</div>
 			<div class='col-auto'>
-				<div class="card">
-					<div class="card-header">Knowledge graph (triples)</div>
-					<div class="card-body">
-						<div class='row mb-2'>
-							<button type="button" class="btn btn-success">
-								Live<span class="badge badge-light ml-3"><div
-										id="odoLiveSize" class="odometer"></div></span>
-							</button>
-						</div>
-						<div class='row mb-2'>
-							<button type="button" class="btn btn-danger">
-								History<span class="badge badge-light ml-3"><div
-										id="odoHistorySize" class="odometer"></div></span>
-							</button>
-						</div>
-						<div class='row'>
-							<button type="button" class="btn btn-warning">
-								Forecast<span class="badge badge-light ml-3"><div
-										id="odoForecastsSize" class="odometer"></div></span>
-							</button>
-						</div>
-					</div>
-				</div>
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-header">Knowledge graph (triples)</div> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div class='row mb-2'> -->
+<!-- 							<button type="button" class="btn btn-success"> -->
+<!-- 								Live<span class="badge badge-light ml-3"><div -->
+<!-- 										id="odoLiveSize" class="odometer"></div></span> -->
+<!-- 							</button> -->
+<!-- 						</div> -->
+<!-- 						<div class='row mb-2'> -->
+<!-- 							<button type="button" class="btn btn-danger"> -->
+<!-- 								History<span class="badge badge-light ml-3"><div -->
+<!-- 										id="odoHistorySize" class="odometer"></div></span> -->
+<!-- 							</button> -->
+<!-- 						</div> -->
+<!-- 						<div class='row'> -->
+<!-- 							<button type="button" class="btn btn-warning"> -->
+<!-- 								Forecast<span class="badge badge-light ml-3"><div -->
+<!-- 										id="odoForecastsSize" class="odometer"></div></span> -->
+<!-- 							</button> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<div class="card mt-2">
 					<div class="card-header">Semantic content</div>
 					<div class="card-body">

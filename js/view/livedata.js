@@ -11,15 +11,14 @@ notifications = [ {
 nots = 0;
 
 function onObservation(binding) {
-	let place = binding.location.value;
+	let place = binding.place.value;
 	let name = binding.name.value;
 	let lat = binding.lat.value;
-	let long = binding.long.value;
+	let long = binding.lon.value;
 	
-	let symbol = binding.symbol.value;
+	let symbol = "#"
 	let label = binding.label.value;
 	let observation = binding.observation.value;
-	let quantity = binding.quantity.value;
 	let value = binding.value ? binding.value.value : "???";
 	
 	console.log("onObservation Place:"+place+" Observation:"+observation+" value:"+value)

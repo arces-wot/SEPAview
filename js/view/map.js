@@ -18,6 +18,11 @@ var initPos = {
 			"lat": 44.4948,
 			"lng": 11.3425,
 			"zoom" : 15
+		},
+		"italy" : {
+			"lat": 42.825,
+			"lng": 10.646,
+			"zoom" : 5
 		}
 }
 
@@ -46,10 +51,10 @@ function initMap(context) {
 
 function onAddedMapPlace(places) {
 	for (binding of places) {
-        place = binding.root.value;
+        place = binding.place.value;
         name = binding.name.value;
         lat = parseFloat(binding.lat.value.replace(",","."));
-        lng = parseFloat(binding.long.value.replace(",","."));
+        lng = parseFloat(binding.lon.value.replace(",","."));
 
         add_marker(lat,lng,name,place);
     }	

@@ -7,36 +7,36 @@ function subscribe() {
 	}
 	const sepa = Sepajs.client;
 	
-	query = prefixes + " "
-	+ jsap["queries"]["HISTORICAL_TRIPLES"]["sparql"];
-	
-	let historicalTriples = sepa.subscribe(query,jsap);
-	historicalTriples.on("added",addedResults=>{
-		for (binding of addedResults.results.bindings) {
-    		if (binding.count != undefined) updateHistoryGraphSize(binding.count.value);
-    }
-	});
-	
-	query = prefixes + " "
-	+ jsap["queries"]["FORECASTS_COUNT"]["sparql"];
-	
-	let forecastsCount = sepa.subscribe(query,jsap);
-	forecastsCount.on("added",addedResults=>{
-		for (binding of addedResults.results.bindings) {
-    		if (binding.count != undefined) updateForecastsCount(binding.count.value);
-    }
-	});
-	
-	query = prefixes + " "
-	+ jsap["queries"]["LIVE_TRIPLES"]["sparql"];
-	
-	let liveTriples = sepa.subscribe(query,jsap);
-	liveTriples.on("added",addedResults=>{
-		for (binding of addedResults.results.bindings) {
-    		if (binding.count != undefined) updateLiveGraphSize(binding.count.value);
-    }
-    });
-	
+//	query = prefixes + " "
+//	+ jsap["queries"]["HISTORICAL_TRIPLES"]["sparql"];
+//	
+//	let historicalTriples = sepa.subscribe(query,jsap);
+//	historicalTriples.on("added",addedResults=>{
+//		for (binding of addedResults.results.bindings) {
+//    		if (binding.count != undefined) updateHistoryGraphSize(binding.count.value);
+//    }
+//	});
+//	
+//	query = prefixes + " "
+//	+ jsap["queries"]["FORECASTS_COUNT"]["sparql"];
+//	
+//	let forecastsCount = sepa.subscribe(query,jsap);
+//	forecastsCount.on("added",addedResults=>{
+//		for (binding of addedResults.results.bindings) {
+//    		if (binding.count != undefined) updateForecastsCount(binding.count.value);
+//    }
+//	});
+//	
+//	query = prefixes + " "
+//	+ jsap["queries"]["LIVE_TRIPLES"]["sparql"];
+//	
+//	let liveTriples = sepa.subscribe(query,jsap);
+//	liveTriples.on("added",addedResults=>{
+//		for (binding of addedResults.results.bindings) {
+//    		if (binding.count != undefined) updateLiveGraphSize(binding.count.value);
+//    }
+//    });
+//	
 	query = prefixes + " "
 	+ jsap["queries"]["PLACES_COUNT"]["sparql"];
 	

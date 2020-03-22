@@ -70,11 +70,11 @@ function queryChilds(placeUri,tree) {
 }
 
 function queryForecast(place,place_id,name,day) {	
-	initForecasts(place_id,day);
-	
-	addForecastForDay(place,place_id,name,day,0);
-	addForecastForDay(place,place_id,name,day,1);
-	addForecastForDay(place,place_id,name,day,2);
+//	initForecasts(place_id,day);
+//	
+//	addForecastForDay(place,place_id,name,day,0);
+//	addForecastForDay(place,place_id,name,day,1);
+//	addForecastForDay(place,place_id,name,day,2);
 }
 
 function addForecastForDay(place,place_id,name,day,n) {
