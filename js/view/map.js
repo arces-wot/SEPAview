@@ -5,9 +5,9 @@ var icons = {};
 
 var initPos = {
 		"swamp" : {
-			"lat" : 44.779,
+			"lat" : 44.781,
 			"lng" : 10.717520,
-			"zoom" : 13
+			"zoom" : 14
 		},
 		"default" : {
 			"lat" : 44.50265,
@@ -95,6 +95,7 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#FosdondoSud"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#FosdondoNord"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#CanaleSanMichele"] = wheel;
+	icons["http://wot.arces.unibo.it/monitor#FosdondoDirezioneSud"] = wheel;
 }
 
 function drawVectorLayers() {
