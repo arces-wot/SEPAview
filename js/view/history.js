@@ -8,6 +8,7 @@ var s = new ColorScheme;
 var colors = ["#2980b9","#16a085"]
 
 var observation;
+var property;
 var title;
 var symbol;
 var placeZone;
@@ -17,6 +18,11 @@ var calendarFrom,calendarTo;
 var traces = [];
 const axisLabels = ["y", "y2"]
 var timestamps = []
+
+var graphConfig = {
+	responsive: true,
+	
+}
 
 var layout = {
 	title : "No data",
@@ -59,8 +65,9 @@ var layout = {
 		zeroline: false,
 		showline: false
 	},
-	margin:{
-		l : 0
+	margin:{	
+		l: 0,
+		r: 40
 	}
 };
 
@@ -74,7 +81,7 @@ function getCalendarDates() {
 
 function onLoad() {
 	// Init plot
-	Plotly.newPlot("plot", [], layout, { responsive: true });
+	Plotly.newPlot("plot", [], layout, graphConfig);
 	
 	var parameters = window.location.search.substring(1).split("&");
 
@@ -91,7 +98,12 @@ function onLoad() {
 			placeName = unescape(unescape(parameters[i].split("=")[1]));
 			break;
 		case "placeUri":
-			placeUri = decodeURIComponent(parameters[i].split("=")[1]).split(",");
+			placeUri = decodeURIComponent(parameters[i].split("=")[1]).split(",")[0];
+			placeUri = decodeURIComponent(placeUri);
+			break;
+		case "property":
+			property = decodeURIComponent(parameters[i].split("=")[1]).split(",")[0];
+			property = decodeURIComponent(property)
 			break;
 		case "symbol":
 			symbol = unescape(unescape(parameters[i].split("=")[1]));
@@ -124,7 +136,7 @@ function onLoad() {
 		defaultDate: [interval[1]],
 		time_24hr : true
 	});
-	
+	console.log("query")
 	onRefresh();
 }
 
@@ -158,7 +170,7 @@ function initCalendar() {
 	var from = moment();
 	from.subtract(from.utcOffset(),'m');
 
-	from.subtract(1, 'days');
+	from.subtract(30, 'days');
 
 	toDate = new Date(to.format());
 	fromDate = new Date(from.format());
@@ -179,8 +191,8 @@ function doQuery(observation) {
 	console.log("Observation: "+observation);
 	console.log("From: "+interval["from"]);
 	console.log("To: "+interval["to"]);
-	
-	return queryHistory(observation,interval["from"],interval["to"]).then((data) => {
+
+	return queryHistory(placeUri, property ,interval["from"],interval["to"]).then((data) => {
 		return results(data);
 	});
 }
@@ -234,7 +246,7 @@ function onRefresh() {
 		.then((data) => {	
 			data.name = title;
 			updateTraces(data, symbol)
-			Plotly.newPlot("plot", traces, layout);
+			Plotly.newPlot("plot", traces, layout, graphConfig);
 		});
 }
 
@@ -249,8 +261,8 @@ function updateTraces(newTrace,unit) {
 
 	for (let i = 0; i < traces.length; i++) {
 		traces[i].line.color = colors[i]
-		traces[i].yaxis = axisLabels[i]
-		layout[layoutAxisKeys[i]].title = traces[i].unit
+		traces[i].yaxis = ""
+		layout[layoutAxisKeys[i]].title = ""
 	}
 }
 
@@ -259,7 +271,7 @@ function updateHistoryGraph() {
 		for (j=0 ; j < traces[i].x.length; j++)
 		traces[i].x[j] = getTraceTime(timestamps[j])
 	}
-	Plotly.newPlot("plot", traces, layout);
+	Plotly.newPlot("plot", traces, layout, graphConfig);
 }
 
 function results(jsapObj) {

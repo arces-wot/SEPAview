@@ -1,6 +1,8 @@
-function queryHistory(observation,from,to) {
+function queryHistory(place,property,from,to) {
+	console.log(place,property,from,to);
+	
 	const sepa = Sepajs.client;
-
+	const bench = new Sepajs.bench()
 	// PREFIXES
 	prefixes = "";
 	for (ns in jsap["namespaces"]) {
@@ -8,15 +10,36 @@ function queryHistory(observation,from,to) {
 				+ ">";
 	}
 	
-	query = prefixes + " "
-	+ jsap["queries"]["LOG_QUANTITY"]["sparql"];
-
-	// Forced bindings
-	query = query.replace("?observation", "<"+observation+">");
-	query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
-	query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
-	 
-	return sepa.query(query,jsap).then((data)=>{ 
+	query = bench.sparql(jsap["queries"]["HISTORY"]["sparql"], {
+		
+			"from": {
+				"type": "DateTime",
+				"value": "'" + from + "'^^xsd:dateTime"
+			},
+			"to": {
+				"type": "DateTime",
+				"value": "'" + to + "'^^xsd:dateTime"
+			},
+			"place": {
+				"type": "uri",
+				"value": place
+			},
+			"property": {
+				"type": "uri",
+				"value": property
+			}
+		})
+	query = prefixes + " " + query;
+	
+	return sepa.query(query, {
+		host: "localhost", sparql11seprotocol: {
+			availableProtocols: {
+				ws: {
+					port: 9000
+				}
+			}
+		}
+	}).then((data)=>{ 
 		 return data;
 	 });
 }

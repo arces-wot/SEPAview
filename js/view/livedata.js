@@ -15,6 +15,7 @@ function onObservation(binding) {
 	let name = binding.name.value;
 	let lat = binding.lat.value;
 	let long = binding.lon.value;
+	let property = binding.property.value;
 	
 	let symbol = "#"
 	let label = binding.label.value;
@@ -49,6 +50,7 @@ function onObservation(binding) {
 		
 		sensorData[place][observation]["placeUri"] = place;
 		sensorData[place][observation]["placeName"] = name;
+		sensorData[place][observation]["property"] = property;
 		sensorData[place][observation]["lat"] = lat;
 		sensorData[place][observation]["long"] = long;
 		sensorData[place][observation]["zoneName"] = tzlookup(parseFloat(lat),parseFloat(long));
@@ -111,6 +113,7 @@ function addObservation(observation, place) {
 		+ "<input class='form-control form-control-sm' type='hidden' name='long' value=\"" + escape(sensorData[place][observation]["long"]) + "\" />"
 		+ "<input class='form-control form-control-sm' type='hidden' name='symbol' value='" + escape(sensorData[place][observation]["symbol"])+ "' />"
 		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[place][observation]["title"])+ "' />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='property' value='" + sensorData[place][observation]["property"]+ "' />"
 		+ "<input placeId='"+placeIds[place]+"' class='form-control form-control-sm' type='hidden' name='placeName' value='???' />"
 		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;History</small></button>"
 	+ "</form></div>"

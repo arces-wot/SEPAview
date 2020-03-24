@@ -35,18 +35,12 @@ function initMap(context) {
 	}
 	
 	
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-	    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-	    maxZoom: 18,
-	    id: 'mapbox.streets',
-	    accessToken: 'pk.eyJ1IjoibHJvZmZpYSIsImEiOiJjanhiZjVxemkwYzZlM3pvODZjcGJlYjdtIn0.cD3reeNMoDGpiRBDTHn5_w'
+	L.tileLayer('http://{username}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+		username:"relu91",
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+		maxZoom: 18
 	}).addTo(map);
-	
-	// Init markers
-	initMarkers();
-	
-	// Draw layers
-	drawVectorLayers();
+
 }
 
 function onAddedMapPlace(places) {
@@ -56,7 +50,7 @@ function onAddedMapPlace(places) {
         lat = parseFloat(binding.lat.value.replace(",","."));
         lng = parseFloat(binding.lon.value.replace(",","."));
 
-        add_marker(lat,lng,name,place);
+        add_marker(lat,lng,name,place,parseInt(binding.cases.value));
     }	
 }
 
@@ -69,53 +63,29 @@ function onRemovedMapPlace(removedResults) {
         remove_marker(place); 
     }
 }
-
-function initMarkers() {
-	var swamp = L.icon({
-	    iconUrl: 'icon/swamp.png',
-	    iconSize: [48, 48]
-	});
-	
-	var server = L.icon({
-	    iconUrl: 'icon/server.svg',
-	    iconSize: [48, 48]
-	});
-	
-	var wheel = L.icon({
-	    iconUrl: 'icon/wheel.png',
-	    iconSize: [24, 24]
-	});
-	
-	icons["http://swamp-project.org/ns#Bertacchini"] = swamp;
-	icons["http://swamp-project.org/ns#Ferrari"] = swamp;
-	icons["http://swamp-project.org/ns#Bonacini"] = swamp;
-	icons["http://swamp-project.org/ns#Guaspari"] = swamp;
-	
-	icons["http://wot.arces.unibo.it/monitor#Star"] = server;
-	icons["http://wot.arces.unibo.it/monitor#Mars"] = server;
-	
-	//icons["http://wot.arces.unibo.it/monitor#ParatoiaSanMichele"] = wheel;
-	icons["http://wot.arces.unibo.it/monitor#SanMichele"] = wheel;
-	icons["http://wot.arces.unibo.it/monitor#DiramazioneSanMichele"] = wheel;
-	icons["http://wot.arces.unibo.it/monitor#FosdondoSud"] = wheel;
-	icons["http://wot.arces.unibo.it/monitor#FosdondoNord"] = wheel;
-	icons["http://wot.arces.unibo.it/monitor#CanaleSanMichele"] = wheel;
+function sigmoid(x){
+	return 1/(1 + Math.exp(-x))
 }
-
-function drawVectorLayers() {
-	initCanals();
-	for (canal of canals) L.polyline(canal["vertexes"], {color: canal["color"]}).addTo(map);
-}
-
-function add_marker(lat, lng, name, id) {
+function add_marker(lat, lng, name, id,cases) {
 	if (placeIds[id] === undefined) placeIds[id] = generateID();
 	
 	if (icons[id] != undefined) {
 		var marker = L.marker([lat, lng],{"title": name,"icon" : icons[id]}).addTo(map);
 	}
 	else {
-		var marker = L.marker([lat, lng],{"title": name,}).addTo(map);
+		var marker = L.circle([lat, lng], { "title": name, 
+			radius: Math.max(Math.min( 20*cases,100000),20000),
+			stroke: false,
+			fillOpacity: 0.2,
+			}, 1000).addTo(map);
+		L.circle([lat, lng], {
+			"title": name,
+			radius: 100
+		}, 1000).addTo(map).on('click', function () {
+			onMapPlaceClick(id, name, lat, lng)
+		});
 	}
+	
 	
 	markers[id] = {};
 	markers[id]["name"] = name;

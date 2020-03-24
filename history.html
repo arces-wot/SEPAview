@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="icon/swamp.png">
+<link rel="icon" href="icon/covid19.png">
 <title>SWAMP</title>
 <meta name="viewport" content="width=device-width">
 
@@ -56,23 +56,34 @@
 .tree::-webkit-scrollbar-track {
 	background-color: #F5F5F5;
 }
+
+.no-margin {
+	margin: 0;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+@media only screen and (min-width: 768px){
+	.plot {
+		margin-left: -50px;
+	}
+}
 </style>
 </head>
 
 <body onload='onLoad()'>
 	<nav class="navbar">
-		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
-			width="28" class="d-inline-block align-top" alt=""> SWAMP - Smart Water Management Platform
+		<a class="navbar-brand" href="./index.html"> <img src="icon/covid19.png"
+			width="28" class="d-inline-block align-top" alt=""> COVID-19 Linked Open Data Portal
 		</a>
 		<span class="badge badge-primary mr-3"
 				id='timeZone'>Time zone: UTC</span>
 	</nav>
 
 	<div class="container-fluid">
-		<div class="row col-12">
-			<div id="plot" class="container-fluid col-12 align-self-center"
-				style="width: 100%; height: 100%;"></div>
-		</div>
+		<div id="plot" class="plot container-fluid col-12 align-self-center"style="width: 100%; height: 80vh"></div>
 		<div class="row col-12 justify-content-center">
 			<div class="col-12">
 				<form id="form">

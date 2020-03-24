@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="47.065731mm"
+   height="46.513054mm"
+   viewBox="0 0 47.065731 46.513054"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="covid19.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="206.37385"
+     inkscape:cy="56.307751"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Livello 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-76.630677,-104.76068)">
+    <path
+       style="opacity:0.77999998;vector-effect:none;fill:#4da5e3;fill-opacity:1;fill-rule:nonzero;stroke:#2980bf;stroke-width:1.66700006;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="m 100.16354,105.5941 -4.674136,8.09623 a 15.106678,15.106678 0 0 0 -1.581786,0.62424 l -9.794824,-2.62444 2.565327,9.57511 a 15.106678,15.106678 0 0 0 -0.68157,1.54974 l -8.532457,4.9259 8.281764,4.78133 a 15.106678,15.106678 0 0 0 0.834694,2.05966 l -2.467758,9.21011 9.019243,-2.41683 a 15.106678,15.106678 0 0 0 2.384073,1.01559 l 4.64743,8.04958 4.63995,-8.0364 a 15.106678,15.106678 0 0 0 2.39333,-1.02842 l 9.01782,2.41648 -2.46704,-9.2069 a 15.106678,15.106678 0 0 0 0.81546,-2.05219 l 8.29993,-4.79201 -8.55133,-4.93694 a 15.106678,15.106678 0 0 0 -0.66698,-1.52231 l 2.56996,-9.5915 -9.7852,2.6216 a 15.106678,15.106678 0 0 0 -1.59853,-0.63351 z"
+       id="path815"
+       inkscape:connector-curvature="0" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot855"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:34.73660278px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       transform="matrix(0.45778377,0,0,0.45778377,-70.897626,-87.86202)"><flowRegion
+         id="flowRegion857"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:34.73660278px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff"><rect
+           id="rect859"
+           width="62.142857"
+           height="55"
+           x="347.85715"
+           y="452.51968"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:34.73660278px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff" /></flowRegion><flowPara
+         id="flowPara861">19</flowPara></flowRoot>  </g>
+</svg>

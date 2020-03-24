@@ -55,8 +55,29 @@ jsap = {
 			"PLACES": {
 				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?place gn:parentFeature ?parent}}}"
 			},
+			"HISTORY":{
+				"sparql": "SELECT * WHERE {  GRAPH <http://covid19/observation/history> {    ?a rdf:type sosa:Observation;    	sosa:resultTime ?timestamp;        sosa:observedProperty ?property;       	sosa:hasFeatureOfInterest ?place;       	sosa:hasSimpleResult ?value.              }FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
+				"forcedBindings": {
+					"from": {
+						"type": "literal",
+						"value": "2020-03-22T17:00:00Z"
+					},
+					"to": {
+						"type": "literal",
+						"value": "2020-03-22T17:00:00Z"
+					},
+					"place": {
+						"type": "uri",
+						"value": "covid19:Place"
+					},
+					"property": {
+						"type": "uri",
+						"value": "covid19:Property"
+					}
+				}
+			},
 			"MAP_PLACES": {
-				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent}}}"
+				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent}}GRAPH <http://covid19/observation>{ ?obs rdf:type sosa:Observation; sosa:observedProperty <http://covid19#TotalCases>; sosa:hasSimpleResult ?cases; sosa:hasFeatureOfInterest ?place.} }"
 			},
 			"CONTAINED_PLACES": {
 				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?child gn:parentFeature ?root ; gn:name ?name}}",
@@ -68,7 +89,7 @@ jsap = {
 				}
 			},
 			"OBSERVATIONS": {
-				"sparql": "SELECT * WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:hasSimpleResult ?value ; sosa:observedProperty ?property . ?property rdfs:label ?label} GRAPH <http://covid19/context> {?place gn:name ?name ;  gn:lat ?lat ; gn:long ?lon}}"
+				"sparql": "SELECT * WHERE {  GRAPH <http://covid19/observation> {    ?observation rdf:type sosa:Observation ; sosa:resultTime ?timestamp;                 sosa:hasFeatureOfInterest ?place ;                  sosa:hasSimpleResult ?value ;                  sosa:observedProperty ?property .   }  GRAPH <http://covid19/observation/context> {  	?property rdfs:label ?label.  }  GRAPH <http://covid19/context> {    ?place gn:name ?name ;             gn:lat ?lat ;            gn:long ?lon  }}"
 			},
 			"OBSERVATIONS_COUNT": {
 				"sparql": "SELECT (COUNT(?observation) AS ?count) WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation}}"
