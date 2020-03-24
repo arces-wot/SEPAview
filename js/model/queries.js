@@ -31,15 +31,7 @@ function queryHistory(place,property,from,to) {
 		})
 	query = prefixes + " " + query;
 	
-	return sepa.query(query, {
-		host: "localhost", sparql11seprotocol: {
-			availableProtocols: {
-				ws: {
-					port: 9000
-				}
-			}
-		}
-	}).then((data)=>{ 
+	return sepa.query(query, jsap).then((data)=>{ 
 		 return data;
 	 });
 }

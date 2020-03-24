@@ -60,13 +60,7 @@ function subscribe() {
 	query = prefixes + " "
 	+ jsap["queries"]["OBSERVATIONS"]["sparql"];
 	
-	let observation = sepa.subscribe(query, { host: "localhost", sparql11seprotocol:{
-		availableProtocols: {
-			ws : {
-				port : 9000
-			}
-		}
-	}});
+	let observation = sepa.subscribe(query, jsap);
 	observation.on("added",addedResults=>{      		
         for (binding of addedResults.results.bindings) {
         	onObservation(binding);
