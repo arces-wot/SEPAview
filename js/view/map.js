@@ -73,8 +73,10 @@ function add_marker(lat, lng, name, id,cases) {
 		var marker = L.marker([lat, lng],{"title": name,"icon" : icons[id]}).addTo(map);
 	}
 	else {
+	
+		var radius = 1000*Math.log(cases)*Math.log(cases)
 		var marker = L.circle([lat, lng], { "title": name, 
-			radius: Math.max(Math.min( 20*cases,100000),20000),
+			radius: Math.max(radius,20000),
 			stroke: false,
 			fillOpacity: 0.2,
 			}, 1000).addTo(map);
