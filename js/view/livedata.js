@@ -17,7 +17,7 @@ function onObservation(binding) {
 	let long = binding.lon.value;
 	let property = binding.property.value;
 	
-	let symbol = "#"
+	let symbol = (binding.symbol != null ? binding.symbol.value : "qudt-unit?");
 	let label = binding.label.value;
 	let observation = binding.observation.value;
 	let value = binding.value ? binding.value.value : "???";
@@ -56,7 +56,7 @@ function onObservation(binding) {
 		sensorData[place][observation]["zoneName"] = tzlookup(parseFloat(lat),parseFloat(long));
 		
 		sensorData[place][observation]["title"] = label;
-		sensorData[place][observation]["symbol"] = (symbol != null ? symbol : "qudt-unit?");
+		sensorData[place][observation]["symbol"] = symbol;
 		sensorData[place][observation]["value"] = value;
 		sensorData[place][observation]["timestamp"] = timestamp;
 				
