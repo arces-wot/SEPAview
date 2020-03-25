@@ -96,6 +96,10 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#FosdondoNord"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#CanaleSanMichele"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#FosdondoDirezioneSud"] = wheel;
+	icons["http://wot.arces.unibo.it/monitor#DiramazioneFosdono"] = wheel;
+	icons["http://wot.arces.unibo.it/monitor#SbarramentoFosdondo"] = wheel;
+	icons["http://wot.arces.unibo.it/monitor#ScaricoCanaleFosdondo"] = wheel;
+	icons["http://wot.arces.unibo.it/monitor#ValleSbarramentoFosdondoDirNord"] = wheel;
 }
 
 function drawVectorLayers() {
