@@ -81,32 +81,59 @@ function addPlace(place_id, name, place) {
 	$("#graph")
 			.append(
 					"<div class='tab-pane fade' id='"+ place_id + "' role='tabpanel' aria-labelledby='"+ place_id+ "-tab'>"
-					+ "<div id='live_"+ place_id+ "'></div>"
-					+ "<div class='container flex-row-reverse' id='forecast_"+ place_id+ "-tab'></div>"
+// + "<div id='live_"+ place_id+ "'>"
+					+"<div class='card'>"
+					+ "<div class='card-header'>"
+					+ "COVID-19 (<span><strong>Fonte: </strong>" + "<a href='https://github.com/pcm-dpc/COVID-19'>Protezione civile</a>" + ")" 
+					+ "<span class='float-right'><strong>Ultimo aggiornamento: </strong><span id='timestamp_"+ place_id + "'/></span>"
+					+ "</div>"
+					+ "<div class='card-body' id='live_"+ place_id+ "'></div>"
+					+ "</div>"
+					+ "<div class='container flex-row-reverse'></div>"
 					+ "</div>");
 
-//	$("#forecast_" + place_id+"-tab").hide();
+// $("#forecast_" + place_id+"-tab").hide();
 }
 
 function addObservation(observation, place) {
 	let obs_id = sensorData[place][observation]["div_id"];
 
+	color = "btn-primary"
+
+// http://covid19#Death
+// http://covid19#IntensiveCare
+
+// http://covid19#TotalHospitalised			
+// http://covid19#HospitalisedWithSymptoms
+// http://covid19#TotalPositiveCases
+// http://covid19#DailyPositiveCases
+// http://covid19#HomeConfinement
+//		
+// http://covid19#Recovered
+// http://covid19#TotalCases
+// http://covid19#TestPerformed
+		
+		switch (sensorData[place][observation]["property"]) {
+		case "http://covid19#Death":
+			color ="btn-danger"
+				break;
+		case "http://covid19#IntensiveCare":
+		case "http://covid19#TotalHospitalised":
+		case "http://covid19#HospitalisedWithSymptoms":
+			color ="btn-warning";
+			break;
+		case "http://covid19#Recovered":
+			color ="btn-success";
+			break;
+		case "http://covid19#TestPerformed":
+			color ="btn-secondary";
+			break;
+		case "http://covid19#HomeConfinement":
+			color ="btn-info";
+			break;
+		}
 	
-	layout = "<div class='container'><div class='row align-items-center mb-3'>"
-	+ "<div class='col'><p class='font-weight-bold'>" 
-	+ sensorData[place][observation]["title"]
-	+ "</p></div>"
-	
-	+ "<div class='col-auto'>" 
-	+ "<button type='button' class='btn btn-success' id='value_+"+ obs_id+ "'>"
-	+ "<span class='badge badge-light' id='value_"+ obs_id+ "'>---</span>&nbsp;"
-	+ sensorData[place][observation]["symbol"]
-	+ "<span class='badge badge-light ml-3' id='timestamp_"+ obs_id + "'>---</span>"
-	+ "</button>"
-	+ "</div>"
-	
-	+ "<div class='col-auto'>"
-	+ "<form target='_blank' action='./history.html'>"
+	obs = "<form target='_blank' action='./history.html'>"
 		+ "<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+ observation+ "\" />"
 		+ "<input class='form-control form-control-sm' type='hidden' name='placeUri' value=\"" + place + "\" />"
 		+ "<input class='form-control form-control-sm' type='hidden' name='lat' value=\"" + escape(sensorData[place][observation]["lat"]) + "\" />"
@@ -115,11 +142,21 @@ function addObservation(observation, place) {
 		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[place][observation]["title"])+ "' />"
 		+ "<input class='form-control form-control-sm' type='hidden' name='property' value='" + sensorData[place][observation]["property"]+ "' />"
 		+ "<input placeId='"+placeIds[place]+"' class='form-control form-control-sm' type='hidden' name='placeName' value='???' />"
-		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;History</small></button>"
-	+ "</form></div>"
-	+ "</div></div>"
+		+ "<button class='btn "+color+" float-right ml-2 mb-2' type='submit'>"
+		+ sensorData[place][observation]["title"]
+		+ "&nbsp;<span class='badge badge-light' id='value_"+ obs_id+ "'>---</span>&nbsp;"
+// + sensorData[place][observation]["symbol"]
+		// + "<span class='badge badge-light ml-3' id='timestamp_"+ obs_id +
+		// "'>---</span>"
+		+ "<small>&nbsp;<i class='fas fa-external-link-alt'></i></small>" 
+		+ "</button>"
+	+ "</form>" 
+	
+	layout = obs
 	
 	$("#live_" + sensorData[place]["div_id"]).append(layout);	
+	
+	$("#timestamp_"+sensorData[place]["div_id"]).html(moment(sensorData[place][observation]["timestamp"]).format('MMMM Do YYYY, h:mm:ss a'))
 }
 
 function updateLiveDataTimestamps(tz) {	

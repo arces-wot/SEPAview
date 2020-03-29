@@ -77,7 +77,7 @@ jsap = {
 				}
 			},
 			"MAP_PLACES": {
-				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent}}GRAPH <http://covid19/observation>{ ?obs rdf:type sosa:Observation; sosa:observedProperty <http://covid19#TotalCases>; sosa:hasSimpleResult ?cases; sosa:hasFeatureOfInterest ?place.} }"
+				"sparql": "SELECT  * FROM <http://covid19/context> FROM <http://covid19/observation> WHERE {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent} . ?obs rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:observedProperty <http://covid19#TotalCases>; sosa:hasResult  ?res . ?res qudt:numericValue ?cases}"
 			},
 			"CONTAINED_PLACES": {
 				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?child gn:parentFeature ?root ; gn:name ?name}}",
@@ -89,7 +89,7 @@ jsap = {
 				}
 			},
 			"OBSERVATIONS": {
-				"sparql": "SELECT * WHERE {  GRAPH <http://covid19/observation> {    ?observation rdf:type sosa:Observation ; sosa:resultTime ?timestamp;                 sosa:hasFeatureOfInterest ?place ;                  sosa:hasSimpleResult ?value ;                  sosa:observedProperty ?property .   }  GRAPH <http://covid19/observation/context> {  	?property rdfs:label ?label.  }  GRAPH <http://covid19/context> {    ?place gn:name ?name ;             gn:lat ?lat ;            gn:long ?lon  }}"
+				"sparql": "SELECT * FROM <http://localhost:8890/DAV> FROM <http://covid19/observation> FROM <http://covid19/context> FROM <http://covid19/observation/context> WHERE {?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:resultTime ?timestamp ; sosa:hasResult ?result ; sosa:observedProperty ?property . ?result rdf:type qudt:QuantityValue ; qudt:unit ?unit ; qudt:numericValue ?value . ?property rdfs:label ?label . ?place gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?unit qudt:symbol ?symbol}}"
 			},
 			"OBSERVATIONS_COUNT": {
 				"sparql": "SELECT (COUNT(?observation) AS ?count) WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation}}"
