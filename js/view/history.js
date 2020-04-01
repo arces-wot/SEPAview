@@ -167,10 +167,10 @@ function getHistoryPlaceZone() {
 function initCalendar() {
 	var to = moment();
 	to.subtract(to.utcOffset(),'m');
-	var from = moment();
-	from.subtract(from.utcOffset(),'m');
-
-	from.subtract(30, 'days');
+	var from = moment('2020-02-24');
+//	from.subtract(from.utcOffset(),'m');
+//
+//	from.subtract(30, 'days');
 
 	toDate = new Date(to.format());
 	fromDate = new Date(from.format());

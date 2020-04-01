@@ -53,10 +53,10 @@ jsap = {
 				"sparql": "SELECT (COUNT(?place) AS ?count) WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature}}"
 			},
 			"PLACES": {
-				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?place gn:parentFeature ?parent}}}"
+				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?place rdf:type gn:Feature; gn:countryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?place gn:parentFeature ?parent}}}"
 			},
 			"HISTORY":{
-				"sparql": "SELECT * WHERE {  GRAPH <http://covid19/observation/history> {    ?a rdf:type sosa:Observation;    	sosa:resultTime ?timestamp;        sosa:observedProperty ?property;       	sosa:hasFeatureOfInterest ?place;       	sosa:hasSimpleResult ?value.              }FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
+				"sparql": "SELECT * WHERE {  GRAPH <http://covid19/observation/history> {    ?a rdf:type sosa:Observation;    	sosa:resultTime ?timestamp;        sosa:observedProperty ?property;       	sosa:hasFeatureOfInterest ?place;       	sosa:hasResult ?res.    ?res rdf:type ?type;         qudt:unit ?unit;         qudt:numericValue ?value.              }FILTER (xsd:dateTime(?timestamp) > ?from && xsd:dateTime(?timestamp) < ?to)} ORDER BY ?timestamp",
 				"forcedBindings": {
 					"from": {
 						"type": "literal",
@@ -77,7 +77,7 @@ jsap = {
 				}
 			},
 			"MAP_PLACES": {
-				"sparql": "SELECT  * FROM <http://covid19/context> FROM <http://covid19/observation> WHERE {?place rdf:type gn:Feature; gn:contryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent} . ?obs rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:observedProperty <http://covid19#TotalCases>; sosa:hasResult  ?res . ?res qudt:numericValue ?cases}"
+				"sparql": "SELECT  * FROM <http://covid19/context> FROM <http://covid19/observation> WHERE {?place rdf:type gn:Feature; gn:countryCode ?code ; gn:featureClass ?class ; gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . FILTER NOT EXISTS {?place gn:parentFeature ?parent} . ?obs rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:observedProperty <http://covid19#TotalCases>; sosa:hasResult  ?res . ?res qudt:numericValue ?cases}"
 			},
 			"CONTAINED_PLACES": {
 				"sparql": "SELECT * WHERE {GRAPH <http://covid19/context> {?child gn:parentFeature ?root ; gn:name ?name}}",

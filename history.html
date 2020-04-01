@@ -27,7 +27,8 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>	
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 
 <script src="lib/color-scheme.js"></script>
 <script src="lib/moment.js"></script>
@@ -65,7 +66,7 @@
 	padding: 0;
 }
 
-@media only screen and (min-width: 768px){
+@media only screen and (min-width: 768px) {
 	.plot {
 		margin-left: -50px;
 	}
@@ -75,72 +76,117 @@
 
 <body onload='onLoad()'>
 	<nav class="navbar">
-		<a class="navbar-brand" href="./index.html"> <img src="icon/covid19.png"
-			width="28" class="d-inline-block align-top" alt=""> COVID-19 Linked Open Data Portal
-		</a>
-		<span class="badge badge-primary mr-3"
-				id='timeZone'>Time zone: UTC</span>
+		<a class="navbar-brand" href="./index.html"> <img
+			src="icon/covid19.png" width="28" class="d-inline-block align-top"
+			alt=""> COVID-19 Linked Open Data Portal
+		</a> <span class="badge badge-primary"> <small><select
+				id="selectTimeZone" onchange="onChangeHistoryTimeZone()">
+					<option value="UTC">UTC
+					<option value="Local">Local
+					<option value="Remote">Observation
+			</select></small> <span class="badge badge-primary mr-3" id='timeZone'>Time
+				zone: UTC</span>
+		</span>
+
 	</nav>
 
 	<div class="container-fluid">
-		<div id="plot" class="plot container-fluid col-12 align-self-center"style="width: 100%; height: 80vh"></div>
-		<div class="row col-12 justify-content-center">
-			<div class="col-12">
-				<form id="form">
-					<div class="form-row justify-content-lg-center align-items-center">		
-						<div class="col-auto">
-							<label class="sr-only" for="inlineFormInputGroup">From:</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="input-group-text">From:</div>
-								</div>
-								<input type="text" class="form-control" id="from" name="from"
-									placeholder="from">
-							</div>
+		<div id="plot" class="plot container-fluid col-12 align-self-center"
+			style="width: 100%; height: 80vh"></div>
+		<div class="container">
+			<div class="row justify-content-end">
+				<div class="col-md-auto">
+					<button type="button" id="last24h" class="btn btn-primary"
+						onclick="javascript:onRefresh24h();">
+						<i class="fas fa-sync-alt mr-1"></i>
+					</button>
+					<button type="button" class="btn btn-primary"
+						onclick="javascript:downloadHistory();">
+						<i class="fas fa-download mr-1"></i>
+					</button>
+				</div>
+			</div>
+			<div class="row justify-content-start">
+				<div class="col-md-auto mt-2">
+					<label class="sr-only" for="inlineFormInputGroup">From:</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text">From:</div>
 						</div>
-						<div class="col-auto">
-							<label class="sr-only" for="inlineFormInputGroup">To:</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<div class="input-group-text">To:</div>
-								</div>
-								<input type="text" class="form-control" id="to" name="to"
-									placeholder="to">
-							</div>
-						</div>
-						
-						<div class="col-auto">
-							<select id="selectTimeZone"
-								onchange="onChangeHistoryTimeZone()">
-									<option value="UTC">UTC
-									<option value="Local">Local
-									<option value="Remote">Observation
-							</select>
-						</div>
-						
-						<div class="col-auto">
-							<button type="button" onclick="javascript:onRefresh();"
-								id="refresh" class="btn btn-primary">
-								<i class="fas fa-search"></i>&nbsp;OK
-							</button>
-						</div>
-						<div class="col-auto">
-							<button type="button" id="last24h" class="btn btn-primary" onclick="javascript:onRefresh24h();">
-								<i class="fas fa-sync-alt"></i>&nbsp;24h
-							</button>
-						</div>
-						<div class="col-auto">
-							<button type="button" class="btn btn-primary"
-								onclick="javascript:downloadHistory();">
-								<small><i class="fas fa-download"></i>&nbsp;CSV</small>
-							</button>
-						</div>
+						<input type="text" class="form-control" id="from" name="from"
+							placeholder="from">
 					</div>
-					<input type='hidden' name='title' /> <input type='hidden'
-						name='observation' />
-				</form>
+				</div>
+				<div class="col-md-auto mt-2">
+					<label class="sr-only" for="inlineFormInputGroup">To:</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text">To:</div>
+						</div>
+						<input type="text" class="form-control" id="to" name="to"
+							placeholder="to">
+					</div>
+				</div>
+				<div class="d-flex align-items-end col-auto mt-2">
+					<button type="button" onclick="javascript:onRefresh();"
+						id="refresh" class="btn btn-primary">
+						<i class="fas fa-search"></i>
+					</button>
+				</div>
 			</div>
 		</div>
+
+
+
+		<!-- 		<div class="row"> -->
+		<!-- 			<div class="col-3"> -->
+		<!-- 				<form id="form"> -->
+		<!-- 					<div class="form-row justify-content-lg-center align-items-center"> -->
+		<!-- <!-- 						<div class="col-auto"> -->
+		<!-- <!-- 							<select id="selectTimeZone" onchange="onChangeHistoryTimeZone()"> -->
+		<!-- <!-- 								<option value="UTC">UTC <option value="Local">Local -->
+
+		<!-- <!-- 								<option value="Remote">Observation -->
+
+		<!-- <!-- 							</select> -->
+		<!-- <!-- 						</div> -->
+
+		<!-- 						<div class="col-auto mt-2"> -->
+		<!-- 							<label class="sr-only" for="inlineFormInputGroup">From:</label> -->
+		<!-- 							<div class="input-group"> -->
+		<!-- 								<div class="input-group-prepend"> -->
+		<!-- 									<div class="input-group-text">From:</div> -->
+		<!-- 								</div> -->
+		<!-- 								<input type="text" class="form-control" id="from" name="from" -->
+		<!-- 									placeholder="from"> -->
+		<!-- 							</div> -->
+		<!-- 						</div> -->
+		<!-- 						<div class="col-auto mt-2"> -->
+		<!-- 							<label class="sr-only" for="inlineFormInputGroup">To:</label> -->
+		<!-- 							<div class="input-group"> -->
+		<!-- 								<div class="input-group-prepend"> -->
+		<!-- 									<div class="input-group-text">To:</div> -->
+		<!-- 								</div> -->
+		<!-- 								<input type="text" class="form-control" id="to" name="to" -->
+		<!-- 									placeholder="to"> -->
+		<!-- 							</div> -->
+		<!-- 						</div> -->
+
+
+
+		<!-- 						<div class="col-auto mt-2"> -->
+		<!-- 							<button type="button" onclick="javascript:onRefresh();" -->
+		<!-- 								id="refresh" class="btn btn-primary"> -->
+		<!-- 								<i class="fas fa-search"></i> -->
+		<!-- 							</button> -->
+		<!-- 						</div> -->
+
+		<!-- 					</div> -->
+		<!-- 					<input type='hidden' name='title' /> -->
+		<!-- 				<input type='hidden' -->
+		<!-- 										name='observation' /></form> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
 	</div>
 
 
