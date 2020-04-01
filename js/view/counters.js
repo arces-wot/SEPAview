@@ -20,5 +20,5 @@ function updateLiveGraphSize(count) {
 
 function updateNotifications() {
 	nots++;
-	$("#odoNotifications").html(nots);
+	//$("#odoNotifications").html(nots);
 }

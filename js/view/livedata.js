@@ -156,35 +156,53 @@ function addObservation(observation, place) {
 	
 	$("#live_" + sensorData[place]["div_id"]).append(layout);	
 	
-	$("#timestamp_"+sensorData[place]["div_id"]).html(moment(sensorData[place][observation]["timestamp"]).format('MMMM Do YYYY, h:mm:ss a'))
+	$("#timestamp_"+sensorData[place]["div_id"]).html(moment(sensorData[place][observation]["timestamp"]).format('MMMM Do YYYY'))
 }
 
-function updateLiveDataTimestamps(tz) {	
-	for (place in sensorData) {
-		for (observation in sensorData[place]) {
-			if (observation == "div_id") continue;
-			
-			let obs_id = sensorData[place][observation]["div_id"];
-			let timestamp = sensorData[place][observation]["timestamp"];
-			
-			if (tz == "UTC") {
-				time = moment(timestamp).utc()
-			}
-			else if (tz == "Local") {
-				time = moment(timestamp)
-			}
-			else {
-				zone = sensorData[place][observation]["zoneName"];
-				if (zone == "America/Sao_Paulo") {
-					zone = "America/Belem"
-				}
-				time = moment(timestamp).utc().tz(zone);
-			}
-			
-			$("#timestamp_" + obs_id).html(time.format("LLL"));
-		}
+function updateLiveDataTimestamps(tz) {
+//	for (place in sensorData) {
+//	for (observation in sensorData[place]) {
+//		if (observation == "div_id") continue;
+//		
+//		let obs_id = sensorData[place][observation]["div_id"];
+//		let timestamp = sensorData[place][observation]["timestamp"];
+//		
+//		if (tz == "UTC") {
+//			time = moment(timestamp).utc()
+//		}
+//		else if (tz == "Local") {
+//			time = moment(timestamp)
+//		}
+//		else {
+//			zone = sensorData[place][observation]["zoneName"];
+//			if (zone == "America/Sao_Paulo") {
+//				zone = "America/Belem"
+//			}
+//			time = moment(timestamp).utc().tz(zone);
+//		}
+//		
+//		$("#timestamp_" + obs_id).html(time.format("LLL"));
+//	}
+//}
+	
+	let timestamp = sensorData[place][observation]["timestamp"];
+	
+	if (tz == "UTC") {
+		time = moment(timestamp).utc()
 	}
-}
+	else if (tz == "Local") {
+		time = moment(timestamp)
+	}
+	else {
+		zone = sensorData[place][observation]["zoneName"];
+		if (zone == "America/Sao_Paulo") {
+			zone = "America/Belem"
+		}
+		time = moment(timestamp).utc().tz(zone);
+	}
+	
+	$("#timestamp_"+sensorData[place]["div_id"]).html(moment(time).format('MMMM Do YYYY'))
+}	
 
 function updateObservation(observation, place) {
 	let obs_id = sensorData[place][observation]["div_id"];
