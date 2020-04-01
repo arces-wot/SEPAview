@@ -27,6 +27,16 @@ var initPos = {
 }
 
 function initMap(context) {
+	icons["http://covid19/context/country/ITA"] = {
+			url: "icon/covid19.png",
+			size: {width: 26, height: 32},
+			origin: {x: 0, y: 0},
+			anchor: {
+				x: "-10px",
+				y: "-32px"
+			}
+		}
+	
 	if (initPos[context] != undefined) {
 		map = L.map('mapid').setView([initPos[context]["lat"],initPos[context]["lng"]], initPos[context]["zoom"]);
 	}
