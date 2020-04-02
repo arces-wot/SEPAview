@@ -89,7 +89,25 @@ jsap = {
 				}
 			},
 			"OBSERVATIONS": {
-				"sparql": "SELECT * FROM <http://localhost:8890/DAV> FROM <http://covid19/observation> FROM <http://covid19/context> FROM <http://covid19/observation/context> WHERE {?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:resultTime ?timestamp ; sosa:hasResult ?result ; sosa:observedProperty ?property . ?result rdf:type qudt:QuantityValue ; qudt:unit ?unit ; qudt:numericValue ?value . ?property rdfs:label ?label . ?place gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?unit qudt:symbol ?symbol}}"
+				"sparql": "SELECT * FROM ?qudtGraph FROM ?obsGraph FROM ?ctxGraph FROM ?proGraph WHERE {?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?place ; sosa:resultTime ?timestamp ; sosa:hasResult ?result ; sosa:observedProperty ?property . ?result rdf:type qudt:QuantityValue ; qudt:unit ?unit ; qudt:numericValue ?value . ?property rdfs:label ?label . ?place gn:name ?name ;  gn:lat ?lat ; gn:long ?lon . OPTIONAL {?unit qudt:symbol ?symbol}}",
+				"forcedBindings": {
+					"qudtGraph": {
+						"type": "uri",
+						"value": "http://localhost:8890/DAV"
+					},
+					"obsGraph": {
+						"type": "uri",
+						"value": "http://covid19/observation"
+					},
+					"proGraph": {
+						"type": "uri",
+						"value": "http://covid19/observation/context"
+					},
+					"ctxGraph": {
+						"type": "uri",
+						"value": "http://covid19/context"
+					}
+				}
 			},
 			"OBSERVATIONS_COUNT": {
 				"sparql": "SELECT (COUNT(?observation) AS ?count) WHERE {GRAPH <http://covid19/observation> {?observation rdf:type sosa:Observation}}"

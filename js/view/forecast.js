@@ -2,9 +2,6 @@ function initForecasts(place_id,today) {
 	var tomorrow = moment(today).add(1,'days');
 	var dat = moment(today).add(2,'days');
 	
-//	tomorrow.setDate(today.getDate() + 1);
-//	dat.setDate(today.getDate() + 2);
-	
 	$("#forecast_" + place_id).empty();
 
 	$("#forecast_" + place_id).append("<div class='alert alert-danger mt-3' role='alert'>Forecast</div>");

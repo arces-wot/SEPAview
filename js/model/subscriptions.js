@@ -1,74 +1,70 @@
 function subscribe() {
+	const sepa = Sepajs.client;
+	const bench = new Sepajs.bench();
+	
 	// PREFIXES
 	prefixes = "";
 	for (ns in jsap["namespaces"]) {
 		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
 				+ ">";
 	}
-	const sepa = Sepajs.client;
 	
-//	query = prefixes + " "
-//	+ jsap["queries"]["HISTORICAL_TRIPLES"]["sparql"];
-//	
-//	let historicalTriples = sepa.subscribe(query,jsap);
-//	historicalTriples.on("added",addedResults=>{
-//		for (binding of addedResults.results.bindings) {
-//    		if (binding.count != undefined) updateHistoryGraphSize(binding.count.value);
-//    }
-//	});
-//	
-//	query = prefixes + " "
-//	+ jsap["queries"]["FORECASTS_COUNT"]["sparql"];
-//	
-//	let forecastsCount = sepa.subscribe(query,jsap);
-//	forecastsCount.on("added",addedResults=>{
-//		for (binding of addedResults.results.bindings) {
-//    		if (binding.count != undefined) updateForecastsCount(binding.count.value);
-//    }
-//	});
-//	
-//	query = prefixes + " "
-//	+ jsap["queries"]["LIVE_TRIPLES"]["sparql"];
-//	
-//	let liveTriples = sepa.subscribe(query,jsap);
-//	liveTriples.on("added",addedResults=>{
-//		for (binding of addedResults.results.bindings) {
-//    		if (binding.count != undefined) updateLiveGraphSize(binding.count.value);
-//    }
-//    });
-//	
-	query = prefixes + " "
-	+ jsap["queries"]["PLACES_COUNT"]["sparql"];
+	query = bench.sparql(jsap["queries"]["OBSERVATIONS"]["sparql"], {	
+		"qudtGraph": {
+			"type": "uri",
+			"value": "http://localhost:8890/DAV"
+		},
+		"obsGraph": {
+			"type": "uri",
+			"value": "http://covid19/observation"
+		},
+		"proGraph": {
+			"type": "uri",
+			"value": "http://covid19/observation/context"
+		},
+		"ctxGraph": {
+			"type": "uri",
+			"value": "http://covid19/context"
+		}
+	})
 	
-	let places = sepa.subscribe(query,jsap);
-	places.on("added",addedResults=>{
-		for (binding of addedResults.results.bindings) {
-    		if (binding.count != undefined) updatePlacesCount(binding.count.value);
-    }
-    });
-	
-	query = prefixes + " "
-	+ jsap["queries"]["OBSERVATIONS_COUNT"]["sparql"];
-	
-	let observation_count = sepa.subscribe(query,jsap);
-	observation_count.on("added",addedResults=>{
-		for (binding of addedResults.results.bindings) {
-    		if (binding.count != undefined) updateObservationsCount(binding.count.value);
-    }
-    });
-	
-	query = prefixes + " "
-	+ jsap["queries"]["OBSERVATIONS"]["sparql"];
+	query = prefixes + " " + query;
 	
 	let observation = sepa.subscribe(query, jsap);
 	observation.on("added",addedResults=>{      		
         for (binding of addedResults.results.bindings) {
         	onObservation(binding);
         }
-        
-        updateNotifications();
 	});
-
+	
+	
+	query = bench.sparql(jsap["queries"]["OBSERVATIONS"]["sparql"], {	
+		"qudtGraph": {
+			"type": "uri",
+			"value": "http://localhost:8890/DAV"
+		},
+		"obsGraph": {
+			"type": "uri",
+			"value": "http://istat/demographics"
+		},
+		"proGraph": {
+			"type": "uri",
+			"value": "http://istat/demographics/context"
+		},
+		"ctxGraph": {
+			"type": "uri",
+			"value": "http://covid19/context"
+		}
+	})
+	
+	query = prefixes + " " + query;
+	
+	let observation1 = sepa.subscribe(query, jsap);
+	observation1.on("added",addedResults=>{      		
+        for (binding of addedResults.results.bindings) {
+        	onObservation(binding);
+        }
+	});
 	
 	query = prefixes + " "
 	+ jsap["queries"]["MAP_PLACES"]["sparql"];

@@ -19,7 +19,10 @@ function onObservation(binding) {
 	
 	let symbol = (binding.symbol != null ? binding.symbol.value : "qudt-unit?");
 	let label = binding.label.value;
-	let observation = binding.observation.value;
+	
+	//let observation = binding.observation.value;
+	let observation = binding.property.value;
+	
 	let value = binding.value ? binding.value.value : "???";
 	
 	console.log("onObservation Place:"+place+" Observation:"+observation+" value:"+value)
@@ -71,47 +74,31 @@ function onObservation(binding) {
 }
 
 function addPlace(place_id, name, place) {
-	var today = new Date();
-	var tomorrow = new Date();
-	var dat = new Date();
-	
-	tomorrow.setDate(tomorrow.getDate() + 1);
-	dat.setDate(dat.getDate() + 2);
-
 	$("#graph")
 			.append(
 					"<div class='tab-pane fade' id='"+ place_id + "' role='tabpanel' aria-labelledby='"+ place_id+ "-tab'>"
-// + "<div id='live_"+ place_id+ "'>"
-					+"<div class='card'>"
-					+ "<div class='card-header'>"
-					+ "COVID-19 (<span><strong>Fonte: </strong>" + "<a href='https://github.com/pcm-dpc/COVID-19'>Protezione civile</a>" + ")" 
-					+ "<span class='float-right'><strong>Ultimo aggiornamento: </strong><span id='timestamp_"+ place_id + "'/></span>"
-					+ "</div>"
-					+ "<div class='card-body' id='live_"+ place_id+ "'></div>"
-					+ "</div>"
-					+ "<div class='container flex-row-reverse'></div>"
-					+ "</div>");
 
-// $("#forecast_" + place_id+"-tab").hide();
+					+ addPropertiesCard("COVID-19","https://github.com/pcm-dpc/COVID-19","Protezione civile",0,place_id)
+					+ addPropertiesCard("Popolazione","http://dati.istat.it/Index.aspx?DataSetCode=DCIS_POPRES1#","ISTAT",1,place_id)
+					
+					+ "</div>");
+}
+
+function addPropertiesCard(title,sourceLink,sourceLabel,classIndex,id) {
+	return "<div class='card mt-2'>"
+	+ "<div class='card-header'>"
+	+ title+" (<span><strong>Fonte: </strong>" + "<a href='"+sourceLink+"'>"+sourceLabel+"</a>" + ")" 
+	+ "<span class='float-right'><strong>Ultimo aggiornamento: </strong><span id='"+propertyClassName[classIndex]+"_timestamp_"+ id + "'/></span>"
+	+ "</div>"
+	
+	+ "<div class='card-body' id='"+propertyClassName[classIndex]+"_live_"+ id+ "'></div>"
+	+ "</div>";
 }
 
 function addObservation(observation, place) {
 	let obs_id = sensorData[place][observation]["div_id"];
 
 	color = "btn-primary"
-
-// http://covid19#Death
-// http://covid19#IntensiveCare
-
-// http://covid19#TotalHospitalised			
-// http://covid19#HospitalisedWithSymptoms
-// http://covid19#TotalPositiveCases
-// http://covid19#DailyPositiveCases
-// http://covid19#HomeConfinement
-//		
-// http://covid19#Recovered
-// http://covid19#TotalCases
-// http://covid19#TestPerformed
 		
 		switch (sensorData[place][observation]["property"]) {
 		case "http://covid19#Death":
@@ -145,46 +132,20 @@ function addObservation(observation, place) {
 		+ "<button class='btn "+color+" float-right ml-2 mb-2' type='submit'>"
 		+ sensorData[place][observation]["title"]
 		+ "&nbsp;<span class='badge badge-light' id='value_"+ obs_id+ "'>---</span>&nbsp;"
-// + sensorData[place][observation]["symbol"]
-		// + "<span class='badge badge-light ml-3' id='timestamp_"+ obs_id +
-		// "'>---</span>"
 		+ "<small>&nbsp;<i class='fas fa-external-link-alt'></i></small>" 
 		+ "</button>"
 	+ "</form>" 
 	
 	layout = obs
 	
-	$("#live_" + sensorData[place]["div_id"]).append(layout);	
+	className = getPropertyClassName(sensorData[place][observation]["property"])
 	
-	$("#timestamp_"+sensorData[place]["div_id"]).html(moment(sensorData[place][observation]["timestamp"]).format('MMMM Do YYYY'))
+	$("#"+className+"_live_" + sensorData[place]["div_id"]).append(layout);	
+	
+	$("#"+className+"_timestamp_"+sensorData[place]["div_id"]).html(moment(sensorData[place][observation]["timestamp"]).format('MMMM Do YYYY'))
 }
 
 function updateLiveDataTimestamps(tz) {
-//	for (place in sensorData) {
-//	for (observation in sensorData[place]) {
-//		if (observation == "div_id") continue;
-//		
-//		let obs_id = sensorData[place][observation]["div_id"];
-//		let timestamp = sensorData[place][observation]["timestamp"];
-//		
-//		if (tz == "UTC") {
-//			time = moment(timestamp).utc()
-//		}
-//		else if (tz == "Local") {
-//			time = moment(timestamp)
-//		}
-//		else {
-//			zone = sensorData[place][observation]["zoneName"];
-//			if (zone == "America/Sao_Paulo") {
-//				zone = "America/Belem"
-//			}
-//			time = moment(timestamp).utc().tz(zone);
-//		}
-//		
-//		$("#timestamp_" + obs_id).html(time.format("LLL"));
-//	}
-//}
-	
 	let timestamp = sensorData[place][observation]["timestamp"];
 	
 	if (tz == "UTC") {
@@ -201,7 +162,9 @@ function updateLiveDataTimestamps(tz) {
 		time = moment(timestamp).utc().tz(zone);
 	}
 	
-	$("#timestamp_"+sensorData[place]["div_id"]).html(moment(time).format('MMMM Do YYYY'))
+	className = getPropertyClassName(sensorData[place][observation]["property"])
+	
+	$("#"+className+"_timestamp_"+sensorData[place]["div_id"]).html(moment(time).format('MMMM Do YYYY'))
 }	
 
 function updateObservation(observation, place) {
@@ -225,7 +188,7 @@ function updateObservation(observation, place) {
 		}
 		time = moment(timestamp).utc().tz(zone);
 	}
-		
+	
 	$("#timestamp_" + obs_id).html(time.format("LLL"));
 	$("#value_" + obs_id).html(value);
 }

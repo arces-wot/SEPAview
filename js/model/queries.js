@@ -10,8 +10,7 @@ function queryHistory(place,property,from,to) {
 				+ ">";
 	}
 	
-	query = bench.sparql(jsap["queries"]["HISTORY"]["sparql"], {
-		
+	query = bench.sparql(jsap["queries"]["HISTORY"]["sparql"], {	
 			"from": {
 				"type": "DateTime",
 				"value": "'" + from + "'^^xsd:dateTime"
