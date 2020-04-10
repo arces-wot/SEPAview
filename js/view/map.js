@@ -29,7 +29,7 @@ var initPos = {
 function initMap(context) {
 	var covid19 = L.icon({
 	    iconUrl: 'icon/covid19.png',
-	    iconSize: [24, 24]
+	    iconSize: [48, 48]
 	});
 	
 	icons["http://covid19/context/country/ITA"] = covid19;
