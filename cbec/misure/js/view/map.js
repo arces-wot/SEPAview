@@ -89,7 +89,7 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#Star"] = server;
 	icons["http://wot.arces.unibo.it/monitor#Mars"] = server;
 	
-	// icons["http://wot.arces.unibo.it/monitor#ParatoiaSanMichele"] = wheel;
+	//icons["http://wot.arces.unibo.it/monitor#ParatoiaSanMichele"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#SanMichele"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#DiramazioneSanMichele"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#FosdondoSud"] = wheel;
@@ -103,39 +103,9 @@ function initMarkers() {
 }
 
 function drawVectorLayers() {
-	canals = initCanals();
+	initCanals();
 	for (canal of canals) L.polyline(canal["vertexes"], {color: canal["color"]}).addTo(map);
-
-	initFields().then((fields) => {
-			L.geoJSON(fields, {
-			    style: function (feature) {
-			        return {color: feature.properties.color};
-			    },
-			    onEachFeature: onEachFeature
-			}).addTo(map);
-	});
-	
 }
-
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: function () {
-            this.setStyle({
-                'fillColor': '#b45501',
-            });
-        },
-        mouseout: function () {
-            this.setStyle({
-                'fillColor': feature.properties.color,
-            });
-        },
-        click: function () {
-            alert('Farmer: ' + feature.properties.farmer+" Canal: "+ feature.properties.canal + " Crop: "+ feature.properties.crop)
-        }
-    });
-    layer.bindTooltip(feature.properties.field, {permanent:false,direction:'center'});        
-}
-
 
 function add_marker(lat, lng, name, id) {
 	if (placeIds[id] === undefined) placeIds[id] = generateID();

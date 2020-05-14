@@ -9,8 +9,6 @@ function initCanals() {
 	canals.push(c6);
 	canals.push(c7);
 	canals.push(c8);
-	
-	return canals;
 }
 
 var c1 = {

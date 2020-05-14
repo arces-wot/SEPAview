@@ -1,32 +1,21 @@
-function queryFields() { 
-	return sepa.query(prefixes + " "
-			+ jsap["queries"]["FIELD"]["sparql"],jsap).then((data)=>{  
-		return data;
-	 });	
-}
-
 function queryHistory(observation,from,to) {
-	// Forced bindings
-//	let query = query.replace("?observation", "<"+observation+">");
-//	let query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
-//	let query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
-//	 
-	query = new Bench().sparql(jsap["queries"]["LOG_QUANTITY"]["sparql"],{
-		observation :{
-		   type: "uri",
-	       value : observation
-		},
-		from : {
-			type:"literal",
-			value: from
-		},
-		to : {
-			type : "literal",
-			value : to
-		}
-		
-	})
+	const sepa = Sepajs.client;
+
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
 	
+	query = prefixes + " "
+	+ jsap["queries"]["LOG_QUANTITY"]["sparql"];
+
+	// Forced bindings
+	query = query.replace("?observation", "<"+observation+">");
+	query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
+	query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
+	 
 	return sepa.query(query,jsap).then((data)=>{ 
 		 return data;
 	 });
@@ -43,15 +32,18 @@ function queryPlaceTree(placeUri,placeName) {
 	})
 }
 
-function queryChilds(placeUri,tree) {	
-    query = new Bench().sparql(jsap["queries"]["CONTAINED_PLACES"]["sparql"],{
-		root :{
-		   type: "uri",
-	       value : placeUri
-		}
-	})
+function queryChilds(placeUri,tree) {
+	const sepa = Sepajs.client;
+    prefixes = "";
+    for (ns in jsap["namespaces"]) {
+        prefixes += " PREFIX " + ns + ":<"+ jsap["namespaces"][ns] + ">";
+    }
     
-    return sepa.query(prefixes + " " + query,jsap).then((data)=>{ 
+    query = jsap["queries"]["CONTAINED_PLACES"]["sparql"];
+	query = query.replace("?root","<"+placeUri+">");
+	query = prefixes + " " + query;
+	
+    return sepa.query(query,jsap).then((data)=>{ 
 		let places = data.results.bindings.length;
     	
 		let promises = [];
@@ -96,7 +88,18 @@ function addForecastForDay(place,place_id,name,day,n) {
 }
 
 function temperatureForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_WEATHER_TEMPERATURE"]["sparql"],{
+	const sepa = Sepajs.client;
+	const Bench = Sepajs.bench
+	
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
+	
+	bench = new Bench()
+	query = bench.sparql(jsap["queries"]["FORECAST_WEATHER_TEMPERATURE"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -111,7 +114,9 @@ function temperatureForecast(place,place_id,from,to,name,forecast) {
 		}
 	})
 	
-	sepa.query(prefixes + " " + query,jsap).then((data)=>{
+	fullQuery = prefixes + " " + query;
+	
+	sepa.query(fullQuery,jsap).then((data)=>{
 		if (data.results.bindings.length != 0) {
 			binding = data.results.bindings[0];
 			
@@ -121,7 +126,19 @@ function temperatureForecast(place,place_id,from,to,name,forecast) {
 }
 
 function precipitationForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_WEATHER_PRECIPITATION"]["sparql"],{
+	const sepa = Sepajs.client;
+
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
+	
+	const Bench = Sepajs.bench
+	
+	bench = new Bench()
+	query = bench.sparql(jsap["queries"]["FORECAST_WEATHER_PRECIPITATION"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -136,7 +153,9 @@ function precipitationForecast(place,place_id,from,to,name,forecast) {
 		}
 	})
 	
-	sepa.query(prefixes + " " + query,jsap).then((data)=>{
+	fullQuery = prefixes + " " + query;
+	
+	sepa.query(fullQuery,jsap).then((data)=>{
 		if (data.results.bindings.length != 0) {		
 			binding = data.results.bindings[0];
 			
@@ -146,7 +165,19 @@ function precipitationForecast(place,place_id,from,to,name,forecast) {
 }
 
 function LAIForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_LAI"]["sparql"],{
+	const sepa = Sepajs.client;
+
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
+	
+	const Bench = Sepajs.bench
+	
+	bench = new Bench()
+	query = bench.sparql(jsap["queries"]["FORECAST_LAI"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -161,7 +192,9 @@ function LAIForecast(place,place_id,from,to,name,forecast) {
 		}
 	})
 	
-	sepa.query(prefixes + " " + query,jsap).then((data)=>{		
+	fullQuery = prefixes + " " + query;
+	
+	sepa.query(fullQuery,jsap).then((data)=>{		
 		if (data.results.bindings.length != 0) {	
 			binding = data.results.bindings[0];
 			
@@ -171,7 +204,19 @@ function LAIForecast(place,place_id,from,to,name,forecast) {
 }
 
 function irrigationForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_IRRIGATION"]["sparql"],{
+	const sepa = Sepajs.client;
+
+	// PREFIXES
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
+	
+	const Bench = Sepajs.bench
+	
+	bench = new Bench()
+	query = bench.sparql(jsap["queries"]["FORECAST_IRRIGATION"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -186,7 +231,9 @@ function irrigationForecast(place,place_id,from,to,name,forecast) {
 		}
 	})
 	
-	sepa.query(prefixes + " " + query,jsap).then((data)=>{
+	fullQuery = prefixes + " " + query;
+	
+	sepa.query(fullQuery,jsap).then((data)=>{
 		if (data.results.bindings.length != 0) {	
 			binding = data.results.bindings[0];
 			

@@ -41,7 +41,7 @@ jsap = {
 			"qudt" : "http://qudt.org/schema/qudt#",
 			"unit" : "http://qudt.org/vocab/unit#",
 			"arces-monitor": "http://wot.arces.unibo.it/monitor#",
-			"swamp" : "http://swamp-project.org/ns#",
+			"swamp" : "http://swamp-project.org/ontology/swamp#",
 			"mqtt": "http://wot.arces.unibo.it/mqtt#",
 			"time": "http://www.w3.org/2006/time#",
 			"wgs84_pos": "http://www.w3.org/2003/01/geo/wgs84_pos#",
@@ -51,6 +51,9 @@ jsap = {
 		"updates": {
 		},
 		"queries": {
+			"FIELD": {
+				"sparql": "SELECT * FROM <http://swamp-project.org/cbec/field> WHERE {?fieldUri rdf:type swamp:Field ; swamp:hasGeometry ?geometry ; swamp:hasCanal ?canalUri ; swamp:hasCrop ?cropUri ; swamp:managedBy ?farmerUri}"
+			},
 			"FORECAST_N_DAYS": {
 				"sparql": "SELECT * WHERE {OPTIONAL {?unit qudt:symbol ?symbol} graph <http://wot.arces.unibo.it/forecast> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?timestamp ; sosa:observedProperty ?property ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit BIND((xsd:dateTime(substr(xsd:string(?timestamp),1,10)) - xsd:dateTime(substr(xsd:string(?resultTime),1,10)))/86400 AS ?diff) FILTER (xsd:dateTime(?resultTime) >= xsd:dateTime(concat(?from,'T00:00:00Z')) && xsd:dateTime(?resultTime) <= xsd:dateTime(concat(?to,'T23:59:59Z')) && (?diff = xsd:integer(?n)) )}} ORDER BY xsd:dateTime(?timestamp)",
 				"forcedBindings": {
