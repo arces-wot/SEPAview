@@ -11,7 +11,7 @@ function queryHistory(observation,from,to) {
 //	let query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
 //	let query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
 //	 
-	query = new Bench().sparql(jsap["queries"]["LOG_QUANTITY"]["sparql"],{
+	query = bench.sparql(jsap["queries"]["LOG_QUANTITY"]["sparql"],{
 		observation :{
 		   type: "uri",
 	       value : observation
@@ -43,8 +43,8 @@ function queryPlaceTree(placeUri,placeName) {
 	})
 }
 
-function queryChilds(placeUri,tree) {	
-    query = new Bench().sparql(jsap["queries"]["CONTAINED_PLACES"]["sparql"],{
+function queryChilds(placeUri,tree) {
+    query = bench.sparql(jsap["queries"]["CONTAINED_PLACES"]["sparql"],{
 		root :{
 		   type: "uri",
 	       value : placeUri
@@ -96,7 +96,7 @@ function addForecastForDay(place,place_id,name,day,n) {
 }
 
 function temperatureForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_WEATHER_TEMPERATURE"]["sparql"],{
+	query = bench.sparql(jsap["queries"]["FORECAST_WEATHER_TEMPERATURE"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -121,7 +121,7 @@ function temperatureForecast(place,place_id,from,to,name,forecast) {
 }
 
 function precipitationForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_WEATHER_PRECIPITATION"]["sparql"],{
+	query = bench.sparql(jsap["queries"]["FORECAST_WEATHER_PRECIPITATION"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -146,7 +146,7 @@ function precipitationForecast(place,place_id,from,to,name,forecast) {
 }
 
 function LAIForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_LAI"]["sparql"],{
+	query = bench.sparql(jsap["queries"]["FORECAST_LAI"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place
@@ -171,7 +171,7 @@ function LAIForecast(place,place_id,from,to,name,forecast) {
 }
 
 function irrigationForecast(place,place_id,from,to,name,forecast) {
-	query = new Bench().sparql(jsap["queries"]["FORECAST_IRRIGATION"]["sparql"],{
+	query = bench.sparql(jsap["queries"]["FORECAST_IRRIGATION"]["sparql"],{
 		place :{
 		   type: "uri",
 	       value : place

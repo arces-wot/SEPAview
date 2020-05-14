@@ -1,7 +1,7 @@
 lastPlaceZone = undefined;
 
 const sepa = Sepajs.client;
-//const bench = new Bench();
+const bench = new Sepajs.bench()
 prefixes = undefined;
 
 function initSepa() {
