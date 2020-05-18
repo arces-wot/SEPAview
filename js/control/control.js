@@ -1,18 +1,5 @@
 lastPlaceZone = undefined;
 
-const sepa = Sepajs.client;
-const bench = new Sepajs.bench()
-prefixes = undefined;
-
-function initSepa() {
-	// PREFIXES	
-	prefixes = "";
-	for (ns in jsap["namespaces"]) {
-		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
-				+ ">";
-	}	
-}
-
 function onMapPlaceClick(uri, name,lat,long) {
 	let today = moment("2019-12-31T08:00:00Z");
 	//let today = moment();

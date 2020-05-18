@@ -27,7 +27,7 @@ function queryHistory(observation,from,to) {
 		
 	})
 	
-	return sepa.query(query,jsap).then((data)=>{ 
+	return sepa.query(prefixes + " " + query,jsap).then((data)=>{ 
 		 return data;
 	 });
 }

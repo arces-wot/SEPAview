@@ -73,6 +73,9 @@ function getCalendarDates() {
 }
 
 function onLoad() {
+	// Init SEPA
+	initSepa();
+	
 	// Init plot
 	Plotly.newPlot("plot", [], layout, { responsive: true });
 	

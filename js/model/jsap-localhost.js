@@ -1,3 +1,19 @@
+sepa = undefined;
+bench = undefined;
+prefixes = undefined;
+
+function initSepa() {
+	// PREFIXES	
+	prefixes = "";
+	for (ns in jsap["namespaces"]) {
+		prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns]
+				+ ">";
+	}
+	
+	sepa = Sepajs.client;
+	bench = new Sepajs.bench()
+}
+
 jsap = {
 		"host": "localhost",
 		"oauth": {
