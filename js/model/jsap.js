@@ -57,7 +57,7 @@ jsap = {
 			"qudt" : "http://qudt.org/schema/qudt#",
 			"unit" : "http://qudt.org/vocab/unit#",
 			"arces-monitor": "http://wot.arces.unibo.it/monitor#",
-			"swamp" : "http://swamp-project.org/ontology/swamp#",
+			"swamp" : "http://swamp-project.org/ns#",
 			"mqtt": "http://wot.arces.unibo.it/mqtt#",
 			"time": "http://www.w3.org/2006/time#",
 			"wgs84_pos": "http://www.w3.org/2003/01/geo/wgs84_pos#",

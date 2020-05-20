@@ -1,8 +1,8 @@
 lastPlaceZone = undefined;
 
 function onMapPlaceClick(uri, name,lat,long) {
-	let today = moment("2019-12-31T08:00:00Z");
-	//let today = moment();
+	//let today = moment("2019-12-31T08:00:00Z");
+	let today = moment();
 	
 	queryPlaceTree(uri, name).then((tree)=> {
 		createObservationsTree(tree,today);
