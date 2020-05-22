@@ -81,6 +81,16 @@ function initMarkers() {
 	    iconSize: [24, 24]
 	});
 	
+	var weir = L.icon({
+	    iconUrl: 'icon/weir.png',
+	    iconSize: [36, 36]
+	});
+	
+	var cp = L.icon({
+	    iconUrl: 'icon/weirwheel.png',
+	    iconSize: [36, 36]
+	});
+	
 	icons["http://swamp-project.org/ns#Bertacchini"] = swamp;
 	icons["http://swamp-project.org/ns#Ferrari"] = swamp;
 	icons["http://swamp-project.org/ns#Bonacini"] = swamp;
@@ -100,6 +110,23 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#SbarramentoFosdondo"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#ScaricoCanaleFosdondo"] = wheel;
 	icons["http://wot.arces.unibo.it/monitor#ValleSbarramentoFosdondoDirNord"] = wheel;
+	
+	icons["http://swamp-project.org/ns#Gate1"] = weir;
+	icons["http://swamp-project.org/ns#Gate2"] = weir;
+	icons["http://swamp-project.org/ns#Gate3"] = weir;
+	icons["http://swamp-project.org/ns#Gate4M"] = weir;
+	icons["http://swamp-project.org/ns#Gate4V"] = weir;
+	icons["http://swamp-project.org/ns#Gate5"] = weir;
+	icons["http://swamp-project.org/ns#Gate6"] = weir;
+	icons["http://swamp-project.org/ns#Gate7"] = weir;
+	
+	icons["http://swamp-project.org/ns#CP1"] = cp;
+	icons["http://swamp-project.org/ns#CP2"] = cp;
+	icons["http://swamp-project.org/ns#CP3"] = cp;
+	
+//	http://swamp-project.org/ns#CP1
+//	http://swamp-project.org/ns#CP2
+//	http://swamp-project.org/ns#CP3
 }
 
 function drawVectorLayers() {
