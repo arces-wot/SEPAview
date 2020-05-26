@@ -5,6 +5,40 @@ function queryFields() {
 	 });	
 }
 
+function queryIrrigationRequests(field) {
+	query = bench.sparql(jsap["queries"]["IRRIGATION_REQUESTS_BY_FIELD"]["sparql"],{
+		fieldUri :{
+		   type: "uri",
+	       value : field
+		}		
+	})
+	
+	return sepa.query(prefixes + " " + query,jsap).then((data)=>{ 
+		let n = data.results.bindings.length;
+		
+		ret = [];
+		
+		for (index = 0; index < n ; index++) {		
+			timestamp = data.results.bindings[index].timestamp.value.split("T")[0];
+			issuedBy = data.results.bindings[index].issuedBy.value;
+			currentStatus = data.results.bindings[index].currentStatus.value;
+			requestNumber = data.results.bindings[index].requestNumber.value;
+			reservationNumber = data.results.bindings[index].reservationNumber.value;
+			
+			irr = {};
+			irr["date"] = timestamp;
+			irr["issuedBy"] = issuedBy;
+			irr["status"] = currentStatus;
+			irr["request"] = requestNumber;
+			irr["reservation"] = reservationNumber;
+			
+			ret.push(irr);
+		}
+		
+		return ret;
+	 });
+}
+
 function queryHistory(observation,from,to) {
 	// Forced bindings
 //	let query = query.replace("?observation", "<"+observation+">");

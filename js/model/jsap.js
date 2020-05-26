@@ -61,7 +61,8 @@ jsap = {
 			"mqtt": "http://wot.arces.unibo.it/mqtt#",
 			"time": "http://www.w3.org/2006/time#",
 			"wgs84_pos": "http://www.w3.org/2003/01/geo/wgs84_pos#",
-			"gn": "http://www.geonames.org/ontology#"
+			"gn": "http://www.geonames.org/ontology#",
+			"swamp2" : "http://swamp-project.org/ontology/swamp#"
 		},
 		"extended": {},
 		"updates": {
@@ -297,6 +298,15 @@ jsap = {
 			},
 			"FORECASTS_COUNT": {
 				"sparql": "SELECT (COUNT(?forecast) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/forecast> {?forecast rdf:type swamp:Forecast}}"
+			},
+			"IRRIGATION_REQUESTS_BY_FIELD": {
+				"sparql": "SELECT * FROM <http://swamp-project.org/cbec/irrigation> WHERE {?irr rdf:type swamp2:IrrigationRequest ; time:inXSDDateTimeStamp ?timestamp ; swamp2:issuedBy ?issuedBy ; swamp2:hasCurrentStatus ?currentStatus ; swamp2:requestNumber ?requestNumber ; swamp2:reservationNumber ?reservationNumber ; swamp2:hasField ?fieldUri ; swamp2:hasStatus ?status . ?status time:inXSDDateTimeStamp ?timestamp ; swamp2:requestStatus ?reqStatus} ORDER BY ?timestamp",
+				"forcedBindings": {
+					"fieldUri": {
+						"type": "uri",
+						"value": "http://swamp-project.org/cbec/field_23566"
+					}
+				}
 			}
 		}
 	}

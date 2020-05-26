@@ -80,7 +80,8 @@
 <body onLoad='onLoad()'>
 	<nav class="navbar">
 		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
-			width=28 class="d-inline-block align-top" alt=""> SWAMP - Smart Water Management Platform
+			width=28 class="d-inline-block align-top" alt=""> SWAMP - Smart
+			Water Management Platform
 		</a>
 		<button type="button" class="btn btn-secondary">
 			Notifications<span class="badge badge-light ml-3"><div
@@ -124,24 +125,25 @@
 					<div class="card-header">Semantic content</div>
 					<div class="card-body">
 						<div class='row mb-2'>
-					<button type="button" class="btn btn-primary">
-						Observations<span class="badge badge-light ml-3"><div
-								id="odoObservations" class="odometer"></div></span>
-					</button>
-				</div>
-				<div class='row'>
-					<button type="button" class="btn btn-primary">
-						Features of interest<span class="badge badge-light ml-3"><div id="odoPlaces"
-								class="odometer"></div></span>
-					</button>
-				</div>
+							<button type="button" class="btn btn-primary">
+								Observations<span class="badge badge-light ml-3"><div
+										id="odoObservations" class="odometer"></div></span>
+							</button>
+						</div>
+						<div class='row'>
+							<button type="button" class="btn btn-primary">
+								Features of interest<span class="badge badge-light ml-3"><div
+										id="odoPlaces" class="odometer"></div></span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row mt-3">
 			<div class="col-4">
-				<div class="alert alert-primary" role="alert">Feature of interest</div>
+				<div class="alert alert-primary" role="alert">Feature of
+					interest</div>
 				<ul id="tree" class="nav nav-pills pt-0"></ul>
 			</div>
 			<div class="col-8">
@@ -160,4 +162,27 @@
 		</div>
 	</div>
 </body>
+<!-- Modal -->
+<div class="modal fade" id="irrigationRequestsInfoBox" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="irrigationRequestsInfoBoxTitle">List of irrigations</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid" id="irrigationRequestsInfoBoxBody"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<!--         <button type="button" class="btn btn-primary">Save changes</button> -->
+			</div>
+		</div>
+	</div>
+</div>
 </html>

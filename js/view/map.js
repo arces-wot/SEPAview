@@ -157,7 +157,20 @@ function onEachFeature(feature, layer) {
             });
         },
         click: function () {
-            alert('Farmer: ' + feature.properties.farmer+" Canal: "+ feature.properties.canal + " Crop: "+ feature.properties.crop)
+        	queryIrrigationRequests(feature.properties.field).then((info) => {
+        		$('#irrigationRequestsInfoBoxBody').empty();
+        		
+        		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Field URI</div><div class="col-auto">'+feature.properties.field+"</div></div>");       		
+        		$('#irrigationRequestsInfoBoxBody').append('<div class="row"><div class="col-2">Date</div><div class="col-1">Request</div><div class="col-2">Reservation</div><div class="col-7">Issued by</div></div>');		
+        		for (irr of info) {
+        			$('#irrigationRequestsInfoBoxBody').append('<div class="row"><div class="col-2">'+irr["date"]+'</div><div class="col-1">'+irr["request"]+'</div><div class="col-2">'+irr["reservation"]+'</div><div class="col-7">'+irr["issuedBy"]+'</div></div>');
+        		}
+
+            	$('#irrigationRequestsInfoBox').modal('show')
+
+        	});
+        	
+//            alert('Farmer: ' + feature.properties.farmer+" Canal: "+ feature.properties.canal + " Crop: "+ feature.properties.crop)
         }
     });
     layer.bindTooltip(feature.properties.field, {permanent:false,direction:'center'});        

@@ -5,8 +5,8 @@ var icons = {};
 
 var initPos = {
 		"swamp" : {
-			"lat" : 44.781,
-			"lng" : 10.717520,
+			"lat" : 44.698701,
+			"lng" : 10.626607,
 			"zoom" : 14
 		},
 		"default" : {
