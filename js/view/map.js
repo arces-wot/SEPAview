@@ -72,7 +72,7 @@ function initMarkers() {
 	});
 	
 	var server = L.icon({
-	    iconUrl: 'icon/server.svg',
+	    iconUrl: 'icon/server.png',
 	    iconSize: [48, 48]
 	});
 	
@@ -88,6 +88,16 @@ function initMarkers() {
 	
 	var cp = L.icon({
 	    iconUrl: 'icon/weirwheel.png',
+	    iconSize: [36, 36]
+	});
+	
+	var sepa = L.icon({
+	    iconUrl: 'icon/sepa-logo.svg',
+	    iconSize: [300, 300]
+	});
+	
+	var cbec = L.icon({
+	    iconUrl: 'icon/cbec.png',
 	    iconSize: [36, 36]
 	});
 	
@@ -123,6 +133,10 @@ function initMarkers() {
 	icons["http://swamp-project.org/ns#CP1"] = cp;
 	icons["http://swamp-project.org/ns#CP2"] = cp;
 	icons["http://swamp-project.org/ns#CP3"] = cp;
+	
+	icons["http://swamp-project.org/context/Place/CBEC"] = cbec;
+	
+	icons["http://sepa/test/place"] = sepa;
 	
 //	http://swamp-project.org/ns#CP1
 //	http://swamp-project.org/ns#CP2
