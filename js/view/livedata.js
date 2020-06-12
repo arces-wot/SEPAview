@@ -16,10 +16,13 @@ function onObservation(binding) {
 	let lat = binding.lat.value;
 	let long = binding.long.value;
 	
-	let symbol = binding.symbol.value;
+	let symbol = (binding.symbol != undefined ? binding.symbol.value : "qudt-unit?");
+	
 	let label = binding.label.value;
 	let observation = binding.observation.value;
-	let quantity = binding.quantity.value;
+	
+	//let quantity = binding.quantity.value;
+	
 	let value = binding.value ? binding.value.value : "???";
 	
 	console.log("onObservation Place:"+place+" Observation:"+observation+" value:"+value)

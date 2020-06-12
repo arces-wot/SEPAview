@@ -48,28 +48,33 @@ jsap = {
 				}
 			}
 		},
-		"graphs": {},
+		"graphs": {
+			
+		},
 		"namespaces": {
 			"schema": "http://schema.org/",
 			"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
 			"rdfs": "http://www.w3.org/2000/01/rdf-schema#",
 			"sosa": "http://www.w3.org/ns/sosa/",
-			"qudt" : "http://qudt.org/schema/qudt#",
-			"unit" : "http://qudt.org/vocab/unit#",
+			"qudt": "http://qudt.org/schema/qudt#",
+			"unit": "http://qudt.org/vocab/unit#",
 			"arces-monitor": "http://wot.arces.unibo.it/monitor#",
-			"swamp" : "http://swamp-project.org/ns#",
+			"swamp": "http://swamp-project.org/ns#",
 			"mqtt": "http://wot.arces.unibo.it/mqtt#",
 			"time": "http://www.w3.org/2006/time#",
 			"wgs84_pos": "http://www.w3.org/2003/01/geo/wgs84_pos#",
 			"gn": "http://www.geonames.org/ontology#",
-			"swamp2" : "http://swamp-project.org/ontology/swamp#"
+			"swamp2": "http://swamp-project.org/ontology/swamp#"
 		},
-		"extended": {},
+		"extended": {
+			
+		},
 		"updates": {
+			
 		},
 		"queries": {
 			"FIELD": {
-				"sparql": "SELECT * FROM <http://swamp-project.org/cbec/field> WHERE {?fieldUri rdf:type <http://swamp-project.org/ontology/swamp#Field> ; <http://swamp-project.org/ontology/swamp#hasGeometry> ?geometry ; <http://swamp-project.org/ontology/swamp#hasCanal> ?canalUri ; <http://swamp-project.org/ontology/swamp#hasCrop> ?cropUri ; <http://swamp-project.org/ontology/swamp#managedBy> ?farmerUri}"
+				"sparql": "SELECT * FROM <http://swamp-project.org/cbec/field> FROM <http://swamp-project.org/cbec/crop> WHERE {?fieldUri rdf:type <http://swamp-project.org/ontology/swamp#Field> ; <http://swamp-project.org/ontology/swamp#hasGeometry> ?geometry ; <http://swamp-project.org/ontology/swamp#hasCanal> ?canalUri ; <http://swamp-project.org/ontology/swamp#hasCrop> ?cropUri ; <http://swamp-project.org/ontology/swamp#managedBy> ?farmerUri . ?cropUri rdfs:label ?cropLabel}"
 			},
 			"FORECAST_N_DAYS": {
 				"sparql": "SELECT * WHERE {OPTIONAL {?unit qudt:symbol ?symbol} graph <http://wot.arces.unibo.it/forecast> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?timestamp ; sosa:observedProperty ?property ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit BIND((xsd:dateTime(substr(xsd:string(?timestamp),1,10)) - xsd:dateTime(substr(xsd:string(?resultTime),1,10)))/86400 AS ?diff) FILTER (xsd:dateTime(?resultTime) >= xsd:dateTime(concat(?from,'T00:00:00Z')) && xsd:dateTime(?resultTime) <= xsd:dateTime(concat(?to,'T23:59:59Z')) && (?diff = xsd:integer(?n)) )}} ORDER BY xsd:dateTime(?timestamp)",
@@ -164,11 +169,11 @@ jsap = {
 					}
 				}
 			},
-			"MQTT_MAPPINGS" : {
-				"sparql" : "SELECT * {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
+			"MQTT_MAPPINGS": {
+				"sparql": "SELECT * {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
 			},
-			"MQTT_MAPPER" : {
-				"sparql" : "SELECT DISTINCT ?regex ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}",
+			"MQTT_MAPPER": {
+				"sparql": "SELECT DISTINCT ?regex ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}",
 				"forcedBindings": {
 					"mapper": {
 						"type": "uri",
@@ -176,14 +181,14 @@ jsap = {
 					}
 				}
 			},
-			"MQTT_MAPPERS_TOPICS" : {
-				"sparql" : "SELECT DISTINCT ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}"
+			"MQTT_MAPPERS_TOPICS": {
+				"sparql": "SELECT DISTINCT ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}"
 			},
-			"MQTT_BROKERS" : {
-				"sparql" : "SELECT * WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:ssl ?ssl . OPTIONAL {?broker mqtt:user ?user ; mqtt:password ?password}}}"
+			"MQTT_BROKERS": {
+				"sparql": "SELECT * WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:ssl ?ssl . OPTIONAL {?broker mqtt:user ?user ; mqtt:password ?password}}}"
 			},
-			"MQTT_BROKER_TOPICS" : {
-				"sparql" : "SELECT ?topic WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:topic ?topic}}",
+			"MQTT_BROKER_TOPICS": {
+				"sparql": "SELECT ?topic WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:topic ?topic}}",
 				"forcedBindings": {
 					"url": {
 						"type": "literal",
@@ -237,6 +242,9 @@ jsap = {
 				"sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place . ?root schema:name ?name .  FILTER NOT EXISTS{?root schema:containedInPlace ?place} }}"
 			},
 			"OBSERVATIONS": {
+				"sparql": "SELECT * FROM <http://wot.arces.unibo.it/context> FROM <http://wot.arces.unibo.it/observation> FROM <http://localhost:8890/DAV> WHERE {?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp} . OPTIONAL{?unit qudt:symbol ?symbol} .OPTIONAL {?unit <http://qudt.org/schema/qudt/symbol> ?symbol} }"
+			},
+			"OBSERVATIONS_OLD": {
 				"sparql": "SELECT * WHERE {?unit qudt:symbol ?symbol . GRAPH <http://wot.arces.unibo.it/context> {?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long}.GRAPH <http://wot.arces.unibo.it/observation> {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}}"
 			},
 			"OBSERVATIONS_BY_LOCATION": {
@@ -294,13 +302,13 @@ jsap = {
 				"sparql": "SELECT (COUNT(?place) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/context> {?place rdf:type schema:Place}}"
 			},
 			"OBSERVATIONS_COUNT": {
-				"sparql": "SELECT (COUNT(?observation) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/observation> {?observation rdf:type sosa:Observation}}"
+				"sparql": "SELECT (COUNT(?observation) AS ?count) FROM <http://wot.arces.unibo.it/context> FROM <http://wot.arces.unibo.it/observation> WHERE {?location rdf:type schema:Place . ?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation}"
 			},
 			"FORECASTS_COUNT": {
 				"sparql": "SELECT (COUNT(?forecast) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/forecast> {?forecast rdf:type swamp:Forecast}}"
 			},
 			"IRRIGATION_REQUESTS_BY_FIELD": {
-				"sparql": "SELECT * FROM <http://swamp-project.org/cbec/irrigation> WHERE {?irr rdf:type swamp2:IrrigationRequest ; time:inXSDDateTimeStamp ?timestamp ; swamp2:issuedBy ?issuedBy ; swamp2:hasCurrentStatus ?currentStatus ; swamp2:requestNumber ?requestNumber ; swamp2:reservationNumber ?reservationNumber ; swamp2:hasField ?fieldUri ; swamp2:hasStatus ?status . ?status time:inXSDDateTimeStamp ?timestamp ; swamp2:requestStatus ?reqStatus} ORDER BY ?timestamp",
+				"sparql": "SELECT * FROM <http://swamp-project.org/cbec/irrigation> WHERE {?irr rdf:type swamp2:IrrigationRequest ; time:inXSDDateTimeStamp ?timestamp ; swamp2:issuedBy ?issuedBy ; swamp2:hasCurrentStatus ?currentStatus ; swamp2:requestNumber ?requestNumber ; swamp2:reservationNumber ?reservationNumber ; swamp2:hasField ?fieldUri ; swamp2:hasStatus ?status . ?status time:inXSDDateTimeStamp ?x ; swamp2:requestStatus ?reqStatus} ORDER BY ?timestamp",
 				"forcedBindings": {
 					"fieldUri": {
 						"type": "uri",

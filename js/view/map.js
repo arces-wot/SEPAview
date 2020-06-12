@@ -7,7 +7,7 @@ var initPos = {
 		"swamp" : {
 			"lat" : 44.781,
 			"lng" : 10.717520,
-			"zoom" : 14
+			"zoom" : 12
 		},
 		"default" : {
 			"lat" : 44.50265,
@@ -101,6 +101,11 @@ function initMarkers() {
 	    iconSize: [36, 36]
 	});
 	
+	var rain = L.icon({
+	    iconUrl: 'icon/rain4.png',
+	    iconSize: [36, 36]
+	});
+	
 	icons["http://swamp-project.org/ns#Bertacchini"] = swamp;
 	icons["http://swamp-project.org/ns#Ferrari"] = swamp;
 	icons["http://swamp-project.org/ns#Bonacini"] = swamp;
@@ -137,6 +142,10 @@ function initMarkers() {
 	icons["http://swamp-project.org/context/Place/CBEC"] = cbec;
 	
 	icons["http://sepa/test/place"] = sepa;
+	
+	icons["http://wot.arces.unibo.it/monitor#PluviometroCorreggio"] = rain;
+	icons["http://wot.arces.unibo.it/monitor#PluviometroRotte"] = rain;
+	icons["http://wot.arces.unibo.it/monitor#PluviometroSantaMaria"] = rain;
 	
 //	http://swamp-project.org/ns#CP1
 //	http://swamp-project.org/ns#CP2
@@ -175,6 +184,9 @@ function onEachFeature(feature, layer) {
         		$('#irrigationRequestsInfoBoxBody').empty();
         		
         		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Field URI</div><div class="col-auto">'+feature.properties.field+"</div></div>");       		
+        		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Crop URI</div><div class="col-auto">'+feature.properties.crop+" ("+feature.properties.cropLabel+")</div></div>");
+        		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Canal URI</div><div class="col-auto">'+feature.properties.canal+"</div></div>");
+        		
         		$('#irrigationRequestsInfoBoxBody').append('<div class="row"><div class="col-2">Date</div><div class="col-1">Request</div><div class="col-2">Reservation</div><div class="col-7">Issued by</div></div>');		
         		for (irr of info) {
         			$('#irrigationRequestsInfoBoxBody').append('<div class="row"><div class="col-2">'+irr["date"]+'</div><div class="col-1">'+irr["request"]+'</div><div class="col-2">'+irr["reservation"]+'</div><div class="col-7">'+irr["issuedBy"]+'</div></div>');

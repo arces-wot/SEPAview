@@ -81,17 +81,18 @@ function initFields() {
 			field["properties"]["field"] = data.results.bindings[index].fieldUri.value;
 			field["properties"]["canal"] = data.results.bindings[index].canalUri.value;
 			field["properties"]["crop"] = data.results.bindings[index].cropUri.value;
+			field["properties"]["cropLabel"] = data.results.bindings[index].cropLabel.value;
 			
 			if (data.results.bindings[index].fieldUri.value.endsWith("3097")) {
-				field["properties"]["field"]  = "Ferrari Andrea (3097)";
+				//field["properties"]["field"]  = "Ferrari Andrea (3097)";
 				field["properties"]["color"] = "blue";
 			}
 			else if (data.results.bindings[index].fieldUri.value.endsWith("27029")) {
-				field["properties"]["field"]  = "Bertacchini Claudio (27029)";
+				//field["properties"]["field"]  = "Bertacchini Claudio (27029)";
 				field["properties"]["color"] = "blue";
 			}
 			else if (data.results.bindings[index].fieldUri.value.endsWith("12255")) {
-				field["properties"]["field"] = "Bonacini Andrea (12255)";
+				//field["properties"]["field"] = "Bonacini Andrea (12255)";
 				field["properties"]["color"] = "blue";
 			}
 			else {

@@ -151,6 +151,8 @@ function temperatureForecast(place,place_id,from,to,name,forecast) {
 			
 			showWeatherTemperatureForecast(place_id,place,name,forecast,binding)
 		}
+	 }).catch((debug)=>{
+		 console.log(debug);
 	 });		
 }
 
