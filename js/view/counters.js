@@ -22,3 +22,15 @@ function updateNotifications() {
 	nots++;
 	$("#odoNotifications").html(nots);
 }
+
+function updateIrrigationRequestsCount(count) {
+	$("#odoIrrigationRequests").html(count);	
+}
+
+function updateFieldsCount(count) {
+	$("#odoFields").html(count);	
+}
+
+function updateCropsCount(count) {
+	$("#odoCrops").html(count);	
+}

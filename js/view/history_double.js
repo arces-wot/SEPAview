@@ -7,7 +7,7 @@ var min = [];
 var s = new ColorScheme;
 
 // Using a fixed palette
-var colors = ["#2980b9","#16a085"]
+var colors = ["#FF0000","#0000FF"]
 
 var csvData;
 
@@ -75,8 +75,9 @@ function changeHistoryTimeZone() {
 }
 
 var layout = {
-	title : "No data",
+	title : "Loading data...please wait...",
 	mode: 'lines+markers',
+	legend: {"orientation": "h", "x" : 0.25},
 	xaxis : {
 		domain : [ 0.15, 1.0 ],
 		showgrid: true,
@@ -93,7 +94,7 @@ var layout = {
 		color : colors[0],
 		tickfont : {
 			family : 'Verdana',
-			size : 16,
+			size : 18,
 			color : colors[0]
 		},
 		title: 'yaxis',
@@ -103,10 +104,11 @@ var layout = {
 	},
 	yaxis2: {
 		title: 'yaxis2',
-		titlefont: { color: 'rgb(148, 103, 189)' },
+		color : colors[1],
+		//titlefont: { color: 'rgb(148, 103, 189)' },
 		tickfont: {
 			family: 'Verdana',
-			size: 16,
+			size: 18,
 			color: colors[1]
 		},
 		overlaying: 'y',
@@ -115,9 +117,11 @@ var layout = {
 		zeroline: false,
 		showline: false
 	},
-	margin:{
-		l : 0
-	}
+	margin: {
+	    autoexpand: true,
+	    l: 0,
+	    b : 75
+	  }
 };
 
 function downloadCSV() {
@@ -233,8 +237,8 @@ function selectObservation(node) {
 		const oldNode = selection.shift();
 		const t = $('#observations').treeview(true)
 		
-		// oldNode is just a clone of the real node cotained inside the tree.
-		// finding the node retrives the real one.
+		// oldNode is just a clone of the real node contained inside the tree.
+		// finding the node retrieves the real one.
 		const treeNode = t.findNodes(oldNode.nodeId,"nodeId")
 		t.toggleNodeSelected(treeNode,{silent:true})
 	}
@@ -278,11 +282,11 @@ function updateUIForm() {
 	
 	for (const node of selection) {
 		obs += node.uri + ","
-		title += `${node.text}&`
+		title += `${node.text} & `
 	}
 
 	obs = obs.substr(0, obs.length - 1)
-	title = title.substr(0,title.length -1)
+	title = title.substr(0,title.length -3)
 	layout.title = title
 
 	$("#form > input[name='observation']").attr("value", obs)
@@ -338,7 +342,7 @@ function onRefresh() {
 		.then((data) => {	
 			data.name = selection[0].text
 			updateTraces(data, selection[0].symbol)
-			//Plotly.newPlot("plot", traces, layout);
+			// Plotly.newPlot("plot", traces, layout);
 		}).then(() => {
 			if (selection[1] != undefined){
 			doQuery(selection[1].uri)
@@ -377,9 +381,9 @@ function results(jsapObj) {
 		x : [],
 		y : [],
 		line : {
-			width : 1.25,
+			width : 2.25,
 		},
-		type : 'scatter',
+		type : 'scatter'
 	};
 	
 	
@@ -394,18 +398,18 @@ function results(jsapObj) {
 			
 		traceTime = moment(timestamp).utc();
 		traceTime.add(tzOffset,'m');
-//		// Format date according to TZ
-//		if (tz == "UTC"){
-//			//traceTime = flatpickr.parseDate(timestamp,"Y-m-dTH:i\\Z");
-//			traceTime = timestamp;
-//		}
-//		else if (tz == "Local") {
-//			var t = moment(timestamp);
-//			t.
-//		}
-//		else if (tz == "Remote") {
+// // Format date according to TZ
+// if (tz == "UTC"){
+// //traceTime = flatpickr.parseDate(timestamp,"Y-m-dTH:i\\Z");
+// traceTime = timestamp;
+// }
+// else if (tz == "Local") {
+// var t = moment(timestamp);
+// t.
+// }
+// else if (tz == "Remote") {
 //				
-//		}
+// }
 					
 		trace.x.push(traceTime.format());
 		trace.y.push(value);		

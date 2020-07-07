@@ -42,3 +42,8 @@ function onChangeHistoryTimeZone() {
 	
 	updateHistoryGraph();
 }
+
+function onFilterByCropChange() {
+	crop = document.getElementById("filterByCrop").value;
+	showFields(crop);
+}

@@ -1,12 +1,14 @@
 const sepa = Sepajs.client;
 
+const mainGroups = {}; //"http://swamp-project.org/ns#Weir","http://swamp-project.org/ns#Farm","http://swamp-project.org/ns#Canal","http://swamp-project.org/ns#Pluviometer"];
+
 function loadPlaceTree() {
     
     prefixes = "";
     for (ns in jsap["namespaces"]) {
         prefixes += " PREFIX " + ns + ":<" + jsap["namespaces"][ns] + ">";
     }
-    let allRootPlaces = prefixes + " " + jsap["queries"]["MAP_PLACES"]["sparql"];
+    let allRootPlaces = prefixes + " " + jsap["queries"]["MAP_GROUPS"]["sparql"];
     let allObservations = prefixes + " " + jsap["queries"]["OBSERVATIONS"]["sparql"];
     
     let tree  = []
@@ -22,7 +24,7 @@ function loadPlaceTree() {
             let obsNode = {
                 text : binding.label.value,
                 uri : obs,
-                symbol : binding.symbol.value
+                symbol : (binding.symbol != undefined ? binding.symbol.value : "???")
             }
             obsMapping[loc].push(obsNode)
         })
@@ -32,16 +34,29 @@ function loadPlaceTree() {
         return sepa.query(allRootPlaces, jsap).then((data) => {
             let promises = []
             data.results.bindings.forEach(binding => {
-                let parentNode = {
+                
+            	if (mainGroups[binding.group.value] == undefined) {
+            		mainGroups[binding.group.value] = {
+            				text : binding.label.value,
+            				uri : binding.group.value,
+            				selectable : false
+            		}
+            		
+            		mainGroups[binding.group.value].nodes = [];
+            		
+            		tree.push(mainGroups[binding.group.value]);
+            	}
+            	
+            	let parentNode = {
                     text: binding.name.value,
                     uri: binding.root.value,
                     selectable : false,
                     lat : binding.lat.value,
                     long : binding.long.value
-
                 }
-
-                tree.push(parentNode)
+            	
+            	mainGroups[binding.group.value].nodes.push(parentNode);
+                //tree.push(parentNode)
 
                 promises.push(loadPlace(binding.root.value, parentNode,mapping))
             });

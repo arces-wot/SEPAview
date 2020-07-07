@@ -19,7 +19,7 @@ const axisLabels = ["y", "y2"]
 var timestamps = []
 
 var layout = {
-	title : "No data",
+	title : "Loading data...please wait...",
 	mode: 'lines+markers',
 	xaxis : {
 		domain : [ 0.15, 1.0 ],

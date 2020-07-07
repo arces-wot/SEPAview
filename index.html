@@ -31,13 +31,9 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.10.7/web/sepa.js"></script>
 
-<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
-
 <script src="lib/moment.js"></script>
 <script src="lib/moment-timezone-with-data.js"></script>
 <script src="lib/odometer.js"></script>
-<!-- <script src="lib/d3.min.js"></script> -->
-<!-- <script src="lib/bullet.js"></script> -->
 <script src="lib/tz.js"></script>
 
 
@@ -55,7 +51,6 @@
 
 <script src="js/control/control.js"></script>
 <script src="js/control/csv.js"></script>
-<!-- <script src="js/control/tz.js"></script> -->
 <script src="js/control/utils.js"></script>
 
 <link rel="stylesheet"
@@ -83,38 +78,59 @@
 			width=28 class="d-inline-block align-top" alt=""> SWAMP - Smart
 			Water Management Platform
 		</a>
-		<button type="button" class="btn btn-secondary">
-			Notifications<span class="badge badge-light ml-3"><div
-					id="odoNotifications" class="odometer"></div></span>
-		</button>
+
+		<form class="form-inline">
+			<button type="button" class="btn btn-sm btn-secondary">
+				Notifications<span class="badge badge-light ml-3"><div
+						id="odoNotifications" class="odometer"></div></span>
+			</button>
+		</form>
+
+
 	</nav>
 
 	<div class="container-fluid">
-		<div class="row mt-3">
+		<div class="row">
 			<div class='col ml-3 mr-3'>
 				<div class='row' id="mapid"></div>
-				<div class='row mt-3 flex-row-reverse '>
-					<span class="badge badge-info" id='timeZone'>Time zone: UTC</span>
+				<div class='row mt-3 flex-row-reverse'>
+					<span class="badge mb-1 badge-success align-self-center">Filter
+						by crop&nbsp;&nbsp;<select id="filterByCrop"
+						onchange="onFilterByCropChange()">
+							<option value="ALL">ALL</option>
+					</select>
+					</span>
+					<button type="button" class="btn btn-sm btn-success mr-3">
+						Fields<span class="badge badge-light ml-3"><div
+								id="odoFields" class="odometer"></div></span>
+					</button>
+
+					<button type="button" class="btn btn-sm btn-success mr-3">
+						Crops<span class="badge badge-light ml-3"><div
+								id="odoCrops" class="odometer"></div></span>
+					</button>
+
 				</div>
 			</div>
 			<div class='col-auto'>
 				<div class="card">
 					<div class="card-header">Knowledge graph (triples)</div>
 					<div class="card-body">
+
 						<div class='row mb-2'>
-							<button type="button" class="btn btn-success">
+							<button type="button" class="btn btn-sm btn-success">
 								Live<span class="badge badge-light ml-3"><div
 										id="odoLiveSize" class="odometer"></div></span>
 							</button>
 						</div>
 						<div class='row mb-2'>
-							<button type="button" class="btn btn-danger">
+							<button type="button" class="btn btn-sm btn-danger">
 								History<span class="badge badge-light ml-3"><div
 										id="odoHistorySize" class="odometer"></div></span>
 							</button>
 						</div>
 						<div class='row'>
-							<button type="button" class="btn btn-warning">
+							<button type="button" class="btn btn-sm btn-warning">
 								Forecast<span class="badge badge-light ml-3"><div
 										id="odoForecastsSize" class="odometer"></div></span>
 							</button>
@@ -125,20 +141,27 @@
 					<div class="card-header">Semantic content</div>
 					<div class="card-body">
 						<div class='row mb-2'>
-							<button type="button" class="btn btn-primary">
+							<button type="button" class="btn btn-sm btn-primary">
 								Observations<span class="badge badge-light ml-3"><div
 										id="odoObservations" class="odometer"></div></span>
 							</button>
 						</div>
-						<div class='row'>
-							<button type="button" class="btn btn-primary">
+						<div class='row mb-2'>
+							<button type="button" class="btn btn-sm btn-primary">
 								Features of interest<span class="badge badge-light ml-3"><div
 										id="odoPlaces" class="odometer"></div></span>
+							</button>
+						</div>
+						<div class='row'>
+							<button type="button" class="btn btn-sm btn-primary mr-3">
+								Irrigation requests<span class="badge badge-light ml-3"><div
+										id=odoIrrigationRequests class="odometer"></div></span>
 							</button>
 						</div>
 					</div>
 				</div>
 			</div>
+
 		</div>
 		<div class="row mt-3">
 			<div class="col-4">
@@ -151,11 +174,11 @@
 					Observation <span class="badge badge-info ml-3 mr-3">Display
 						time&nbsp;&nbsp;<select id="selectTimeZone"
 						onchange="onChangeTimeZone()">
-							<option value="UTC">UTC
-							<option value="Local">Local
-							<option value="Remote">Observation
+							<option value="UTC">UTC</option>
+							<option value="Local">Local</option>
+							<option value="Remote">Observation</option>
 					</select>
-					</span>
+					</span> <span class="badge badge-info" id='timeZone'>Time zone: UTC</span>
 				</div>
 				<div class="tab-content" id="graph"></div>
 			</div>
@@ -169,7 +192,8 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="irrigationRequestsInfoBoxTitle">List of irrigations</h5>
+				<h5 class="modal-title" id="irrigationRequestsInfoBoxTitle">List
+					of irrigations</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>

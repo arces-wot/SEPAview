@@ -39,9 +39,61 @@ function initMap(context) {
 	
 	// Init markers
 	initMarkers();
+
+	// Crop list box
+	queryCrops().then((crops) => {
+		n = 0;
+		for (crop in crops) {
+			$('#filterByCrop').append('<option value="'+crops[crop]+'">'+crop+'</option>');
+			n++;
+		}
+		
+		updateCropsCount(n);
+	});
 	
-	// Draw layers
-	drawVectorLayers();
+	// Canals
+	canals = initCanals();
+	for (canal of canals) L.polyline(canal["vertexes"], {color: canal["color"]}).addTo(map);
+	
+	// Fields
+	initFields().then((fields) => {
+		mapFields = fields;
+		geoJson = undefined;
+		showFields("ALL");	
+	});
+	
+	// Requests
+	queryIrrigationRequestsCount().then((n)=>{
+		updateIrrigationRequestsCount(n);
+	})
+}
+
+function showFields(crop) {
+	cropFilter = crop;
+	
+	if (geoJson != undefined) geoJson.removeFrom(map);
+	
+	fieldsCount = 0;
+	
+	geoJson = L.geoJSON(mapFields, {
+		style: function (feature) {
+			return {color: feature.properties.color};
+		},
+		onEachFeature: onEachFeature,
+		filter: onFilter
+	});
+	
+	geoJson.addTo(map);
+	
+	updateFieldsCount(fieldsCount);
+}
+
+function onFilter(feature) {
+	if (cropFilter == "ALL" || feature.properties.crop == cropFilter) {
+		fieldsCount++;
+		return true;
+	}
+	return false;
 }
 
 function onAddedMapPlace(places) {
@@ -146,25 +198,6 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#PluviometroCorreggio"] = rain;
 	icons["http://wot.arces.unibo.it/monitor#PluviometroRotte"] = rain;
 	icons["http://wot.arces.unibo.it/monitor#PluviometroSantaMaria"] = rain;
-	
-//	http://swamp-project.org/ns#CP1
-//	http://swamp-project.org/ns#CP2
-//	http://swamp-project.org/ns#CP3
-}
-
-function drawVectorLayers() {
-	canals = initCanals();
-	for (canal of canals) L.polyline(canal["vertexes"], {color: canal["color"]}).addTo(map);
-
-	initFields().then((fields) => {
-			L.geoJSON(fields, {
-			    style: function (feature) {
-			        return {color: feature.properties.color};
-			    },
-			    onEachFeature: onEachFeature
-			}).addTo(map);
-	});
-	
 }
 
 function onEachFeature(feature, layer) {
@@ -195,8 +228,6 @@ function onEachFeature(feature, layer) {
             	$('#irrigationRequestsInfoBox').modal('show')
 
         	});
-        	
-//            alert('Farmer: ' + feature.properties.farmer+" Canal: "+ feature.properties.canal + " Crop: "+ feature.properties.crop)
         }
     });
     layer.bindTooltip(feature.properties.field, {permanent:false,direction:'center'});        

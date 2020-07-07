@@ -1,7 +1,31 @@
 function queryFields() { 
 	return sepa.query(prefixes + " "
-			+ jsap["queries"]["FIELD"]["sparql"],jsap).then((data)=>{  
-		return data;
+			+ jsap["queries"]["FIELD"]["sparql"],jsap).then((data)=>{  				
+				return data;
+	 });	
+}
+
+function queryIrrigationRequestsCount() {
+	return sepa.query(prefixes + " "
+			+ jsap["queries"]["IRRIGATION_REQUESTS_COUNT"]["sparql"],jsap).then((data)=>{  
+				return data.results.bindings[0].n.value;
+	 });	
+}
+
+function queryCrops() { 
+	return sepa.query(prefixes + " "
+			+ jsap["queries"]["CROP"]["sparql"],jsap).then((data)=>{  
+				let n = data.results.bindings.length;
+				
+				ret = {};
+				
+				for (index = 0; index < n ; index++) {
+					crop = data.results.bindings[index].crop.value;
+					label = data.results.bindings[index].label.value;
+					ret[label] = crop;
+				}
+				
+				return ret;
 	 });	
 }
 
@@ -41,9 +65,9 @@ function queryIrrigationRequests(field) {
 
 function queryHistory(observation,from,to) {
 	// Forced bindings
-//	let query = query.replace("?observation", "<"+observation+">");
-//	let query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
-//	let query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
+// let query = query.replace("?observation", "<"+observation+">");
+// let query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
+// let query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
 //	 
 	query = bench.sparql(jsap["queries"]["LOG_QUANTITY"]["sparql"],{
 		observation :{

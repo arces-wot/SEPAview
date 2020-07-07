@@ -3,8 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="icon/newLogo.png">
-<title>SEPAView - History</title>
+<link rel="icon" href="icon/swamp.png">
+<title>SWAMP</title>
 <meta name="viewport" content="width=device-width">
 
 <link rel="stylesheet"
@@ -26,13 +26,16 @@
 	src="https://cdn.jsdelivr.net/npm/patternfly-bootstrap-treeview@2.1.8/dist/bootstrap-treeview.js"></script>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="js/tree2.js"></script>
-<script src="lib/color-scheme.js"></script>
-<script src="js/jsap.js"></script>
-<script src="js/history.js"></script>
 
-<script src="js/moment.js"></script>
-<script src="js/moment-timezone-with-data.js"></script>
+<script src="lib/color-scheme.js"></script>
+<script src="lib/moment.js"></script>
+<script src="lib/moment-timezone-with-data.js"></script>
+
+<script src="js/model/jsap.js"></script>
+
+<script src="js/view/tree_double.js"></script>
+<script src="js/view/history_double.js"></script>
+
 
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -57,9 +60,9 @@
 
 <body onload='onLoad()'>
 	<nav class="navbar">
-		<a class="navbar-brand" href="#"> <img src="icon/newFullLogo.png"
-			width="100" class="d-inline-block align-top" alt=""> Historical
-			Linked Open Sensor Data
+		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
+			width="28" class="d-inline-block align-top" alt=""> SWAMP -
+			Smart Water Management Platform
 		</a>
 	</nav>
 
@@ -78,16 +81,15 @@
 							<form id="form">
 								<div class="form-row justify-content-lg-center">
 									<div class="col-auto">
-										<h4>
-											<span class="badge badge-secondary">
-											<select
-												id="historyTimeZone" onchange="changeHistoryTimeZone()">
-													<option value="UTC">UTC time
-													<option value="Local">Local time
-													<option value="Remote">Remote time
-											</select></span>
-										</h4>
-
+									<span class="badge badge-info" id='timeZone'>Time zone: UTC</span>
+<!-- 										<h4> -->
+<!-- 											<span class="badge badge-secondary"> <select -->
+<!-- 												id="historyTimeZone" onchange="changeHistoryTimeZone()"> -->
+<!-- 													<option value="UTC">UTC time -->
+<!-- 													<option value="Local">Local time -->
+<!-- 													<option value="Remote">Remote time -->
+<!-- 											</select></span> -->
+<!-- 										</h4> -->
 									</div>
 									<div class="col-auto">
 										<label class="sr-only" for="inlineFormInputGroup">From:</label>
@@ -112,7 +114,7 @@
 									<div class="col-auto">
 										<button type="button" onclick="javascript:onRefresh();"
 											id="refresh" class="btn btn-primary mb-2">
-											<i class="fas fa-search"></i>&nbsp;Zoom
+											<i class="fas fa-search"></i>&nbsp;OK
 										</button>
 									</div>
 									<div class="col-auto">
@@ -127,13 +129,13 @@
 											<small><i class="fas fa-download"></i>&nbsp;CSV</small>
 										</button>
 									</div>
-<!-- 									<div class="col-auto"> -->
-<!-- 										<button type="button" onclick="javascript:redirectMap();" -->
-<!-- 											id="map" class="btn btn-primary-2" -->
-<!-- 											style="background-color: green; color: white;"> -->
-<!-- 											<i class="fas fa-map"></i>&nbsp;Map -->
-<!-- 										</button> -->
-<!-- 									</div> -->
+									<!-- 									<div class="col-auto"> -->
+									<!-- 										<button type="button" onclick="javascript:redirectMap();" -->
+									<!-- 											id="map" class="btn btn-primary-2" -->
+									<!-- 											style="background-color: green; color: white;"> -->
+									<!-- 											<i class="fas fa-map"></i>&nbsp;Map -->
+									<!-- 										</button> -->
+									<!-- 									</div> -->
 								</div>
 								<input type='hidden' name='title' /> <input type='hidden'
 									name='observation' />

@@ -74,6 +74,7 @@ function initFields() {
 		fields["features"] = [];
 		
 		for (index = 0; index < n ; index++) {
+			
 			field = {}
 			field["type"] = "Feature";
 			field["geometry"] = JSON.parse(data.results.bindings[index].geometry.value);
