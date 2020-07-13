@@ -15,7 +15,7 @@ function initSepa() {
 }
 
 jsap = {
-		"host": "mml.arces.unibo.it",
+		"host": "engine",
 		"oauth": {
 			"enable": false,
 			"register": "https://localhost:8443/oauth/register",
@@ -23,7 +23,7 @@ jsap = {
 		},
 		"sparql11protocol": {
 			"protocol": "http",
-			"port": 8666,
+			"port": 8000,
 			"query": {
 				"path": "/query",
 				"method": "POST",
@@ -39,7 +39,7 @@ jsap = {
 			"protocol": "ws",
 			"availableProtocols": {
 				"ws": {
-					"port": 9666,
+					"port": 9000,
 					"path": "/subscribe"
 				},
 				"wss": {
