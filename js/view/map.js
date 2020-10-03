@@ -18,6 +18,11 @@ var initPos = {
 			"lat": 44.4948,
 			"lng": 11.3425,
 			"zoom" : 15
+		},
+		"vaimee" : {
+			"lat" : 44.50265,
+			"lng" : 11.3701,
+			"zoom" : 18
 		}
 }
 
@@ -40,32 +45,32 @@ function initMap(context) {
 	// Init markers
 	initMarkers();
 
-	// Crop list box
-	queryCrops().then((crops) => {
-		n = 0;
-		for (crop in crops) {
-			$('#filterByCrop').append('<option value="'+crops[crop]+'">'+crop+'</option>');
-			n++;
-		}
-		
-		updateCropsCount(n);
-	});
-	
-	// Canals
-	canals = initCanals();
-	for (canal of canals) L.polyline(canal["vertexes"], {color: canal["color"]}).addTo(map);
-	
-	// Fields
-	initFields().then((fields) => {
-		mapFields = fields;
-		geoJson = undefined;
-		showFields("ALL");	
-	});
-	
-	// Requests
-	queryIrrigationRequestsCount().then((n)=>{
-		updateIrrigationRequestsCount(n);
-	})
+//	// Crop list box
+//	queryCrops().then((crops) => {
+//		n = 0;
+//		for (crop in crops) {
+//			$('#filterByCrop').append('<option value="'+crops[crop]+'">'+crop+'</option>');
+//			n++;
+//		}
+//		
+//		updateCropsCount(n);
+//	});
+//	
+//	// Canals
+//	canals = initCanals();
+//	for (canal of canals) L.polyline(canal["vertexes"], {color: canal["color"]}).addTo(map);
+//	
+//	// Fields
+//	initFields().then((fields) => {
+//		mapFields = fields;
+//		geoJson = undefined;
+//		showFields("ALL");	
+//	});
+//	
+//	// Requests
+//	queryIrrigationRequestsCount().then((n)=>{
+//		updateIrrigationRequestsCount(n);
+//	})
 }
 
 function showFields(crop) {
@@ -214,23 +219,26 @@ function onEachFeature(feature, layer) {
         },
         click: function () {
         	queryIrrigationRequests(feature.properties.field).then((info) => {
-        		$('#irrigationRequestsInfoBoxBody').empty();
-        		
-        		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Field URI</div><div class="col-auto">'+feature.properties.field+"</div></div>");       		
-        		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Crop URI</div><div class="col-auto">'+feature.properties.crop+" ("+feature.properties.cropLabel+")</div></div>");
-        		$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Canal URI</div><div class="col-auto">'+feature.properties.canal+"</div></div>");
-        		
-        		$('#irrigationRequestsInfoBoxBody').append('<div class="row"><div class="col-2">Date</div><div class="col-1">Request</div><div class="col-2">Reservation</div><div class="col-7">Issued by</div></div>');		
-        		for (irr of info) {
-        			$('#irrigationRequestsInfoBoxBody').append('<div class="row"><div class="col-2">'+irr["date"]+'</div><div class="col-1">'+irr["request"]+'</div><div class="col-2">'+irr["reservation"]+'</div><div class="col-7">'+irr["issuedBy"]+'</div></div>');
-        		}
-
-            	$('#irrigationRequestsInfoBox').modal('show')
-
+        		showIrrigationRequests(info,feature)
         	});
         }
     });
     layer.bindTooltip(feature.properties.field, {permanent:false,direction:'center'});        
+}
+
+function showIrrigationRequests(info,feature) {
+	$('#irrigationRequestsInfoBoxBody').empty();
+	
+	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Field URI</div><div class="col-auto">'+feature.properties.field+"</div></div>");       		
+	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Crop URI</div><div class="col-auto">'+feature.properties.crop+" ("+feature.properties.cropLabel+")</div></div>");
+	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Canal URI</div><div class="col-auto">'+feature.properties.canal+"</div></div>");
+	
+	$('#irrigationRequestsInfoBoxBody').append('<div class="row"> <div class="col-2">Reservation</div> <div class="col-6">Issued by</div> <div class="col-2">Scheduled</div> <div class="col-2">Completed</div> </div>');
+	for (irr of info) {
+		$('#irrigationRequestsInfoBoxBody').append('<div class="row"> <div class="col">'+irr["reservation"]+'</div> <div class="col-auto">'+irr["issuedBy"]+'</div> <div class="col">'+irr["scheduled"]+'</div> <div class="col">'+irr["done"]+'</div> </div>');
+	}
+
+	$('#irrigationRequestsInfoBox').modal('show')	
 }
 
 

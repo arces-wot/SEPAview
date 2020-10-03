@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="icon" href="icon/swamp.png">
+<link rel="icon" href="icon/favicon.svg">
 <meta charset="utf-8">
-<title>SWAMP - Water Distribution</title>
+<title>MONAS</title>
 
 <link rel="stylesheet"
 	href="fontawesome-free-5.0.6/web-fonts-with-css/css/fontawesome-all.css">
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -14,6 +15,8 @@
 
 <link rel="stylesheet" href="css/odometer-theme-plaza.css" />
 <link href="css/map.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/navbar.css" />
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -28,8 +31,8 @@
 	crossorigin="anonymous"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.10.7/web/sepa.js"></script>
+
+<script type="text/javascript" src="lib/sepa.js"></script>
 
 <script src="lib/moment.js"></script>
 <script src="lib/moment-timezone-with-data.js"></script>
@@ -52,6 +55,7 @@
 <script src="js/control/control.js"></script>
 <script src="js/control/csv.js"></script>
 <script src="js/control/utils.js"></script>
+<script src="js/control/keycloak.js"></script>
 
 <link rel="stylesheet"
 	href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
@@ -62,116 +66,128 @@
 	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 	crossorigin=""></script>
 
-<script>
-	function onLoad() {
-		initSepa();
-		initMap("swamp");
-		subscribe();
-	}
-</script>
+<!-- Import KeyCloak API -->
+<script src="https://sepa.vaimee.it:8443/auth/js/keycloak.js"></script>
 
 </head>
 
-<body onLoad='onLoad()'>
-	<nav class="navbar">
-		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
-			width=28 class="d-inline-block align-top" alt=""> SWAMP - Smart
-			Water Management Platform
+<body onLoad='login()'>
+	<nav class="navbar navbar-custom mb-2">
+		<a class="navbar-brand" href="#"> <img src="icon/favicon.svg"
+			height="30" class="d-inline-block align-top mr-3" alt="">MONAS
 		</a>
-
 		<form class="form-inline">
-			<button type="button" class="btn btn-sm btn-secondary">
-				Notifications<span class="badge badge-light ml-3"><div
-						id="odoNotifications" class="odometer"></div></span>
+			<button type="button" class="btn btn-sm btn-success mr-3">
+				<i class="fas fa-bell"></i> Notifications<span
+					class="badge badge-light ml-3"><div id="odoNotifications"
+						class="odometer"></div></span>
+			</button>
+			<button type="button" class="btn btn-sm btn-danger mr-3">
+				<i class="fas fa-thermometer-three-quarters"></i> Temperatures<span
+					class="badge badge-light ml-3"><div id="odoObservations"
+						class="odometer"></div></span>
+			</button>
+			<button type="button" class="btn btn-sm btn-info">
+				<i class="fas fa-map-marker-alt"></i> Devices<span
+					class="badge badge-light ml-3"><div id="odoFOI"
+						class="odometer"></div></span>
 			</button>
 		</form>
-
-
+		<form class="form-inline">
+			<span class="navbar-text mr-3" id="userLogin">---</span>
+			<button id="userLogin" class="btn btn-sm btn-primary" type="button"
+				onclick="logOut()">
+				<i class="fas fa-sign-out-alt"></i> Logout
+			</button>
+		</form>
 	</nav>
 
 	<div class="container-fluid">
 		<div class="row">
 			<div class='col ml-3 mr-3'>
 				<div class='row' id="mapid"></div>
-				<div class='row mt-3 flex-row-reverse'>
-					<span class="badge mb-1 badge-success align-self-center">Filter
-						by crop&nbsp;&nbsp;<select id="filterByCrop"
-						onchange="onFilterByCropChange()">
-							<option value="ALL">ALL</option>
-					</select>
-					</span>
-					<button type="button" class="btn btn-sm btn-success mr-3">
-						Fields<span class="badge badge-light ml-3"><div
-								id="odoFields" class="odometer"></div></span>
-					</button>
+				<!-- 				<div class='row mt-3 flex-row-reverse'> -->
+				<!-- 					<span class="badge mb-1 badge-success align-self-center">Filter -->
+				<!-- 						by crop&nbsp;&nbsp;<select id="filterByCrop" -->
+				<!-- 						onchange="onFilterByCropChange()"> -->
+				<!-- 							<option value="ALL">ALL</option> -->
+				<!-- 					</select> -->
+				<!-- 					</span> -->
+				<!-- 					<button type="button" class="btn btn-sm btn-success mr-3"> -->
+				<!-- 						Fields<span class="badge badge-light ml-3"><div -->
+				<!-- 								id="odoFields" class="odometer"></div></span> -->
+				<!-- 					</button> -->
 
-					<button type="button" class="btn btn-sm btn-success mr-3">
-						Crops<span class="badge badge-light ml-3"><div
-								id="odoCrops" class="odometer"></div></span>
-					</button>
+				<!-- 					<button type="button" class="btn btn-sm btn-success mr-3"> -->
+				<!-- 						Crops<span class="badge badge-light ml-3"><div -->
+				<!-- 								id="odoCrops" class="odometer"></div></span> -->
+				<!-- 					</button> -->
 
-				</div>
+				<!-- 				</div> -->
 			</div>
 			<div class='col-auto'>
-				<div class="card">
-					<div class="card-header">Knowledge graph (triples)</div>
-					<div class="card-body">
+				<!-- 				<div class="card"> -->
+				<!-- 					<div class="card-header">Knowledge graph (triples)</div> -->
+				<!-- 					<div class="card-body"> -->
 
-						<div class='row mb-2'>
-							<button type="button" class="btn btn-sm btn-success">
-								Live<span class="badge badge-light ml-3"><div
-										id="odoLiveSize" class="odometer"></div></span>
-							</button>
-						</div>
-						<div class='row mb-2'>
-							<button type="button" class="btn btn-sm btn-danger">
-								History<span class="badge badge-light ml-3"><div
-										id="odoHistorySize" class="odometer"></div></span>
-							</button>
-						</div>
-						<div class='row'>
-							<button type="button" class="btn btn-sm btn-warning">
-								Forecast<span class="badge badge-light ml-3"><div
-										id="odoForecastsSize" class="odometer"></div></span>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="card mt-2">
-					<div class="card-header">Semantic content</div>
-					<div class="card-body">
-						<div class='row mb-2'>
-							<button type="button" class="btn btn-sm btn-primary">
-								Observations<span class="badge badge-light ml-3"><div
-										id="odoObservations" class="odometer"></div></span>
-							</button>
-						</div>
-						<div class='row mb-2'>
-							<button type="button" class="btn btn-sm btn-primary">
-								Features of interest<span class="badge badge-light ml-3"><div
-										id="odoPlaces" class="odometer"></div></span>
-							</button>
-						</div>
-						<div class='row'>
-							<button type="button" class="btn btn-sm btn-primary mr-3">
-								Irrigation requests<span class="badge badge-light ml-3"><div
-										id=odoIrrigationRequests class="odometer"></div></span>
-							</button>
-						</div>
-					</div>
-				</div>
+				<!-- 						<div class='row mb-2'> -->
+				<!-- 							<button type="button" class="btn btn-sm btn-success"> -->
+				<!-- 								<i class="fas fa-heartbeat"></i> Live<span -->
+				<!-- 									class="badge badge-light ml-3"><div id="odoLiveSize" -->
+				<!-- 										class="odometer"></div></span> -->
+				<!-- 							</button> -->
+				<!-- 						</div> -->
+				<!-- 						<div class='row mb-2'> -->
+				<!-- 							<button type="button" class="btn btn-sm btn-danger"> -->
+				<!-- 								<i class="fas fa-book"></i> History<span -->
+				<!-- 									class="badge badge-light ml-3"><div id="odoHistorySize" -->
+				<!-- 										class="odometer"></div></span> -->
+				<!-- 							</button> -->
+				<!-- 						</div> -->
+				<!-- 												<div class='row'> -->
+				<!-- 													<button type="button" class="btn btn-sm btn-warning"> -->
+				<!-- 														Forecast<span class="badge badge-light ml-3"><div -->
+				<!-- 																id="odoForecastsSize" class="odometer"></div></span> -->
+				<!-- 													</button> -->
+				<!-- 												</div> -->
+				<!-- 					</div> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="card mt-2"> -->
+				<!-- 					<div class="card-header">Semantic content</div> -->
+				<!-- 					<div class="card-body"> -->
+				<!-- 						<div class='row mb-2'> -->
+				<!-- 							<button type="button" class="btn btn-sm btn-primary"> -->
+				<!-- 								<i class="fas fa-thermometer-three-quarters"></i> Observations<span -->
+				<!-- 									class="badge badge-light ml-3"><div id="odoObservations" -->
+				<!-- 										class="odometer"></div></span> -->
+				<!-- 							</button> -->
+				<!-- 						</div> -->
+				<!-- 						<div class='row mb-2'> -->
+				<!-- 							<button type="button" class="btn btn-sm btn-primary"> -->
+				<!-- 								<i class="fas fa-map-marker-alt"></i> Features of interest<span -->
+				<!-- 									class="badge badge-light ml-3"><div id="odoPlaces" -->
+				<!-- 										class="odometer"></div></span> -->
+				<!-- 							</button> -->
+				<!-- 						</div> -->
+				<!-- 												<div class='row'> -->
+				<!-- 													<button type="button" class="btn btn-sm btn-primary mr-3"> -->
+				<!-- 														Irrigation requests<span class="badge badge-light ml-3"><div -->
+				<!-- 																id=odoIrrigationRequests class="odometer"></div></span> -->
+				<!-- 													</button> -->
+				<!-- 												</div> -->
+				<!-- 					</div> -->
+				<!-- 				</div> -->
 			</div>
 
 		</div>
 		<div class="row mt-3">
 			<div class="col-4">
-				<div class="alert alert-primary" role="alert">Feature of
-					interest</div>
+				<div class="alert alert-primary" role="alert">Devices</div>
 				<ul id="tree" class="nav nav-pills pt-0"></ul>
 			</div>
 			<div class="col-8">
 				<div class="alert alert-info" role="alert">
-					Observation <span class="badge badge-info ml-3 mr-3">Display
+					Temperatures <span class="badge badge-info ml-3 mr-3">Display
 						time&nbsp;&nbsp;<select id="selectTimeZone"
 						onchange="onChangeTimeZone()">
 							<option value="UTC">UTC</option>
@@ -184,6 +200,11 @@
 			</div>
 		</div>
 	</div>
+
+	<footer id="bottom" class="row text-center fixed-bottom">
+		<div class="col-12">Copyright &copy; 2020 VAIMEE srl</div>
+		</div>
+		&nbsp 
 </body>
 <!-- Modal -->
 <div class="modal fade" id="irrigationRequestsInfoBox" tabindex="-1"

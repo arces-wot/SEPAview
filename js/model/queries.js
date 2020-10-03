@@ -42,20 +42,17 @@ function queryIrrigationRequests(field) {
 		
 		ret = [];
 		
-		for (index = 0; index < n ; index++) {		
-			timestamp = data.results.bindings[index].timestamp.value.split("T")[0];
-			issuedBy = data.results.bindings[index].issuedBy.value;
-			currentStatus = data.results.bindings[index].currentStatus.value;
-			requestNumber = data.results.bindings[index].requestNumber.value;
-			reservationNumber = data.results.bindings[index].reservationNumber.value;
-			
+		for (index = 0; index < n ; index++) {					
 			irr = {};
-			irr["date"] = timestamp;
-			irr["issuedBy"] = issuedBy;
-			irr["status"] = currentStatus;
-			irr["request"] = requestNumber;
-			irr["reservation"] = reservationNumber;
+			irr["scheduled"] = data.results.bindings[index].scheduled.value.split("T")[0];
+			irr["issuedBy"] = data.results.bindings[index].issuedBy.value;
+			//irr["status"] = data.results.bindings[index].currentStatus.value;
+			//irr["request"] = data.results.bindings[index].requestNumber.value;
+			irr["reservation"] = data.results.bindings[index].reservationNumber.value;
 			
+			irr["done"] = "---"
+			if (data.results.bindings[index].done != null) irr["done"] = data.results.bindings[index].done.value.split("T")[0];
+						
 			ret.push(irr);
 		}
 		
