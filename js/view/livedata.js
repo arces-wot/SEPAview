@@ -18,8 +18,8 @@ function onObservation(binding) {
 	
 	let symbol = (binding.symbol != undefined ? binding.symbol.value : "qudt-unit?");
 	
-	let label = binding.label.value;
-	let observation = binding.observation.value;
+	let label = binding.label.value; //observed property label
+	let observation = binding.prop.value; //observed property is the URI
 	
 	//let quantity = binding.quantity.value;
 	
@@ -84,7 +84,7 @@ function addPlace(place_id, name, place) {
 			.append(
 					"<div class='tab-pane fade' id='"+ place_id + "' role='tabpanel' aria-labelledby='"+ place_id+ "-tab'>"
 					+ "<div id='live_"+ place_id+ "'></div>"
-					+ "<div class='container flex-row-reverse' id='forecast_"+ place_id+ "-tab'></div>"
+//					+ "<div class='container flex-row-reverse' id='forecast_"+ place_id+ "-tab'></div>"
 					+ "</div>");
 
 //	$("#forecast_" + place_id+"-tab").hide();
@@ -119,17 +119,17 @@ function addObservation(observation, place) {
 		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;History</small></button>"
 	+ "</form></div>"
 	
-	+ "<div class='col-auto'>"
-	+ "<form target='_blank' action='./compare.html'>"
-		+ "<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+ observation+ "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='placeUri' value=\"" + place + "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='lat' value=\"" + escape(sensorData[place][observation]["lat"]) + "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='long' value=\"" + escape(sensorData[place][observation]["long"]) + "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='symbol' value='" + escape(sensorData[place][observation]["symbol"])+ "' />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[place][observation]["title"])+ "' />"
-		+ "<input placeId='"+placeIds[place]+"' class='form-control form-control-sm' type='hidden' name='placeName' value='???' />"
-		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;Compare</small></button>"
-	+ "</form></div>"
+//	+ "<div class='col-auto'>"
+//	+ "<form target='_blank' action='./compare.html'>"
+//		+ "<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+ observation+ "\" />"
+//		+ "<input class='form-control form-control-sm' type='hidden' name='placeUri' value=\"" + place + "\" />"
+//		+ "<input class='form-control form-control-sm' type='hidden' name='lat' value=\"" + escape(sensorData[place][observation]["lat"]) + "\" />"
+//		+ "<input class='form-control form-control-sm' type='hidden' name='long' value=\"" + escape(sensorData[place][observation]["long"]) + "\" />"
+//		+ "<input class='form-control form-control-sm' type='hidden' name='symbol' value='" + escape(sensorData[place][observation]["symbol"])+ "' />"
+//		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[place][observation]["title"])+ "' />"
+//		+ "<input placeId='"+placeIds[place]+"' class='form-control form-control-sm' type='hidden' name='placeName' value='???' />"
+//		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;Compare</small></button>"
+//	+ "</form></div>"
 	
 	+ "</div></div>"
 	

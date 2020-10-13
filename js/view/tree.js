@@ -26,11 +26,11 @@ function createObservationsTree(tree,day) {
 	forecasts[id+"-tab"]["uri"] = tree["placeUri"];
 	forecasts[id+"-tab"]["name"] = tree["placeName"];
 	
-	$('#'+id+'-tab').on('shown.bs.tab', function (e) {
-		// FORECAST
-		console.log("Query forecasts. URI: "+forecasts[e.target.id].uri+" Name: "+forecasts[e.target.id].name+" day: "+day.toISOString())
-		queryForecast(forecasts[e.target.id].uri,e.target.id,forecasts[e.target.id].name,day)
-	});
+//	$('#'+id+'-tab').on('shown.bs.tab', function (e) {
+//		// FORECAST
+//		console.log("Query forecasts. URI: "+forecasts[e.target.id].uri+" Name: "+forecasts[e.target.id].name+" day: "+day.toISOString())
+//		queryForecast(forecasts[e.target.id].uri,e.target.id,forecasts[e.target.id].name,day)
+//	});
 		
 	$("#"+id+"-tab").tab('show');
 	
@@ -60,11 +60,11 @@ function createTree(childs, parentId,n,names,day) {
 		forecasts[id+"-tab"]["uri"] = child["placeUri"];
 		forecasts[id+"-tab"]["name"] = child["placeName"];
 		
-		$('#'+id+'-tab').on('shown.bs.tab', function (e) {
-			// FORECASTS
-			console.log("Query forecasts. URI: "+forecasts[e.target.id].uri+"Name: "+forecasts[e.target.id].name+" day: "+day.toISOString())
-			queryForecast(forecasts[e.target.id].uri,e.target.id,forecasts[e.target.id].name,day);
-		});
+//		$('#'+id+'-tab').on('shown.bs.tab', function (e) {
+//			// FORECASTS
+//			console.log("Query forecasts. URI: "+forecasts[e.target.id].uri+"Name: "+forecasts[e.target.id].name+" day: "+day.toISOString())
+//			queryForecast(forecasts[e.target.id].uri,e.target.id,forecasts[e.target.id].name,day);
+//		});
 		
 		placeNames[child["placeUri"]] = [];
 		for (x of names) placeNames[child["placeUri"]].push(x);

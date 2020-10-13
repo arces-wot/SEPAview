@@ -73,33 +73,33 @@ function initMap(context) {
 //	})
 }
 
-function showFields(crop) {
-	cropFilter = crop;
-	
-	if (geoJson != undefined) geoJson.removeFrom(map);
-	
-	fieldsCount = 0;
-	
-	geoJson = L.geoJSON(mapFields, {
-		style: function (feature) {
-			return {color: feature.properties.color};
-		},
-		onEachFeature: onEachFeature,
-		filter: onFilter
-	});
-	
-	geoJson.addTo(map);
-	
-	updateFieldsCount(fieldsCount);
-}
+//function showFields(crop) {
+//	cropFilter = crop;
+//	
+//	if (geoJson != undefined) geoJson.removeFrom(map);
+//	
+//	fieldsCount = 0;
+//	
+//	geoJson = L.geoJSON(mapFields, {
+//		style: function (feature) {
+//			return {color: feature.properties.color};
+//		},
+//		onEachFeature: onEachFeature,
+//		filter: onFilter
+//	});
+//	
+//	geoJson.addTo(map);
+//	
+//	updateFieldsCount(fieldsCount);
+//}
 
-function onFilter(feature) {
-	if (cropFilter == "ALL" || feature.properties.crop == cropFilter) {
-		fieldsCount++;
-		return true;
-	}
-	return false;
-}
+//function onFilter(feature) {
+//	if (cropFilter == "ALL" || feature.properties.crop == cropFilter) {
+//		fieldsCount++;
+//		return true;
+//	}
+//	return false;
+//}
 
 function onAddedMapPlace(places) {
 	for (binding of places) {
@@ -205,41 +205,41 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#PluviometroSantaMaria"] = rain;
 }
 
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: function () {
-            this.setStyle({
-                'fillColor': '#b45501',
-            });
-        },
-        mouseout: function () {
-            this.setStyle({
-                'fillColor': feature.properties.color,
-            });
-        },
-        click: function () {
-        	queryIrrigationRequests(feature.properties.field).then((info) => {
-        		showIrrigationRequests(info,feature)
-        	});
-        }
-    });
-    layer.bindTooltip(feature.properties.field, {permanent:false,direction:'center'});        
-}
+//function onEachFeature(feature, layer) {
+//    layer.on({
+//        mouseover: function () {
+//            this.setStyle({
+//                'fillColor': '#b45501',
+//            });
+//        },
+//        mouseout: function () {
+//            this.setStyle({
+//                'fillColor': feature.properties.color,
+//            });
+//        },
+//        click: function () {
+//        	queryIrrigationRequests(feature.properties.field).then((info) => {
+//        		showIrrigationRequests(info,feature)
+//        	});
+//        }
+//    });
+//    layer.bindTooltip(feature.properties.field, {permanent:false,direction:'center'});        
+//}
 
-function showIrrigationRequests(info,feature) {
-	$('#irrigationRequestsInfoBoxBody').empty();
-	
-	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Field URI</div><div class="col-auto">'+feature.properties.field+"</div></div>");       		
-	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Crop URI</div><div class="col-auto">'+feature.properties.crop+" ("+feature.properties.cropLabel+")</div></div>");
-	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Canal URI</div><div class="col-auto">'+feature.properties.canal+"</div></div>");
-	
-	$('#irrigationRequestsInfoBoxBody').append('<div class="row"> <div class="col-2">Reservation</div> <div class="col-6">Issued by</div> <div class="col-2">Scheduled</div> <div class="col-2">Completed</div> </div>');
-	for (irr of info) {
-		$('#irrigationRequestsInfoBoxBody').append('<div class="row"> <div class="col">'+irr["reservation"]+'</div> <div class="col-auto">'+irr["issuedBy"]+'</div> <div class="col">'+irr["scheduled"]+'</div> <div class="col">'+irr["done"]+'</div> </div>');
-	}
-
-	$('#irrigationRequestsInfoBox').modal('show')	
-}
+//function showIrrigationRequests(info,feature) {
+//	$('#irrigationRequestsInfoBoxBody').empty();
+//	
+//	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Field URI</div><div class="col-auto">'+feature.properties.field+"</div></div>");       		
+//	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Crop URI</div><div class="col-auto">'+feature.properties.crop+" ("+feature.properties.cropLabel+")</div></div>");
+//	$('#irrigationRequestsInfoBoxBody').append('<div class="row mb-3"><div class="col-auto">Canal URI</div><div class="col-auto">'+feature.properties.canal+"</div></div>");
+//	
+//	$('#irrigationRequestsInfoBoxBody').append('<div class="row"> <div class="col-2">Reservation</div> <div class="col-6">Issued by</div> <div class="col-2">Scheduled</div> <div class="col-2">Completed</div> </div>');
+//	for (irr of info) {
+//		$('#irrigationRequestsInfoBoxBody').append('<div class="row"> <div class="col">'+irr["reservation"]+'</div> <div class="col-auto">'+irr["issuedBy"]+'</div> <div class="col">'+irr["scheduled"]+'</div> <div class="col">'+irr["done"]+'</div> </div>');
+//	}
+//
+//	$('#irrigationRequestsInfoBox').modal('show')	
+//}
 
 
 function add_marker(lat, lng, name, id) {

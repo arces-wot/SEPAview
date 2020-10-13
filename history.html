@@ -3,8 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="icon/swamp.png">
-<title>SWAMP</title>
+<link rel="icon" href="icon/favicon.svg">
+<title>MONAS</title>
 <meta name="viewport" content="width=device-width">
 
 <link rel="stylesheet"
@@ -20,14 +20,15 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.10.7/web/sepa.js"></script>
+<!-- <script -->
+<!-- 	src="https://cdn.jsdelivr.net/npm/@arces-wot/sepa-js@0.10.7/web/sepa.js"></script> -->
 <script
 	src="https://cdn.jsdelivr.net/npm/patternfly-bootstrap-treeview@2.1.8/dist/bootstrap-treeview.js"></script>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>	
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 
 <script src="lib/color-scheme.js"></script>
 <script src="lib/moment.js"></script>
@@ -43,6 +44,8 @@
 <script src="js/control/csv.js"></script>
 <script src="js/control/utils.js"></script>
 
+<link rel="stylesheet" href="css/navbar.css" />
+
 <style>
 .tree::-webkit-scrollbar {
 	width: 3px;
@@ -57,15 +60,27 @@
 	background-color: #F5F5F5;
 }
 </style>
+
+<!-- Import KeyCloak API -->
+<script src="https://sepa.vaimee.it:8443/auth/js/keycloak.js"></script>
+<script src="lib/sepa.js"></script>
+<script src="js/control/keycloak.js"></script>
+
 </head>
 
-<body onload='onLoad()'>
-	<nav class="navbar">
-		<a class="navbar-brand" href="#"> <img src="icon/swamp.png"
-			width="28" class="d-inline-block align-top" alt=""> SWAMP - Smart Water Management Platform
-		</a>
-		<span class="badge badge-primary mr-3"
-				id='timeZone'>Time zone: UTC</span>
+<body onload='loginHistory()'>
+	<nav class="navbar navbar-custom mb-2">
+		<a class="navbar-brand" href="#"> <img src="icon/favicon.svg"
+			height="30" class="d-inline-block align-top mr-3" alt="">MONAS
+		</a> <span class="badge badge-primary mr-3" id='timeZone'>Time
+			zone: UTC</span>
+		<form class="form-inline">
+			<span class="navbar-text mr-3" id="userLogin">---</span>
+			<button id="userLogin" class="btn btn-sm btn-primary" type="button"
+				onclick="logOutHistory()">
+				<i class="fas fa-sign-out-alt"></i> Logout
+			</button>
+		</form>
 	</nav>
 
 	<div class="container-fluid">
@@ -76,7 +91,7 @@
 		<div class="row col-12 justify-content-center">
 			<div class="col-12">
 				<form id="form">
-					<div class="form-row justify-content-lg-center align-items-center">		
+					<div class="form-row justify-content-lg-center align-items-center">
 						<div class="col-auto">
 							<label class="sr-only" for="inlineFormInputGroup">From:</label>
 							<div class="input-group">
@@ -97,16 +112,15 @@
 									placeholder="to">
 							</div>
 						</div>
-						
+
 						<div class="col-auto">
-							<select id="selectTimeZone"
-								onchange="onChangeHistoryTimeZone()">
-									<option value="UTC">UTC
-									<option value="Local">Local
-									<option value="Remote">Observation
+							<select id="selectTimeZone" onchange="onChangeHistoryTimeZone()">
+								<option value="UTC">UTC
+								<option value="Local">Local
+								<option value="Remote">Observation
 							</select>
 						</div>
-						
+
 						<div class="col-auto">
 							<button type="button" onclick="javascript:onRefresh();"
 								id="refresh" class="btn btn-primary">
@@ -114,7 +128,8 @@
 							</button>
 						</div>
 						<div class="col-auto">
-							<button type="button" id="last24h" class="btn btn-primary" onclick="javascript:onRefresh24h();">
+							<button type="button" id="last24h" class="btn btn-primary"
+								onclick="javascript:onRefresh24h();">
 								<i class="fas fa-sync-alt"></i>&nbsp;24h
 							</button>
 						</div>

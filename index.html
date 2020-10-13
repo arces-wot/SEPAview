@@ -39,7 +39,6 @@
 <script src="lib/odometer.js"></script>
 <script src="lib/tz.js"></script>
 
-
 <script src="js/view/tree.js"></script>
 <script src="js/view/counters.js"></script>
 <script src="js/view/forecast.js"></script>
@@ -106,79 +105,7 @@
 		<div class="row">
 			<div class='col ml-3 mr-3'>
 				<div class='row' id="mapid"></div>
-				<!-- 				<div class='row mt-3 flex-row-reverse'> -->
-				<!-- 					<span class="badge mb-1 badge-success align-self-center">Filter -->
-				<!-- 						by crop&nbsp;&nbsp;<select id="filterByCrop" -->
-				<!-- 						onchange="onFilterByCropChange()"> -->
-				<!-- 							<option value="ALL">ALL</option> -->
-				<!-- 					</select> -->
-				<!-- 					</span> -->
-				<!-- 					<button type="button" class="btn btn-sm btn-success mr-3"> -->
-				<!-- 						Fields<span class="badge badge-light ml-3"><div -->
-				<!-- 								id="odoFields" class="odometer"></div></span> -->
-				<!-- 					</button> -->
-
-				<!-- 					<button type="button" class="btn btn-sm btn-success mr-3"> -->
-				<!-- 						Crops<span class="badge badge-light ml-3"><div -->
-				<!-- 								id="odoCrops" class="odometer"></div></span> -->
-				<!-- 					</button> -->
-
-				<!-- 				</div> -->
 			</div>
-			<div class='col-auto'>
-				<!-- 				<div class="card"> -->
-				<!-- 					<div class="card-header">Knowledge graph (triples)</div> -->
-				<!-- 					<div class="card-body"> -->
-
-				<!-- 						<div class='row mb-2'> -->
-				<!-- 							<button type="button" class="btn btn-sm btn-success"> -->
-				<!-- 								<i class="fas fa-heartbeat"></i> Live<span -->
-				<!-- 									class="badge badge-light ml-3"><div id="odoLiveSize" -->
-				<!-- 										class="odometer"></div></span> -->
-				<!-- 							</button> -->
-				<!-- 						</div> -->
-				<!-- 						<div class='row mb-2'> -->
-				<!-- 							<button type="button" class="btn btn-sm btn-danger"> -->
-				<!-- 								<i class="fas fa-book"></i> History<span -->
-				<!-- 									class="badge badge-light ml-3"><div id="odoHistorySize" -->
-				<!-- 										class="odometer"></div></span> -->
-				<!-- 							</button> -->
-				<!-- 						</div> -->
-				<!-- 												<div class='row'> -->
-				<!-- 													<button type="button" class="btn btn-sm btn-warning"> -->
-				<!-- 														Forecast<span class="badge badge-light ml-3"><div -->
-				<!-- 																id="odoForecastsSize" class="odometer"></div></span> -->
-				<!-- 													</button> -->
-				<!-- 												</div> -->
-				<!-- 					</div> -->
-				<!-- 				</div> -->
-				<!-- 				<div class="card mt-2"> -->
-				<!-- 					<div class="card-header">Semantic content</div> -->
-				<!-- 					<div class="card-body"> -->
-				<!-- 						<div class='row mb-2'> -->
-				<!-- 							<button type="button" class="btn btn-sm btn-primary"> -->
-				<!-- 								<i class="fas fa-thermometer-three-quarters"></i> Observations<span -->
-				<!-- 									class="badge badge-light ml-3"><div id="odoObservations" -->
-				<!-- 										class="odometer"></div></span> -->
-				<!-- 							</button> -->
-				<!-- 						</div> -->
-				<!-- 						<div class='row mb-2'> -->
-				<!-- 							<button type="button" class="btn btn-sm btn-primary"> -->
-				<!-- 								<i class="fas fa-map-marker-alt"></i> Features of interest<span -->
-				<!-- 									class="badge badge-light ml-3"><div id="odoPlaces" -->
-				<!-- 										class="odometer"></div></span> -->
-				<!-- 							</button> -->
-				<!-- 						</div> -->
-				<!-- 												<div class='row'> -->
-				<!-- 													<button type="button" class="btn btn-sm btn-primary mr-3"> -->
-				<!-- 														Irrigation requests<span class="badge badge-light ml-3"><div -->
-				<!-- 																id=odoIrrigationRequests class="odometer"></div></span> -->
-				<!-- 													</button> -->
-				<!-- 												</div> -->
-				<!-- 					</div> -->
-				<!-- 				</div> -->
-			</div>
-
 		</div>
 		<div class="row mt-3">
 			<div class="col-4">
@@ -199,12 +126,12 @@
 				<div class="tab-content" id="graph"></div>
 			</div>
 		</div>
+		<div class="row mt-3">
+<!-- 			<footer id="bottom" class="row text-center fixed-bottom"> -->
+ 				<div class="col-12 text-center fixed-bottom">Copyright &copy; 2020 VAIMEE srl</div>
+		</div>
 	</div>
 
-	<footer id="bottom" class="row text-center fixed-bottom">
-		<div class="col-12">Copyright &copy; 2020 VAIMEE srl</div>
-		</div>
-		&nbsp 
 </body>
 <!-- Modal -->
 <div class="modal fade" id="irrigationRequestsInfoBox" tabindex="-1"

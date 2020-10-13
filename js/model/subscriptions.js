@@ -61,22 +61,22 @@ function subscribe() {
 	+ jsap["queries"]["OBSERVATIONS"]["sparql"];
 	
 	let observation = sepa.subscribe(query,jsap);
-	observation.on("added",addedResults=>{      		
-//        for (binding of addedResults.results.bindings) {
-//        	onObservation(binding);
-//        }
+	observation.on("added",addedResults=>{
+		updateNotifications();      		
+        for (binding of addedResults.results.bindings) {
+        	onObservation(binding);
+        }
         
-        updateNotifications();
     });
 	
-//	query = prefixes + " "
-//	+ jsap["queries"]["MAP_PLACES"]["sparql"];
-//	
-//	let mapPlaces = sepa.subscribe(query,jsap);
-//	mapPlaces.on("added",addedResults=>{
-//		onAddedMapPlace(addedResults.results.bindings);
-//	});
-//	mapPlaces.on("removed",removedResults=>{
-//		onRemovedMapPlace(removedResults.results.bindings);
-//	});
+	query = prefixes + " "
+	+ jsap["queries"]["MAP_PLACES"]["sparql"];
+	
+	let mapPlaces = sepa.subscribe(query,jsap);
+	mapPlaces.on("added",addedResults=>{
+		onAddedMapPlace(addedResults.results.bindings);
+	});
+	mapPlaces.on("removed",removedResults=>{
+		onRemovedMapPlace(removedResults.results.bindings);
+	});
 }

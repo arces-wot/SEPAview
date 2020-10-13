@@ -25,3 +25,29 @@ function login() {
 function logOut() {
 	keycloak.logout({ redirectUri: 'https://vaimee.it/sepaview/index.html' })
 }
+
+function loginHistory() {
+	keycloak = new Keycloak();
+	keycloak.init({
+		onLoad: 'login-required', redirectUri: 'https://vaimee.it/sepaview/history.html'
+	}).then(function(authenticated) {
+		if (authenticated) {
+			keycloak.loadUserProfile()
+				.then(function(profile) {
+					$("#userLogin").text('Logged is as ' + profile.username)
+					onLoadHistory();
+
+				}).catch(function() {
+					$("#userLogin").text('Failed to load user profile')
+					alert('Failed to load user profile');
+				});
+		}
+		else $("#userLogin").text('not authenticated')
+	}).catch(function() {
+		$("#userLogin").text('failed to initialize');
+	});
+}
+
+function logOutHistory() {
+	keycloak.logout({ redirectUri: 'https://vaimee.it/sepaview/history.html' })
+}
