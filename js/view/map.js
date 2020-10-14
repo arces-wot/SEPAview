@@ -158,6 +158,11 @@ function initMarkers() {
 	    iconSize: [36, 36]
 	});
 	
+	var lorawan = L.icon({
+	    iconUrl: 'icon/lorawan.png',
+	    iconSize: [72, 36]
+	});
+	
 	icons["http://swamp-project.org/ns#Bertacchini"] = swamp;
 	icons["http://swamp-project.org/ns#Ferrari"] = swamp;
 	icons["http://swamp-project.org/ns#Bonacini"] = swamp;
@@ -198,6 +203,11 @@ function initMarkers() {
 	icons["http://wot.arces.unibo.it/monitor#PluviometroCorreggio"] = rain;
 	icons["http://wot.arces.unibo.it/monitor#PluviometroRotte"] = rain;
 	icons["http://wot.arces.unibo.it/monitor#PluviometroSantaMaria"] = rain;
+	
+	icons["http://wot.arces.unibo.it/monitor#LepidaLoRaWANBagnarolo"] = lorawan;
+	icons["http://wot.arces.unibo.it/monitor#LepidaLoRaWANCadelbosco"] = lorawan;
+	icons["http://wot.arces.unibo.it/monitor#LepidaLoRaWANNovellara"] = lorawan;
+	icons["http://wot.arces.unibo.it/monitor#LepidaLoRaWANCastelnuovo"] = lorawan;
 }
 
 function onEachFeature(feature, layer) {
