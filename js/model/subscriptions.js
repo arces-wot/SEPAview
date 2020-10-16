@@ -47,15 +47,15 @@ function subscribe() {
     }
     });
 	
-	query = prefixes + " "
-	+ jsap["queries"]["OBSERVATIONS_COUNT"]["sparql"];
-	
-	let observation_count = sepa.subscribe(query,jsap);
-	observation_count.on("added",addedResults=>{
-		for (binding of addedResults.results.bindings) {
-    		if (binding.count != undefined) updateObservationsCount(binding.count.value);
-    }
-    });
+//	query = prefixes + " "
+//	+ jsap["queries"]["OBSERVATIONS_COUNT"]["sparql"];
+//	
+//	let observation_count = sepa.subscribe(query,jsap);
+//	observation_count.on("added",addedResults=>{
+//		for (binding of addedResults.results.bindings) {
+//    		if (binding.count != undefined) updateObservationsCount(binding.count.value);
+//    }
+//    });
 	
 	query = prefixes + " "
 	+ jsap["queries"]["OBSERVATIONS"]["sparql"];

@@ -61,45 +61,58 @@ const jsap = {
 	},
 	"queries": {
 		"OBSERVATIONS": {
-			"sparql": "SELECT * FROM <http://demo> WHERE {?observation rdf:type sosa:Observation ; sosa:observedProperty ?prop ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . ?prop rdfs:label ?label .  OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp} . ?location schema:name ?name . BIND('°C' as ?symbol)}"
+			"sparql": "SELECT * FROM <http://demo/observations> FROM <http://demo/devices> FROM <http://demo/places> FROM <http://demo/properties> FROM <http://qudt.org/2.1> WHERE {?obs rdf:type sosa:Observation; sosa:madeBySensor ?urn ; sosa:hasFeatureOfInterest ?foi ; sosa:resultTime ?timestamp ; sosa:hasSimpleResult ?value . ?foi schema:location ?location . ?location  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?urn sosa:observes ?prop . ?prop rdfs:label ?label . ?location schema:name ?name . ?prop qudt:applicableUnit ?unit . ?unit rdfs:label ?symbol}"
 		},
 		"OBSERVATIONS_COUNT": {
-			"sparql": "SELECT (COUNT(?obs) AS ?count) FROM <http://demo> WHERE {?obs rdf:type sosa:Observation}"
+			"sparql": "SELECT (COUNT(?obs) AS ?count) FROM <http://demo/observations> WHERE {?obs rdf:type sosa:Observation}"
 		},
 		"FOI_COUNT": {
-			"sparql": "SELECT (COUNT(DISTINCT ?foi) AS ?count) FROM <http://demo> WHERE {?obs sosa:hasFeatureOfInterest ?foi}"
+			"sparql": "SELECT (COUNT(DISTINCT ?foi) AS ?count) FROM <http://demo/devices> WHERE {?foi rdf:type sosa:FeatureOfInterest}"
 		},
 		"MAP_PLACES": {
-			"sparql": "SELECT * FROM <http://demo> WHERE {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}"
+			"sparql": "SELECT * FROM <http://demo/places> WHERE {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}"
 		},
 		"CONTAINED_PLACES": {
-			"sparql": "SELECT * FROM <http://demo> WHERE {?root schema:containsPlace ?child . ?child schema:name ?name}",
+			"sparql": "SELECT * FROM <http://demo/places> WHERE {?root schema:containsPlace ?child . ?child schema:name ?name}",
 			"forcedBindings": {
 				"root": {
 					"type": "uri",
-					"value": "arces-monitor:Mars"
+					"value": "monas:Vaimee"
+				}
+			}
+		},
+		"CONTAINED_FOI": {
+			"sparql": "SELECT * FROM <http://demo/devices> WHERE {?foi schema:location ?root ; rdfs:label ?name}",
+			"forcedBindings": {
+				"root": {
+					"type": "uri",
+					"value": "monas:Vaimee"
 				}
 			}
 		},
 		"LOG_QUANTITY": {
-			"sparql": "SELECT * FROM <http://demo/history> WHERE {?result sosa:isResultOf ?observation ; qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp FILTER (xsd:dateTime(?timestamp) > xsd:dateTime(?from) && xsd:dateTime(?timestamp) < xsd:dateTime(?to))} ORDER BY xsd:dateTime(?timestamp)",
+			"sparql": "SELECT * FROM <http://demo/history> FROM <http://demo/devices> WHERE {?urn sosa:madeObservation ?obs . ?urn sosa:observes ?property . ?obs sosa:hasFeatureOfInterest ?foi ; sosa:resultTime ?timestamp ; sosa:hasSimpleResult ?value FILTER (?timestamp > STRDT(?from, xsd:dateTimeStamp) && ?timestamp < STRDT(?to,xsd:dateTimeStamp))} ORDER BY ?timestamp",
 			"forcedBindings": {
 				"from": {
-					"datatype": "xsd:dateTime",
+					"datatype": "xsd:dateTimeStamp",
 					"type": "literal",
-					"value": "2019-07-15T00:00:00Z"
+					"value": "2020-10-15T00:00:00Z"
 				},
 				"to": {
-					"datatype": "xsd:dateTime",
+					"datatype": "xsd:dateTimeStamp",
 					"type": "literal",
-					"value": "2019-07-15T23:59:59Z"
+					"value": "2020-10-15T23:59:59Z"
 				},
-				"observation": {
+				"foi": {
 					"type": "uri",
-					"value": "arces-monitor:SanMicheleLevelsL1"
+					"value": "urn:epc:id:gid:13101974.0.0"
+				},
+				"property": {
+					"type": "uri",
+					"value": "monas:ProbeATemperature"
 				}
 			}
-		},
+		}
 	}
 }
 

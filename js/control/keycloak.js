@@ -1,4 +1,5 @@
 var keycloak;
+var parameters;
 
 function login() {
 	keycloak = new Keycloak();
@@ -26,20 +27,20 @@ function logOut() {
 	keycloak.logout({ redirectUri: 'https://vaimee.it/sepaview/index.html' })
 }
 
-function loginHistory() {
+function loginHistory() {	
 	keycloak = new Keycloak();
 	keycloak.init({
-		onLoad: 'login-required', redirectUri: 'https://vaimee.it/sepaview/history.html'
+		onLoad: 'login-required', redirectUri: 'https://vaimee.it/sepaview/history.html?'+window.location.search.substring(1)
 	}).then(function(authenticated) {
 		if (authenticated) {
 			keycloak.loadUserProfile()
 				.then(function(profile) {
 					$("#userLogin").text('Logged is as ' + profile.username)
+					console.log("Parameters: "+window.location.search.substring(1))
 					onLoadHistory();
 
-				}).catch(function() {
-					$("#userLogin").text('Failed to load user profile')
-					alert('Failed to load user profile');
+				}).catch(function(e) {
+					console.log(e)
 				});
 		}
 		else $("#userLogin").text('not authenticated')

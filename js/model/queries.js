@@ -60,16 +60,16 @@
 //	 });
 //}
 
-function queryHistory(observation,from,to) {
+function queryHistory(foi,property,from,to) {
 	// Forced bindings
 // let query = query.replace("?observation", "<"+observation+">");
 // let query = query.replace("?from", "'" + from + "'^^xsd:dateTime");
 // let query = query.replace("?to", "'" + to + "'^^xsd:dateTime");
 //	 
 	query = bench.sparql(jsap["queries"]["LOG_QUANTITY"]["sparql"],{
-		observation :{
+		foi :{
 		   type: "uri",
-	       value : observation
+	       value : foi
 		},
 		from : {
 			type:"literal",
@@ -78,7 +78,11 @@ function queryHistory(observation,from,to) {
 		to : {
 			type : "literal",
 			value : to
-		}
+		},
+		property :{
+		   type: "uri",
+	       value : property
+		},
 		
 	})
 	
@@ -93,12 +97,51 @@ function queryPlaceTree(placeUri,placeName) {
 	tree["placeName"] = placeName;
 	tree["childs"] = [];
 	
-	return queryChilds(placeUri,tree["childs"]).then(()=>{
+//	return queryChilds(placeUri,tree["childs"]).then(()=>{
+//		return tree;
+//	})
+
+	console.log("queryPlaceTree "+placeUri+" "+placeName)
+
+	return queryFoi(placeUri,tree["childs"]).then(()=>{
 		return tree;
+	});
+}
+
+function queryFoi(placeUri,tree) {
+	console.log("queryFoi "+placeUri)
+	
+	query = bench.sparql(jsap["queries"]["CONTAINED_FOI"]["sparql"],{
+		root :{
+		   type: "uri",
+	       value : placeUri
+		}
 	})
+	
+	return sepa.query(prefixes + " " + query,jsap).then((data)=>{
+		let fois = data.results.bindings.length;
+		
+		for (index = 0; index < fois ; index++) {
+			childUri = data.results.bindings[index].foi.value;
+			childName = data.results.bindings[index].name.value;
+		    
+			child ={};
+			child["placeUri"] = childUri;
+			child["placeName"] = childName;
+			child["childs"] = [];
+			
+			console.log("Push child "+child)
+			
+			tree.push(child);		
+		}
+		
+		return queryChilds(placeUri,tree);	
+	});
 }
 
 function queryChilds(placeUri,tree) {
+	console.log("queryChilds "+placeUri)
+	
     query = bench.sparql(jsap["queries"]["CONTAINED_PLACES"]["sparql"],{
 		root :{
 		   type: "uri",
@@ -120,9 +163,11 @@ function queryChilds(placeUri,tree) {
 			child["placeName"] = childName;
 			child["childs"] = [];
 			
+			console.log("Push child "+child)
+			
 			tree.push(child);
 			
-			promises.push(queryChilds(childUri,child["childs"]));			
+			promises.push(queryFoi(childUri,child["childs"]));			
 		}
 		
 		return Promise.all(promises).then(() => {

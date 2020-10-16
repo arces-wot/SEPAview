@@ -7,7 +7,9 @@ var s = new ColorScheme;
 // Using a fixed palette
 var colors = ["#2980b9", "#16a085"]
 
-var observation;
+var foi;
+var property;
+
 var title;
 var symbol;
 var placeZone;
@@ -15,12 +17,12 @@ var placeZone;
 var calendarFrom, calendarTo;
 
 var traces = [];
-const axisLabels = ["y", "y2"]
+const axisLabels = ["y"]
 var timestamps = []
 
 var layout = {
 	title: "Loading data...please wait...",
-	mode: 'lines+markers',
+	mode: 'markers',
 	xaxis: {
 		domain: [0.15, 1.0],
 		showgrid: true,
@@ -41,20 +43,6 @@ var layout = {
 			color: colors[0]
 		},
 		title: 'yaxis',
-		showgrid: true,
-		zeroline: false,
-		showline: false
-	},
-	yaxis2: {
-		title: 'yaxis2',
-		titlefont: { color: 'rgb(148, 103, 189)' },
-		tickfont: {
-			family: 'Verdana',
-			size: 16,
-			color: colors[1]
-		},
-		overlaying: 'y',
-		side: 'right',
 		showgrid: true,
 		zeroline: false,
 		showline: false
@@ -81,26 +69,19 @@ function onLoadHistory() {
 
 	var parameters = window.location.search.substring(1).split("&");
 
-	if (parameters.length != 7) {
-		layout.title = "Missing parameters";
-		return;
-	}
 	var i;
 	for (i = 0; i < parameters.length; i++) {
 		if (parameters[i].indexOf("=") < 0) continue;
 		
 		switch (parameters[i].split("=")[0]) {
-			case "observation":
-				observation = decodeURIComponent(parameters[i].split("=")[1]).split(",");
+			case "property":
+				property = decodeURIComponent(parameters[i].split("=")[1]).split(",");
 				break;
 			case "title":
 				title = unescape(unescape(parameters[i].split("=")[1]));
 				break;
-			case "placeName":
-				placeName = unescape(unescape(parameters[i].split("=")[1]));
-				break;
-			case "placeUri":
-				placeUri = decodeURIComponent(parameters[i].split("=")[1]).split(",");
+			case "foi":
+				foi = decodeURIComponent(parameters[i].split("=")[1]).split(",");
 				break;
 			case "symbol":
 				symbol = unescape(unescape(parameters[i].split("=")[1]));
@@ -114,49 +95,94 @@ function onLoadHistory() {
 		}
 	}
 
-	if (observation == undefined || title == undefined || placeName == undefined || placeUri == undefined || lat == undefined || long == undefined || symbol == undefined) {
-		layout.title = observation + " - " + placeName + " - " + title + " - " + placeUri + " - " + symbol + " - " + lat + " - " + long;
-		return;
-	}
+	layout.title = "Device: "+foi + " Observed property: " + title;
+
+	if (property == undefined || title == undefined || foi == undefined || lat == undefined || long == undefined || symbol == undefined) return;
 
 	placeZone = tzlookup(parseFloat(lat), parseFloat(long));
 
-	layout.title = placeName + " - " + title;
-
-	interval = initCalendar();
+	interval = initCalendar(1,'days');
 
 	calendarFrom = flatpickr("#from", {
 		mode: "single",
 		enableTime: true,
 		defaultDate: [interval[0]],
-		time_24hr: true
+		time_24hr: true,
+		enableSeconds : true
 	});
 
 	calendarTo = flatpickr("#to", {
 		mode: "single",
 		enableTime: true,
 		defaultDate: [interval[1]],
-		time_24hr: true
+		time_24hr: true,
+		enableSeconds : true
 	});
 
 	onRefresh();
 }
 
 function onRefresh24h() {
-	interval = initCalendar();
+	interval = initCalendar(1,'days');
 
 	calendarFrom = flatpickr("#from", {
 		mode: "single",
 		enableTime: true,
 		defaultDate: [interval[0]],
-		time_24hr: true
+		time_24hr: true,
+		enableSeconds : true
 	});
 
 	calendarTo = flatpickr("#to", {
 		mode: "single",
 		enableTime: true,
 		defaultDate: [interval[1]],
-		time_24hr: true
+		time_24hr: true,
+		enableSeconds : true
+	});
+
+	onRefresh();
+}
+
+function onRefresh1h() {
+	interval = initCalendar(1,'hours');
+
+	calendarFrom = flatpickr("#from", {
+		mode: "single",
+		enableTime: true,
+		defaultDate: [interval[0]],
+		time_24hr: true,
+		enableSeconds : true
+	});
+
+	calendarTo = flatpickr("#to", {
+		mode: "single",
+		enableTime: true,
+		defaultDate: [interval[1]],
+		time_24hr: true,
+		enableSeconds : true
+	});
+
+	onRefresh();
+}
+
+function onRefresh1m() {
+	interval = initCalendar(1,'minutes');
+
+	calendarFrom = flatpickr("#from", {
+		mode: "single",
+		enableTime: true,
+		defaultDate: [interval[0]],
+		time_24hr: true,
+		enableSeconds : true
+	});
+
+	calendarTo = flatpickr("#to", {
+		mode: "single",
+		enableTime: true,
+		defaultDate: [interval[1]],
+		time_24hr: true,
+		enableSeconds : true
 	});
 
 	onRefresh();
@@ -166,13 +192,13 @@ function getHistoryPlaceZone() {
 	return placeZone;
 }
 
-function initCalendar() {
+function initCalendar(n,period) {
 	var to = moment();
 	to.subtract(to.utcOffset(), 'm');
 	var from = moment();
 	from.subtract(from.utcOffset(), 'm');
 
-	from.subtract(1, 'days');
+	from.subtract(n, period);
 
 	toDate = new Date(to.format());
 	fromDate = new Date(from.format());
@@ -184,24 +210,25 @@ function initCalendar() {
 	return interval;
 }
 
-function doQuery(observation) {
+function doQuery() {
 	console.log("Calendar from: " + calendarFrom.selectedDates[0]);
 	console.log("Calendar to: " + calendarTo.selectedDates[0]);
 
 	interval = setQueryInterval(calendarFrom.selectedDates[0], calendarTo.selectedDates[0]);
 
-	console.log("Observation: " + observation);
+	console.log("FOI: " + foi);
+	console.log("Property: " + property);
 	console.log("From: " + interval["from"]);
 	console.log("To: " + interval["to"]);
 
-	return queryHistory(observation, interval["from"], interval["to"]).then((data) => {
+	return queryHistory(foi, property,interval["from"], interval["to"]).then((data) => {
 		return results(data);
 	});
 }
 
 function setQueryInterval(calendarFromDate, calendarToDate) {
-	from = flatpickr.formatDate(calendarFromDate, "Y-m-dTH:i:00.000");
-	to = flatpickr.formatDate(calendarToDate, "Y-m-dTH:i:00.000");
+	from = flatpickr.formatDate(calendarFromDate, "Y-m-dTH:i:S.000");
+	to = flatpickr.formatDate(calendarToDate, "Y-m-dTH:i:S.000");
 
 	tz = document.getElementById("selectTimeZone").value;
 
@@ -244,7 +271,7 @@ function setQueryInterval(calendarFromDate, calendarToDate) {
 function onRefresh() {
 	traces = []
 
-	doQuery(observation)
+	doQuery()
 		.then((data) => {
 			data.name = title;
 			updateTraces(data, symbol)
@@ -253,7 +280,7 @@ function onRefresh() {
 }
 
 function updateTraces(newTrace, unit) {
-	const layoutAxisKeys = ["yaxis", "yaxis2"]
+	const layoutAxisKeys = ["yaxis"]
 	newTrace.unit = unit
 
 	if (traces.length > 1) {
@@ -273,7 +300,8 @@ function updateHistoryGraph() {
 		for (j = 0; j < traces[i].x.length; j++)
 			traces[i].x[j] = getTraceTime(timestamps[j])
 	}
-	Plotly.newPlot("plot", traces, layout);
+//	Plotly.newPlot("plot", traces, layout);
+	Plotly.newPlot("plot", traces);
 }
 
 function results(jsapObj) {
@@ -284,7 +312,8 @@ function results(jsapObj) {
 		line: {
 			width: 1.25,
 		},
-		type: 'scatter'
+		type: 'scatter',
+		mode: 'lines+markers'
 	};
 
 	clearCSVData();

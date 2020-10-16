@@ -11,21 +11,23 @@ notifications = [ {
 nots = 0;
 
 function onObservation(binding) {
-	let place = binding.location.value;
+	console.log("onObservation "+binding)
+	
+	// FOI
+	let foi = binding.foi.value;
+	
+	// OBSERVED PROPERTY
+	let label = binding.label.value; //observed property label
+	let prop = binding.prop.value; //observed property is the URI
+	
 	let name = binding.name.value;
 	let lat = binding.lat.value;
 	let long = binding.long.value;
-	
 	let symbol = (binding.symbol != undefined ? binding.symbol.value : "qudt-unit?");
-	
-	let label = binding.label.value; //observed property label
-	let observation = binding.prop.value; //observed property is the URI
-	
-	//let quantity = binding.quantity.value;
 	
 	let value = binding.value ? binding.value.value : "???";
 	
-	console.log("onObservation Place:"+place+" Observation:"+observation+" value:"+value)
+	console.log("onObservation FOI:"+foi+" Observed property:"+prop+" value:"+value)
 	
 	if (binding.timestamp != undefined) {
 		timestamp = binding.timestamp.value;
@@ -35,105 +37,84 @@ function onObservation(binding) {
 	}
 
 	// NEW PLACE
-	if (sensorData[place] === undefined) {
-		sensorData[place] = {};
+	if (sensorData[foi] === undefined) {
+		sensorData[foi] = {};
 
-		if (placeIds[place] === undefined) {
-			placeIds[place] = generateID();
+		if (placeIds[foi] === undefined) {
+			placeIds[foi] = generateID();
 		}
-		sensorData[place]["div_id"] = placeIds[place];
+		sensorData[foi]["div_id"] = placeIds[foi];
 
-		addPlace(sensorData[place]["div_id"],name,place);
+		addPlace(sensorData[foi]["div_id"]);
 	}
 
 	// NEW OBSERVATION
-	if (sensorData[place][observation] === undefined) {
-		sensorData[place][observation] = {};
-		sensorData[place][observation]["div_id"] = generateID();
+	if (sensorData[foi][prop] === undefined) {
+		sensorData[foi][prop] = {};
+		sensorData[foi][prop]["div_id"] = generateID();
 		
-		sensorData[place][observation]["placeUri"] = place;
-		sensorData[place][observation]["placeName"] = name;
-		sensorData[place][observation]["lat"] = lat;
-		sensorData[place][observation]["long"] = long;
-		sensorData[place][observation]["zoneName"] = tzlookup(parseFloat(lat),parseFloat(long));
+		sensorData[foi][prop]["placeUri"] = foi;
+		sensorData[foi][prop]["placeName"] = name;
+		sensorData[foi][prop]["lat"] = lat;
+		sensorData[foi][prop]["long"] = long;
+		sensorData[foi][prop]["zoneName"] = tzlookup(parseFloat(lat),parseFloat(long));
 		
-		sensorData[place][observation]["title"] = label;
-		sensorData[place][observation]["symbol"] = (symbol != null ? symbol : "qudt-unit?");
-		sensorData[place][observation]["value"] = value;
-		sensorData[place][observation]["timestamp"] = timestamp;
+		sensorData[foi][prop]["title"] = label;
+		sensorData[foi][prop]["symbol"] = (symbol != null ? symbol : "qudt-unit?");
+		sensorData[foi][prop]["value"] = value;
+		sensorData[foi][prop]["timestamp"] = timestamp;
 				
-		addObservation(observation,place);
+		addObservation(prop,foi);
 	}
 
-	sensorData[place][observation]["value"] = value;
-	sensorData[place][observation]["timestamp"] = timestamp;
+	sensorData[foi][prop]["value"] = value;
+	sensorData[foi][prop]["timestamp"] = timestamp;
 	
 	// UPDATE data
-	updateObservation(observation,place);
+	updateObservation(prop,foi);
 }
 
-function addPlace(place_id, name, place) {
-	var today = new Date();
-	var tomorrow = new Date();
-	var dat = new Date();
-	
-	tomorrow.setDate(tomorrow.getDate() + 1);
-	dat.setDate(dat.getDate() + 2);
-
+function addPlace(place_id) {
 	$("#graph")
 			.append(
 					"<div class='tab-pane fade' id='"+ place_id + "' role='tabpanel' aria-labelledby='"+ place_id+ "-tab'>"
 					+ "<div id='live_"+ place_id+ "'></div>"
-//					+ "<div class='container flex-row-reverse' id='forecast_"+ place_id+ "-tab'></div>"
 					+ "</div>");
 
-//	$("#forecast_" + place_id+"-tab").hide();
 }
 
-function addObservation(observation, place) {
-	let obs_id = sensorData[place][observation]["div_id"];
+function addObservation(prop, foi) {
+	let obs_id = sensorData[foi][prop]["div_id"];
 
 	
 	layout = "<div class='container'><div class='row align-items-center mb-3'>"
 	+ "<div class='col'><p class='font-weight-bold'>" 
-	+ sensorData[place][observation]["title"]
+	+ sensorData[foi][prop]["title"]
 	+ "</p></div>"
 	
 	+ "<div class='col-auto'>" 
 	+ "<button type='button' class='btn btn-success' id='value_+"+ obs_id+ "'>"
 	+ "<span class='badge badge-light' id='value_"+ obs_id+ "'>---</span>&nbsp;"
-	+ sensorData[place][observation]["symbol"]
+	+ sensorData[foi][prop]["symbol"]
 	+ "<span class='badge badge-light ml-3' id='timestamp_"+ obs_id + "'>---</span>"
 	+ "</button>"
 	+ "</div>"
 	
 	+ "<div class='col-auto'>"
 	+ "<form target='_blank' action='./history.html'>"
-		+ "<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+ observation+ "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='placeUri' value=\"" + place + "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='lat' value=\"" + escape(sensorData[place][observation]["lat"]) + "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='long' value=\"" + escape(sensorData[place][observation]["long"]) + "\" />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='symbol' value='" + escape(sensorData[place][observation]["symbol"])+ "' />"
-		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[place][observation]["title"])+ "' />"
-		+ "<input placeId='"+placeIds[place]+"' class='form-control form-control-sm' type='hidden' name='placeName' value='???' />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='property' value=\""+ prop+ "\" />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='foi' value=\"" + foi + "\" />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='lat' value=\"" + escape(sensorData[foi][prop]["lat"]) + "\" />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='long' value=\"" + escape(sensorData[foi][prop]["long"]) + "\" />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='symbol' value='" + escape(sensorData[foi][prop]["symbol"])+ "' />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[foi][prop]["title"])+ "' />"
+		+ "<input class='form-control form-control-sm' type='hidden' name='placeName' placeId='"+placeIds[foi]+"' value='???' />"
 		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;History</small></button>"
 	+ "</form></div>"
 	
-//	+ "<div class='col-auto'>"
-//	+ "<form target='_blank' action='./compare.html'>"
-//		+ "<input class='form-control form-control-sm' type='hidden' name='observation' value=\""+ observation+ "\" />"
-//		+ "<input class='form-control form-control-sm' type='hidden' name='placeUri' value=\"" + place + "\" />"
-//		+ "<input class='form-control form-control-sm' type='hidden' name='lat' value=\"" + escape(sensorData[place][observation]["lat"]) + "\" />"
-//		+ "<input class='form-control form-control-sm' type='hidden' name='long' value=\"" + escape(sensorData[place][observation]["long"]) + "\" />"
-//		+ "<input class='form-control form-control-sm' type='hidden' name='symbol' value='" + escape(sensorData[place][observation]["symbol"])+ "' />"
-//		+ "<input class='form-control form-control-sm' type='hidden' name='title' value='" + escape(sensorData[place][observation]["title"])+ "' />"
-//		+ "<input placeId='"+placeIds[place]+"' class='form-control form-control-sm' type='hidden' name='placeName' value='???' />"
-//		+ "<button class='btn btn-primary float-right' type='submit'><small><i class='fas fa-external-link-alt'></i>&nbsp;Compare</small></button>"
-//	+ "</form></div>"
-	
 	+ "</div></div>"
 	
-	$("#live_" + sensorData[place]["div_id"]).append(layout);	
+	$("#live_" + sensorData[foi]["div_id"]).append(layout);	
 }
 
 function updateLiveDataTimestamps(tz) {	
