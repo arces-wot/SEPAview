@@ -44,6 +44,8 @@
 <script src="js/view/forecast.js"></script>
 <script src="js/view/livedata.js"></script>
 <script src="js/view/map.js"></script>
+<script src="js/view/superset.js"></script>
+<script src="js/view/colored_button.js"></script>
 
 <script src="js/model/jsap.js"></script>
 <script src="js/model/queries.js"></script>
@@ -72,7 +74,7 @@
 <script type="text/javascript">
 var keycloak = new Keycloak();
 keycloak.init({
-	onLoad: 'login-required', redirectUri: 'https://vaimee.it/sepaview/index.html'
+	onLoad: 'login-required', redirectUri: 'https://vaimee.it/monas/index.html'
 }).then(function(authenticated) {
 	if (authenticated) {
 		keycloak.loadUserProfile()
@@ -101,16 +103,12 @@ keycloak.init({
 		</a>
 		<form class="form-inline">
 			<button type="button" class="btn btn-sm btn-success mr-3">
-				<i class="fas fa-bell"></i> Notifications<span
+				<i class="fas fa-bell"></i> Sensors readings<span
 					class="badge badge-light ml-3"><div id="odoNotifications"
 						class="odometer"></div></span>
 			</button>
-			<!-- 			<button type="button" class="btn btn-sm btn-danger mr-3"> -->
-			<!-- 				<i class="fas fa-thermometer-three-quarters"></i> Temperatures<span -->
-			<!-- 					class="badge badge-light ml-3"><div id="odoObservations" -->
-			<!-- 						class="odometer"></div></span> -->
-			<!-- 			</button> -->
-			<button type="button" class="btn btn-sm btn-info">
+
+			<button type="button" class="btn btn-sm btn-info mr-3">
 				<i class="fas fa-map-marker-alt"></i> Devices<span
 					class="badge badge-light ml-3"><div id="odoFOI"
 						class="odometer"></div></span>
@@ -127,59 +125,124 @@ keycloak.init({
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class='col ml-3 mr-3'>
-				<div class='row' id="mapid"></div>
+			<div class='col'>
+				<div class='row mr-3 ml-3' id="mapid"></div>
 			</div>
 		</div>
-		<div class="row mt-3">
-			<div class="col-4">
-				<div class="alert alert-primary" role="alert">Devices</div>
-				<ul id="tree" class="nav nav-pills pt-0"></ul>
-			</div>
-			<div class="col-8">
-				<div class="alert alert-info" role="alert">
-					Temperatures <span class="badge badge-info ml-3 mr-3">Display
-						time&nbsp;&nbsp;<select id="selectTimeZone"
-						onchange="onChangeTimeZone()">
-							<option value="UTC">UTC</option>
-							<option value="Local">Local</option>
-							<option value="Remote">Observation</option>
-					</select>
-					</span> <span class="badge badge-info" id='timeZone'>Time zone: UTC</span>
+		<div class="card mt-3 mb-3 ml-3 mr-3">
+			<div class="card-header">Live data (click on the map, then
+				select your device)</div>
+			<div class="card-body">
+				<div class="row mt-3">
+					<div class="col-4">
+						<div class="alert alert-primary ml-3" role="alert">Devices</div>
+						<ul id="tree" class="nav nav-pills pt-0 ml-3"></ul>
+					</div>
+					<div class="col-8">
+						<div class="alert alert-primary mr-3" role="alert">
+							<div class="row">
+								<div class="col">Sensor data</div>
+								<div class="col">
+									<div class="d-flex flex-row-reverse">
+										<span class="align-text-bottom ml-3" id='timeZone'>Time
+											zone: UTC</span> <span class="badge badge-primary">Display
+											time&nbsp;&nbsp;<select id="selectTimeZone"
+											onchange="onChangeTimeZone()">
+												<option value="UTC">UTC</option>
+												<option value="Local">Local</option>
+												<option value="Remote">Observation</option>
+										</select>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="container flex" id="graph"></div>
+					</div>
 				</div>
-				<div class="tab-content" id="graph"></div>
+			</div>
+			<div class="row">
+				<div class="col-12" id="superset"></div>
 			</div>
 		</div>
-		<div class="row mt-3">
-			<!-- 			<footer id="bottom" class="row text-center fixed-bottom"> -->
-			<div class="col-12 text-center fixed-bottom">Copyright &copy;
-				2020 VAIMEE srl</div>
-		</div>
-	</div>
 
+		<footer id="footer">
+			<div class="card text-center">
+				<!-- 			<div class="card-header">Featured</div> -->
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<h5 class="card-title mt-2">In partnership with</h5>
+							<a href="http://www.almaelettronica.it"> <img
+								src="./img/alma.png" alt="alma" style="height: 35px"
+								"class="img-thumbnail">
+							</a>
+							<h5 class="card-title">ELETTRONICA</h5>
+						</div>
+						<div class="col">
+							<h5 class="card-title">Powered by</h5>
+							<div class="container">
+								<div class="row">
+									<div class="col">
+										<a href="https://github.com/arces-wot/SEPA"> <img
+											src="https://raw.githubusercontent.com/arces-wot/SEPA/master/doc/logo.png"
+											alt="sepa" style="height: 40px"
+											"class="rounded mx-auto d-block mr-3 ml-3">
+										</a>
+									</div>
+									<div class="col">
+										<a href="http://vos.openlinksw.com/owiki/wiki/VOS"><img
+											src="https://community.openlinksw.com/uploads/default/original/1X/e92dc4ebb5a2f272de53b2dff1f928f5d940c1f3.png"
+											alt="sepa" style="height: 40px"
+											"class="rounded mx-auto d-block mr-3 ml-3"> </a>
+									</div>
+									<div class="col">
+										<a href="https://www.mysql.com/"> <img
+											src="https://www.smeup.com/wp-content/uploads/2017/07/mysql-logo.png"
+											alt="mysql" style="height: 40px"
+											"class="rounded mx-auto d-block">
+										</a>
+									</div>
+									<div class="col">
+										<a href="https://superset.apache.org/"> <img
+											src="https://superset.apache.org/static/superset-logo-horiz-apache-ac1a91de27eed9f5c53944c555a39c6f.svg"
+											alt="superset" style="height: 40px"
+											"class="rounded mx-auto d-block">
+										</a>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col">
+										<a href="https://www.keycloak.org/"> <img
+											src="https://www.keycloak.org/resources/images/keycloak_logo_480x108.png"
+											alt="keycloak" style="height: 40px"
+											"class="rounded mx-auto d-block">
+										</a>
+									</div>
+									<div class="col">
+										<a href="https://directory.apache.org/"> <img
+											src="https://cwiki.apache.org/confluence/download/thumbnails/46679/Directory_Black_with_label.png?version=1&modificationDate=1172112641000&api=v2"
+											alt="ldap" style="height: 40px"
+											"class="rounded mx-auto d-block">
+										</a>
+									</div>
+									<div class="col">
+										<a href="https://github.com/twbs/bootstrap"> <img
+											src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/480px-Bootstrap_logo.svg.png"
+											alt="boostrap" style="height: 40px"
+											"class="rounded mx-auto d-block">
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-muted">
+					&copy; Copyright 2020, <a href="https://vaimee.it">VAIMEE srl</a>.
+					All Rights Reserved
+				</div>
+			</div>
+		</footer>
 </body>
-<!-- Modal -->
-<div class="modal fade" id="irrigationRequestsInfoBox" tabindex="-1"
-	role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="irrigationRequestsInfoBoxTitle">List
-					of irrigations</h5>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="container-fluid" id="irrigationRequestsInfoBoxBody"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<!--         <button type="button" class="btn btn-primary">Save changes</button> -->
-			</div>
-		</div>
-	</div>
-</div>
 </html>

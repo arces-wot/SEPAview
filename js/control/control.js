@@ -4,6 +4,7 @@ function onLoad() {
 	initSepa();
 	initMap("vaimee");
 	subscribe();
+	$("#superset").hide();
 }
 
 function onMapPlaceClick(uri, name, lat, long) {
