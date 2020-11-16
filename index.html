@@ -32,6 +32,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/mootools/1.6.0/mootools-core.min.js"></script>
 
+<!-- LOCAL REFERENCE WITH ENABLED SECURITY -->
 <script type="text/javascript" src="lib/sepa.js"></script>
 
 <script src="lib/moment.js"></script>
@@ -50,8 +51,6 @@
 <script src="js/model/jsap.js"></script>
 <script src="js/model/queries.js"></script>
 <script src="js/model/subscriptions.js"></script>
-<script src="js/model/canals.js"></script>
-<script src="js/model/fields.js"></script>
 
 <script src="js/control/control.js"></script>
 <script src="js/control/csv.js"></script>
@@ -71,32 +70,9 @@
 <!-- Import KeyCloak API -->
 <script src="https://sepa.vaimee.it:8443/auth/js/keycloak.js"></script>
 
-<script type="text/javascript">
-var keycloak = new Keycloak();
-keycloak.init({
-	onLoad: 'login-required', redirectUri: 'https://vaimee.it/monas/index.html'
-}).then(function(authenticated) {
-	if (authenticated) {
-		keycloak.loadUserProfile()
-			.then(function(profile) {
-				$("#userLogin").text('Logged is as ' + profile.username)
-				onLoad();
-
-			}).catch(function(e) {
-				console.log(e)
-				//$("#userLogin").text('Failed to load')
-				//alert('Failed to load');
-			});
-	}
-	else $("#userLogin").text('not authenticated')
-}).catch(function() {
-	$("#userLogin").text('failed to initialize');
-});
-</script>
-
 </head>
 
-<body>
+<body onLoad="login('https://vaimee.it/monas/index.html')">
 	<nav class="navbar navbar-custom mb-2">
 		<a class="navbar-brand" href="#"> <img src="icon/favicon.svg"
 			height="30" class="d-inline-block align-top mr-3" alt="">MONAS
@@ -117,7 +93,7 @@ keycloak.init({
 		<form class="form-inline">
 			<span class="navbar-text mr-3" id="userLogin">---</span>
 			<button id="userLogin" class="btn btn-sm btn-primary" type="button"
-				onclick="logOut()">
+				onclick="logOut('https://vaimee.it/monas/index.html')">
 				<i class="fas fa-sign-out-alt"></i> Logout
 			</button>
 		</form>
@@ -130,16 +106,16 @@ keycloak.init({
 			</div>
 		</div>
 		<div class="card mt-3 mb-3 ml-3 mr-3">
-			<div class="card-header">Live data (click on the map, then
-				select your device)</div>
+			<div class="card-header">Select a place on the map, then
+				select your device from the tree below</div>
 			<div class="card-body">
 				<div class="row mt-3">
 					<div class="col-4">
-						<div class="alert alert-primary ml-3" role="alert">Devices</div>
-						<ul id="tree" class="nav nav-pills pt-0 ml-3"></ul>
+						<div class="alert alert-primary" role="alert">Devices</div>
+						<ul id="tree" class="nav nav-pills pt-0"></ul>
 					</div>
 					<div class="col-8">
-						<div class="alert alert-primary mr-3" role="alert">
+						<div class="alert alert-primary" role="alert">
 							<div class="row">
 								<div class="col">Sensor data</div>
 								<div class="col">
@@ -157,7 +133,7 @@ keycloak.init({
 								</div>
 							</div>
 						</div>
-						<div class="container flex" id="graph"></div>
+						<div class="tab-content" id="graph"></div>
 					</div>
 				</div>
 			</div>

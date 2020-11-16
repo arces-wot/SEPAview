@@ -3,16 +3,14 @@ lastPlaceZone = undefined;
 function onLoad() {
 	initSepa();
 	initMap("vaimee");
-	subscribe();
+	queryMapPlaces();
+	queryFoiCount();
 	$("#superset").hide();
 }
 
 function onMapPlaceClick(uri, name, lat, long) {
-	//let today = moment("2019-12-31T08:00:00Z");
-	let today = moment();
-
 	queryPlaceTree(uri, name).then((tree) => {
-		createObservationsTree(tree, today);
+		createObservationsTree(tree);
 	});
 
 	lastPlaceZone = tzlookup(parseFloat(lat), parseFloat(long));
@@ -40,17 +38,4 @@ function updateTimeZone(obsTz) {
 	else {
 		$("#timeZone").html("Time zone: " + obsTz);
 	}
-}
-
-function onChangeHistoryTimeZone() {
-	var tz = document.getElementById("selectTimeZone").value;
-
-	updateTimeZone(getHistoryPlaceZone());
-
-	updateHistoryGraph();
-}
-
-function onFilterByCropChange() {
-	crop = document.getElementById("filterByCrop").value;
-	showFields(crop);
 }

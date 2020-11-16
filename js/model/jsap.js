@@ -63,6 +63,15 @@ const jsap = {
 		"OBSERVATIONS": {
 			"sparql": "SELECT * FROM <http://demo/observations> FROM <http://demo/devices> FROM <http://demo/places> FROM <http://demo/properties> FROM <http://qudt.org/2.1> WHERE {?obs rdf:type sosa:Observation; sosa:madeBySensor ?urn ; sosa:hasFeatureOfInterest ?foi ; sosa:resultTime ?timestamp ; sosa:hasSimpleResult ?value . ?foi schema:location ?location . ?location  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?urn sosa:observes ?prop . ?prop rdfs:label ?label . ?location schema:name ?name . ?prop qudt:applicableUnit ?unit . ?unit rdfs:label ?symbol}"
 		},
+		"OBSERVATIONS_BY_FOI": {
+			"sparql": "SELECT * WHERE {graph <http://demo/observations> {?obs sosa:hasFeatureOfInterest ?foi ; rdf:type sosa:Observation ; sosa:madeBySensor ?urn ; sosa:resultTime ?timestamp ; sosa:hasSimpleResult ?value }  graph  <http://demo/devices> {?foi schema:location ?location . ?urn sosa:observes ?prop} graph <http://demo/places> {?location  schema:GeoCoordinates ?coordinate ; schema:name ?name . ?coordinate schema:latitude ?lat ; schema:longitude ?long }  graph  <http://demo/properties> {?prop rdfs:label ?label  . ?prop qudt:applicableUnit ?unit} graph <http://qudt.org/2.1> {?unit rdfs:label ?symbol}}",
+			"forcedBindings": {
+				"foi": {
+					"type": "uri",
+					"value": "urn:epc:id:gid:13101974.0.0"
+				}
+			}
+		},
 		"OBSERVATIONS_COUNT": {
 			"sparql": "SELECT (COUNT(?obs) AS ?count) FROM <http://demo/observations> WHERE {?obs rdf:type sosa:Observation}"
 		},

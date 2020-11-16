@@ -11,7 +11,9 @@ function aspectRatio() {
 }
 
 function showAnalytics(foi) {
-	dashid = foi.replaceAll(':','').replaceAll('.','');
+	dashid = queryDashboardURL(foi);
+	
+	if (dashid == undefined) dashid = foi.replaceAll(':','').replaceAll('.','').replaceAll('/','_').replaceAll('#','_');
 	
 	var iframe = document.createElement("iframe");
 	iframe.setAttribute("class", "embed-responsive-item");
@@ -19,7 +21,7 @@ function showAnalytics(foi) {
 	iframe.setAttribute("style", "height: 100%; width: 100%");
 
 	var title = document.createElement("div");
-	title.setAttribute("class", "alert alert-primary");
+	title.setAttribute("class", "alert alert-warning mr-3 ml-3");
 	title.setAttribute("role", "alert");
 	title.innerHTML = "Data analytics";
 

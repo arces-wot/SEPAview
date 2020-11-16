@@ -1,10 +1,10 @@
 var keycloak;
 var parameters;
 
-function login() {
+function login(uri) {
 	keycloak = new Keycloak();
 	keycloak.init({
-		onLoad: 'login-required', redirectUri: 'https://vaimee.it/sepaview/index.html'
+		onLoad: 'login-required', redirectUri: uri
 	}).then(function(authenticated) {
 		if (authenticated) {
 			keycloak.loadUserProfile()
@@ -23,8 +23,8 @@ function login() {
 	});
 }
 
-function logOut() {
-	keycloak.logout({ redirectUri: 'https://vaimee.it/sepaview/index.html' })
+function logOut(uri) {
+	keycloak.logout({ redirectUri: uri })
 }
 
 function loginHistory() {	

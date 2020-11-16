@@ -10,11 +10,11 @@ notifications = [{
 
 nots = 0;
 
-function onObservation(binding) {
-	//console.log("onObservation "+binding)
-
+function onObservation(binding,foi) {
 	// FOI
-	let foi = binding.foi.value;
+//	let foi = binding.foi.value;
+
+	if (sensorData[foi] === undefined) return;
 
 	// OBSERVED PROPERTY
 	let label = binding.label.value; //observed property label
@@ -27,8 +27,6 @@ function onObservation(binding) {
 
 	let value = binding.value ? binding.value.value : "???";
 
-	//console.log("onObservation FOI:"+foi+" Observed property:"+prop+" value:"+value)
-
 	if (binding.timestamp != undefined) {
 		timestamp = binding.timestamp.value;
 	} else {
@@ -37,16 +35,16 @@ function onObservation(binding) {
 	}
 
 	// NEW PLACE
-	if (sensorData[foi] === undefined) {
-		sensorData[foi] = {};
-
-		if (placeIds[foi] === undefined) {
-			placeIds[foi] = generateID();
-		}
-		sensorData[foi]["div_id"] = placeIds[foi];
-
-		addPlace(sensorData[foi]["div_id"]);
-	}
+	//	if (sensorData[foi] === undefined) {
+	//		sensorData[foi] = {};
+	//
+	//		if (placeIds[foi] === undefined) {
+	//			placeIds[foi] = generateID();
+	//		}
+	//		sensorData[foi]["div_id"] = placeIds[foi];
+	//
+	//		addPlace(sensorData[foi]["div_id"]);
+	//	}
 
 	// NEW OBSERVATION
 	if (sensorData[foi][prop] === undefined) {
@@ -79,54 +77,34 @@ function onObservation(binding) {
 function buildLegend() {
 	var freeze = document.createElement("span");
 	freeze.setAttribute("class", "badge badge-secondary ml-3 mr-3");
-	freeze.setAttribute("id","badge-freezing");
-	freeze.innerHTML = "Freeze "+thresholds.abc.freeze+"/"+thresholds.d.freeze;
-	
+	freeze.setAttribute("id", "badge-freezing");
+	freeze.innerHTML = "Freeze " + thresholds.abc.freeze + "/" + thresholds.d.freeze;
+
 	var fanon = document.createElement("span");
 	fanon.setAttribute("class", "badge badge-primary mr-3");
-	fanon.setAttribute("id","badge-fan-on");
-	fanon.innerHTML = "Fan on "+thresholds.abc.fan_on+"/"+thresholds.d.fan_on;
-	
+	fanon.setAttribute("id", "badge-fan-on");
+	fanon.innerHTML = "Fan on " + thresholds.abc.fan_on + "/" + thresholds.d.fan_on;
+
 	var warning = document.createElement("span");
 	warning.setAttribute("class", "badge badge-warning mr-3");
-	warning.setAttribute("id","badge-warning");
-	warning.innerHTML = "Warning "+thresholds.abc.pre_alarm+"/"+thresholds.d.pre_alarm;
-	
+	warning.setAttribute("id", "badge-warning");
+	warning.innerHTML = "Warning " + thresholds.abc.pre_alarm + "/" + thresholds.d.pre_alarm;
+
 	var danger = document.createElement("span");
 	danger.setAttribute("class", "badge badge-danger mr-3");
-	danger.setAttribute("id","badge-danger");
-	danger.innerHTML = "Danger "+thresholds.abc.alarm+"/"+thresholds.d.alarm;
-		
+	danger.setAttribute("id", "badge-danger");
+	danger.innerHTML = "Danger " + thresholds.abc.alarm + "/" + thresholds.d.alarm;
+
 	var legend = document.createElement("button");
 	legend.setAttribute("class", "btn btn-sm btn-light");
-	legend.innerHTML = "Temperature thresholds (probes ABC/probe D)";	
-	
+	legend.innerHTML = "Temperature thresholds (probes ABC/probe D)";
+
 	legend.appendChild(freeze);
 	legend.appendChild(fanon);
 	legend.appendChild(warning);
 	legend.appendChild(danger);
-	
+
 	return legend;
-}
-	
-function addPlace(place_id) {
-	var legend_div = document.createElement("div");
-	legend_div.setAttribute("class", "row d-flex justify-content-end");
-	legend_div.appendChild(buildLegend());
-	
-	var container = document.createElement("div");
-	container.setAttribute("class", "container flex");
-	container.setAttribute("id", "live_" + place_id);
-
-	var tab_pane = document.createElement("div");
-	tab_pane.setAttribute("class", "tab-pane fade");
-	tab_pane.setAttribute("id", place_id);
-	tab_pane.setAttribute("role", "tabpanel");
-	tab_pane.setAttribute("aria-labelledby", place_id + "-tab");
-	tab_pane.appendChild(container);
-	tab_pane.appendChild(legend_div);
-
-	document.getElementById("graph").appendChild(tab_pane);
 }
 
 function addObservation(prop, foi) {
@@ -178,6 +156,14 @@ function addObservation(prop, foi) {
 	document.getElementById("live_" + sensorData[foi]["div_id"]).appendChild(obs);
 
 	sortObservations("live_" + sensorData[foi]["div_id"]);
+
+	if ($("#legend_" + sensorData[foi]["div_id"]).length == 0) {
+		var legend_div = document.createElement("div");
+		legend_div.setAttribute("id", "legend_"+sensorData[foi]["div_id"]);
+		legend_div.setAttribute("class", "row d-flex justify-content-end");
+		legend_div.appendChild(buildLegend());
+		document.getElementById(sensorData[foi]["div_id"]).appendChild(legend_div);
+	}
 }
 
 function sortObservations(id) {
@@ -238,6 +224,8 @@ function updateLiveDataTimestamps(tz) {
 }
 
 function updateObservation(prop, foi) {
+	updateNotifications();
+	
 	let obs_id = sensorData[foi][prop]["div_id"];
 
 	value = sensorData[foi][prop]["value"];
