@@ -10,9 +10,9 @@ notifications = [{
 
 nots = 0;
 
-function onObservation(binding,foi) {
+function onObservation(binding, foi) {
 	// FOI
-//	let foi = binding.foi.value;
+	//	let foi = binding.foi.value;
 
 	if (sensorData[foi] === undefined) return;
 
@@ -157,12 +157,17 @@ function addObservation(prop, foi) {
 
 	sortObservations("live_" + sensorData[foi]["div_id"]);
 
-	if ($("#legend_" + sensorData[foi]["div_id"]).length == 0) {
-		var legend_div = document.createElement("div");
-		legend_div.setAttribute("id", "legend_"+sensorData[foi]["div_id"]);
-		legend_div.setAttribute("class", "row d-flex justify-content-end");
-		legend_div.appendChild(buildLegend());
-		document.getElementById(sensorData[foi]["div_id"]).appendChild(legend_div);
+	var arr = document.getElementById("live_" + sensorData[foi]["div_id"]).children;
+	arr = Array.prototype.slice.call(arr, 0);
+	if (arr.length == 4) {
+		document.getElementById(sensorData[foi]["div_id"]).appendChild(buildTrafo(foi));
+		if ($("#legend_" + sensorData[foi]["div_id"]).length == 0) {
+			var legend_div = document.createElement("div");
+			legend_div.setAttribute("id", "legend_" + sensorData[foi]["div_id"]);
+			legend_div.setAttribute("class", "row d-flex justify-content-end");
+			legend_div.appendChild(buildLegend());
+			document.getElementById(sensorData[foi]["div_id"]).appendChild(legend_div);
+		}
 	}
 }
 
@@ -225,7 +230,7 @@ function updateLiveDataTimestamps(tz) {
 
 function updateObservation(prop, foi) {
 	updateNotifications();
-	
+
 	let obs_id = sensorData[foi][prop]["div_id"];
 
 	value = sensorData[foi][prop]["value"];
@@ -249,5 +254,10 @@ function updateObservation(prop, foi) {
 
 	$("#timestamp_" + obs_id).html(time.format("LLL"));
 	$("#value_" + obs_id).html(value);
+	
+	//trafo
+	$("#trafo_timestamp").html(time.format("LLL"));
+	$("#trafo_value_" + obs_id).html(value);
+	
 	updateButtonColor(obs_id, prop, value);
 }

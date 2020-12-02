@@ -24,6 +24,7 @@ ProbeDTemperature = "https://vaimee.it/monas#ProbeDTemperature"
 // "<button type='button' class='btn btn-success' id='value_+"+ obs_id+ "'>"
 function setColor(obs_id,color) {
 	$('#'+obs_id).attr("class", 'btn '+color);
+	$('#trafo_button_'+obs_id).attr("class", 'btn '+color);
 }
 
 function updateButtonColor(obs_id,prop,value) {

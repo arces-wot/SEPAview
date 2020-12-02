@@ -60,6 +60,15 @@ const jsap = {
 
 	},
 	"queries": {
+		"SUPERSET_DASHBOARD_URL": {
+			"sparql": "SELECT * FROM <http://demo> WHERE {?foi monas:hasSuperSetDashboardUrl ?dashboard}",
+			"forcedBindings": {
+				"foi": {
+					"type": "uri",
+					"value": "urn:epc:id:gid:13101974.0.0"
+				}
+			}
+		},
 		"OBSERVATIONS": {
 			"sparql": "SELECT * FROM <http://demo/observations> FROM <http://demo/devices> FROM <http://demo/places> FROM <http://demo/properties> FROM <http://qudt.org/2.1> WHERE {?obs rdf:type sosa:Observation; sosa:madeBySensor ?urn ; sosa:hasFeatureOfInterest ?foi ; sosa:resultTime ?timestamp ; sosa:hasSimpleResult ?value . ?foi schema:location ?location . ?location  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?urn sosa:observes ?prop . ?prop rdfs:label ?label . ?location schema:name ?name . ?prop qudt:applicableUnit ?unit . ?unit rdfs:label ?symbol}"
 		},
