@@ -421,7 +421,7 @@ const defaults = require('./defaults')
 const merge = require("./utils").mergeWithDefaults
 
 class SecureSEPA extends SEPA {
-	
+
     constructor(keycloak,parameters){
         super(parameters)
         super._wsFactory = (uri) => {
@@ -438,12 +438,12 @@ class SecureSEPA extends SEPA {
     
     async query(query, config){    
         config = this._setHeaders(config)
-        return this._autoRenewToken(super.query.bind(this),query,config,3)
+        return this._autoRenewToken(super.query.bind(this),query,config,0)
     }
 
     async update(update, config){
         config = this._setHeaders(config)
-        return this._autoRenewToken(super.update.bind(this), update, config, 3)
+        return this._autoRenewToken(super.update.bind(this), update, config, 0)
     }
 
     subscribe(query, config, alias){
@@ -473,7 +473,6 @@ class SecureSEPA extends SEPA {
                     config = this._setHeaders(config)
                     return oper(arg,config);
             	}).catch(function() {
-					if (callTimes > 0) return _autoRenewToken(oper,arg,config,callTimes-1);
             	    alert('Failed to refresh token');
             	    return Promise.reject(e)
             	});

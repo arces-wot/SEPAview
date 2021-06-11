@@ -1,0 +1,34 @@
+.probeA {
+	position: absolute;
+	top: 44%;
+	left: 6%;
+}
+
+.probeB {
+	position: absolute;
+	top: 44%;
+	left: 34%;
+}
+
+.probeC {
+	position: absolute;
+	top: 44%;
+	left: 63%;
+}
+
+.probeD {
+	position: absolute;
+	top: 10%;
+	left: 48%;
+}
+
+.trafo {
+	position: relative;
+	width : 35%;	
+}
+
+.trafo-timestamp {
+	position: absolute;
+	top: 90%;
+	left: 8%;	
+}

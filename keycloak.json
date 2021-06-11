@@ -1,6 +1,6 @@
 {
   "realm": "MONAS",
-  "auth-server-url": "https://sepa.vaimee.it:8443/auth/",
+  "auth-server-url": "https://sepa.vaimee.it:9443/auth/",
   "ssl-required": "all",
   "resource": "monas-demo",
   "public-client": true,
