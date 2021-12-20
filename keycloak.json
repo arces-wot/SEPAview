@@ -1,7 +1,7 @@
 {
   "realm": "MONAS",
-  "auth-server-url": "https://sepa.vaimee.it:9443/auth/",
-  "ssl-required": "all",
+  "auth-server-url": "https://keycloak.dasibreaker.vaimee.it/auth/",
+  "ssl-required": "none",
   "resource": "monas-demo",
   "public-client": true,
   "confidential-port": 0

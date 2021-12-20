@@ -15,7 +15,7 @@ function onQueryDashboardURL(dashid,foi) {
 
 	var iframe = document.createElement("iframe");
 	iframe.setAttribute("class", "embed-responsive-item");
-	iframe.setAttribute("src", "https://sepa.vaimee.it:8088/superset/dashboard/" + dashid + "/?standalone=true");
+	iframe.setAttribute("src", "http://sepa.vaimee.it:9088/superset/dashboard/" + dashid + "/?standalone=true");
 	iframe.setAttribute("style", "height: 100%; width: 100%");
 
 	var title = document.createElement("div");

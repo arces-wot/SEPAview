@@ -19,26 +19,29 @@ function initSepa() {
 }
 
 const jsap = {
+	"oauth": {
+		"enable": false
+	},
 	"host": "sepa.vaimee.it",
 	"sparql11protocol": {
-		"protocol": "https",
-		"port": 9001,
+		"protocol": "http",
+		"port": 8111,
 		"query": {
-			"path": "/secure/query",
+			"path": "/query",
 			"method": "POST",
 			"format": "JSON"
 		},
 		"update": {
-			"path": "/secure/update",
+			"path": "/update",
 			"method": "POST",
 			"format": "JSON"
 		}
 	},
 	"sparql11seprotocol": {
-		"protocol": "wss",
+		"protocol": "ws",
 		"availableProtocols": {
 			"ws": {
-				"port": 9002,
+				"port": 9111,
 				"path": "/subscribe"
 			},
 			"wss": {
